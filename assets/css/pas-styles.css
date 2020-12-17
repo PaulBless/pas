@@ -1,0 +1,336 @@
+
+    
+/***
+-------------
+LOGIN PAGE
+--------------
+**/
+.page-login
+{
+    font-size: 14px;
+    background: #3a6248;/*dark green*/
+    color: #666;
+}
+
+.login-container
+{
+    height: 100vh;
+    width: 100%;
+}
+
+.login-container .app-title
+{
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #3a6248;
+    border-bottom: 1px solid #dee0e4;
+    padding-top: 5px;
+    margin-bottom: 10px;
+}
+
+.login-container .login-form .hint
+{
+ font-size: normal;
+ font-weight: 400;
+}
+
+.login-form
+{
+    max-width: 100%;
+    width: 370px;
+    padding: 15px;
+    margin: auto;
+    background: #fff;
+  	justify-content: center;
+}
+.login-form img
+{
+    border-radius: 50%;
+    border: 5px solid #3a6248;
+}
+
+.form-group::before{
+/*
+    font-family: 'Font Awesome\ 5 Free';
+    content: "\f007";
+    position: absolute;
+    font-size: 20px;
+    right: 525px;
+    padding-top: 4px;
+    color: #666;
+*/
+}
+.form-group:last-of-type::before{
+/*    content: "\f044";*/
+}
+
+.form-control 
+{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 48px;
+    margin-top: 16px;
+}
+.form-control:focus
+{
+    border-color: #6e9954;
+    box-shadow: 0 0 0 0.2rem rgba(86,116,104,.25);
+}
+.forgot-link{
+   font-size: 13px; 
+    padding: 0px;
+}
+
+.forgot-link label
+{
+    margin: 0;
+}
+.forgot-link f-pwd{
+    float: right;
+}
+.login-form a
+{
+    text-decoration: none;
+    color: #666;
+}
+
+.login-form .register-link{
+    padding-top: 15px;
+    padding-bottom: 0px;
+}
+.login-form a:hover{
+    color: #3a6248;
+    transition: background-color 0.2s;
+}
+
+.login-link .btn-custom
+{
+    background: #6e9952;
+    font-size: 15px;
+/*    font-weight: 600;*/
+    border-color: #6e9952;
+    color: #fff;
+    min-height: 48px;
+}
+
+.login-link .btn-custom:hover, btn-custom:active, btn-custom:focus, btn-custom:active:focus{
+    background: #3a6248;
+    border-color: #3a6248;
+    color: #fff;
+}
+.login-link .btn-custom:focus{
+    box-shadow: 0 0 0 0.2rem rgba(86, 116, 104, .25);
+}
+
+.page-login .bottom-text{
+    padding-left: 90px;
+    padding-right: 75px;
+    color: #ccc;
+    display: block; 
+    position: absolute;
+    bottom: -20; 
+    padding-top: 25px;
+}
+
+.page-login .bottom-text p
+{
+    text-align: center; 
+    font-size: 13px;
+}
+
+.page-login .bottom-text a{
+    color: #ccc;
+    text-decoration: none;
+}
+.page-login .bottom-text a:hover{
+    color: #fff;
+}
+
+
+/**
+-----------------
+FORGOT PASSWORD PAGE
+-----------------
+***/
+.page-forgot-pwd
+{
+    font-size: 14px;
+    background: #fff;
+    color: #666;
+}
+    
+.forgot-password-container
+{
+    height: 100vh;
+    width: 100%;
+}
+
+.forgot-password-container .app-title
+{
+    font-weight: bold;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #3a6248;
+}
+.forgot-password-container span{
+    font-size: normal;
+    font-weight: 600;
+}
+
+.forgot-form
+{
+    max-width: 100%;
+    width: 370px;
+    padding: 15px;
+    margin: auto;
+    border: 2px solid #6a9952;
+}
+
+.forgot-form img
+{
+    border-radius: 50%;
+}
+.submit-link .btn-custom{
+   background: #6a9952;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    min-height: 48px; 
+}
+
+.submit-link .btn-custom:hover, btn-custom:active, btn-custom:focus, btn-custom:active:focus{
+    background: #3a6248;
+    color: #fff;
+}
+.submit-link .btn-custom:focus{
+    box-shadow: 0 0 0 0.2rem rgba(86, 116, 104, .25);
+}
+
+.page-forgot-pwd .bottom-text
+{
+    padding-left: 70px;
+    display: block; 
+    position: absolute;
+    bottom: -20; 
+    padding-top: 30px;
+}
+.page-forgot-pwd .bottom-text p
+{
+    text-align: center;
+    
+}
+
+.page-forgot-pwd .bottom-text a{
+    color: #666;
+    text-decoration: none;
+}
+.page-forgot-pwd .bottom-text a:hover
+{
+    color: #3a6248;
+}
+
+
+/**
+---------------------
+CHANGE PASSWORD PAGE
+---------------------
+**/
+.change-password-page
+{
+    font-size: 14px;
+    background: #fff;/*dark gray*/
+    color: #666;
+}
+    
+.change-pwd-container
+{
+    height: 100vh;
+    width: 100%;
+}
+
+.change-pwd-container .app-title
+{
+    font-weight: bold;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #3a6248;
+}
+.change-pwd-container span{
+    font-size: normal;
+    font-weight: 600;
+}
+
+.change-pwd-form
+{
+    max-width: 100%;
+    width: 370px;
+    padding: 15px;
+    margin: auto;
+    border: 2px solid #ccc;
+}
+
+.change-pwd-form img
+{
+    border-radius: 50%;
+}
+.changepwd-link .btn-custom{
+   background: #6e9952;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    min-height: 48px; 
+}
+
+.changepwd-link .btn-custom:hover, btn-custom:active, btn-custom:focus, btn-custom:active:focus{
+    background: #3a6248;
+    color: #fff;
+}
+.btn-custom:focus{
+    box-shadow: 0 0 0 0.2rem rgba(86, 116, 104, .25);
+}
+
+.change-password-page .bottom-text
+{
+    padding-left: 70px;
+    display: block; 
+    position: absolute;
+    bottom: -20; 
+    padding-top: 30px;
+}
+.change-password-page .bottom-text p
+{
+    text-align: center; 
+}
+
+.change-password-page .bottom-text a{
+    color: #666;
+    text-decoration: none;
+}
+.change-password-page .bottom-text a:hover{
+    color: #3a6248;
+}
+
+/*-------------------*/
+
+
+/*Admin Register page*/
+
+
+
+
+/**
+================
+DASHBOARD
+================
+**/
+
+
+
+
+
+
+
+
+
+

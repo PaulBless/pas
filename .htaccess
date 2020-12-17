@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+##Removing file extensions of .php
+RewriteEngine on
+
+##add application base path
+##RewriteBase /bpas/
+
+##RewriteCond %{REQUEST_FILENAME} !-d
+##RewriteCond %{REQUEST_FILENAME}.php -f
+##RewriteRule ^(.*)$ $1.php
+##RewriteRule ^([a-z]+)\/?$ $1.php [NC]
+</IfModule>
