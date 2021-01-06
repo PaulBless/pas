@@ -18,7 +18,7 @@ Admin Login Details
 1. Login Id : admin
    Password : admin1
 
-2. Username: sa
+2. Username: sysadm
    Password: 123456
 
 User Login Details
