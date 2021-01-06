@@ -22,12 +22,12 @@
 		<meta name="author" content="Paul Eshun">
 
 		<!-- browser image -->
-		<link rel="icon" href="./assets/images/logo.jpg" type="image/jpg">    
+		<link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
 		 <!-- bootstrap csss -->
-		<link href="./assets/css/bootstrap.css" rel="stylesheet">
+		<link href="../assets/css/bootstrap.css" rel="stylesheet">
 		<!-- page main css -->
-		<link href="./assets/css/pas-styles.css" rel="stylesheet">
-		<link href="./assets/font-awesome/css/fontawesome-all.css" rel="stylesheet">
+		<link href="../assets/css/pas-styles.css" rel="stylesheet">
+		<link href="../assets/font-awesome/css/fontawesome-all.css" rel="stylesheet">
 
 
 		<script type="text/javascript">
@@ -52,20 +52,19 @@
 				   align-items: center;
 				   width: 100%;
 				   z-index: 2;
-				   background: url('./assets/images/91.gif') 50% 50% no-repeat;
+				   background: url('../assets/images/91.gif') 50% 50% no-repeat;
 				   opacity: 0.8;
 			   }
 			   .hint{
 				   display: inline-block;
 				   margin-top: 110px;
 			   }
-			</style>
+		   </style>
     </head>
     
     <body>
         <div class="logout text-center"> 
         <div class="loader"><span class="hint">Updating Password..</span><span style="display: block">Restarting session, please wait...</span></div>
-<!--        <div class="text-hint">Loging out, please wait...</div>-->
     	</div>
     </body>
 </html>

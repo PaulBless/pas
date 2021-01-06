@@ -88,7 +88,7 @@ $description = $_POST['appdesc'];
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="../admin/assets/css/main.css" />
@@ -206,7 +206,7 @@ $description = $_POST['appdesc'];
 
 
          <!-- MENU SECTION -->
-    <div id="left" >
+    	<div id="left" >
             <div class="media user-media well-small">
                 <div class="media-body">
                     <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
@@ -238,7 +238,7 @@ $description = $_POST['appdesc'];
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                        <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                        <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
                     </ul>
                 </li>
                  <!--panel item-->
@@ -251,8 +251,8 @@ $description = $_POST['appdesc'];
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel ">
@@ -277,7 +277,7 @@ $description = $_POST['appdesc'];
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -286,9 +286,24 @@ $description = $_POST['appdesc'];
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+                <!-- Report menu item-->
+                <li class="panel hidden">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                        <i class="fa fa-signal"></i> Reports Menu
+                        <span class="pull-right">
+                        <i class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="report-nav">
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                    </ul>
+                </li>
                 <!--menu item exit-->
                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -366,7 +381,7 @@ $description = $_POST['appdesc'];
                                 </div>
                                 <!--description-->
                                 <div class="form-group">
-                                    <label class="control-label col-lg-4">Application description </label>
+                                    <label class="control-label col-lg-4">Name of Department to use System </label>
                                     <div class="col-lg-6">
                                         <textarea style="" class="form-control" id="appdesc" name="appdesc" cols="6" rows="3"><?php if(isset($rows['description'])) echo $rows['description']; ?></textarea>
                                     </div>

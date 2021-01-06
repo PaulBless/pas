@@ -84,7 +84,7 @@ if(isset($_POST['']))
     <![endif]-->
     
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -130,7 +130,7 @@ if(isset($_POST['']))
         }
   		
 		 .loading{
-					opacity:1.0;
+					opacity:0.7;
 					background:#c1c1c1 url(../assets/images/spin.gif) no-repeat center;
 					position:fixed;
 					width:100%;
@@ -230,10 +230,11 @@ if(isset($_POST['']))
                 <!--menu item-->
                 <li class="panel active"><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submissions </a></li>
+                <li class="panel"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
                 <li><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+<!--                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
+                
                 <!--menu item exit-->
                 <li class="panel"><a href="../logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -270,7 +271,7 @@ if(isset($_POST['']))
                                     <div class="col-md-9 col-md-offset-1 col-xs-9 col-sm-10" >
                                     <input type="text" class="form-control" name="searchtxt" placeholder="Enter applicant name to search" autocomplete="off"></div>
 								<!--  <input type="submit" name="btnSearch" value="Search" class="btn btn-info" style="pointer-events: all; cursor: pointer;">-->
-                                    <button class="btn btn-primary " type="submit" id="btn_search" name="btn_search" style="pointer-events: a;;; cursor: pointer; font-weight: bold">Search</button>
+                                    <button class="btn btn-primary " type="submit" id="btn_search" name="btn_search" style="pointer-events: all; cursor: pointer; font-weight: bold">Search</button>
                                  </div>
                             </form>
                             
@@ -280,7 +281,7 @@ if(isset($_POST['']))
                     			<div class="sparkline13-graph">
                         			<div class="datatable-dashv1-list custom-datatable-overright table-responsive">
                              
-                              <table id="table" class="table table-bordered table-striped hidden">
+                              <table id="table" class="table table-bordered table-striped hidden" data-responsive="table">
                               	<thead class="text-warning" style="background: #000; font-weight: bold">
                               	<tr>
                               	<td>No.</td>

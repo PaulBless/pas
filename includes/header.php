@@ -16,7 +16,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="../admin/assets/css/main.css" />

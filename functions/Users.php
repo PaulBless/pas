@@ -25,7 +25,7 @@ class Users
         $query = "INSERT INTO users_account (fullname,mobileno,email,department_name, username, password,role,status,regdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $paramType = "sssssssss";
         $paramValue = array(
-            strtoupper($name),
+            ucwords($name),
             $phone,
             $email,
             $department,

@@ -65,9 +65,10 @@ if(isset($_POST['btnSubmit']))
         //get form data
         $permitno = $_POST['permitno'];
         $townsheet = $_POST['townsheet'];
+        $zoning = $_POST['zoning'];
         
             //insert new permit record
-            $query =  "INSERT INTO `permits` (application_id, permit_number, dateAssigned, assignedBy, townsheet) VALUES ('".$appID."', '".$permitno."', CURRENT_TIMESTAMP, '".$user."', '".$townsheet."')";
+            $query =  "INSERT INTO `permits` (application_id, permit_number, dateAssigned, assignedBy, townsheet, zoning) VALUES ('".$appID."', '".$permitno."', CURRENT_TIMESTAMP, '".$user."', '".$townsheet."', '".$zoning."')";
             $ins_query=mysqli_query($connect_db, $query);
 			
 			//change application status to Permit Granted
@@ -116,7 +117,7 @@ if(isset($_POST['btnSubmit']))
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="../admin/assets/css/main.css" />
@@ -245,7 +246,7 @@ if(isset($_POST['btnSubmit']))
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                        <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                        <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
 
                     </ul>
                 </li>
@@ -259,8 +260,8 @@ if(isset($_POST['btnSubmit']))
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel ">
@@ -285,7 +286,7 @@ if(isset($_POST['btnSubmit']))
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -294,9 +295,24 @@ if(isset($_POST['btnSubmit']))
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+                <!-- Report menu item-->
+                <li class="panel hidden">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                        <i class="fa fa-signal"></i> Reports Menu
+                        <span class="pull-right">
+                        <i class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="report-nav">
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                    </ul>
+                </li>
                 <!--menu item exit-->
                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -312,7 +328,7 @@ if(isset($_POST['btnSubmit']))
                 <div class="row">
                     <div class="col-lg-12">
                        <!--page title/section-->
-                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Transactions <i class="fa fa-chevron-right"></i> Assign Permit </h5>
+                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Transactions <i class="fa fa-chevron-right"></i> Assign Building Development Permit </h5>
                     </div>
                 </div>
                   <hr />
@@ -323,7 +339,7 @@ if(isset($_POST['btnSubmit']))
                 <div class="box">
                     <header>
                         <div class="icons"><i class="fa fa-puzzle-piece"></i></div>
-                        <h5>BUILDING PERMIT APPROVAL</h5>
+                        <h5>BUILDING DEVELOPMENT PERMIT APPROVAL</h5>
                         <div class="toolbar">
                             <ul class="nav pull-right">
                                 <li>
@@ -394,7 +410,7 @@ if(isset($_POST['btnSubmit']))
                                 <form class="form-horizontal" name="addPermit" id="addPermit" method="post">
                                 <!--district name-->
                                 <div class="form-group">
-                                    <label class="control-label col-lg-4">Permit Development Number</label>
+                                    <label class="control-label col-lg-4">Permit Development Number <span class="text-danger">*</span></label>
                                     <div class="col-lg-4">
                                         <input name="permitno" id="permitno" onblur="" onkeyup="" class="form-control" required/>
                                     </div>
@@ -407,18 +423,16 @@ if(isset($_POST['btnSubmit']))
                                     </div>
                                 </div> 
                                 <!--zoning-->
-<!--
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Zoning </label>
                                     <div class="col-lg-4">
                                         <input name="zoning" id="zoning" class="form-control" />
                                     </div>
                                 </div>
--->
                                 
                                 <div class="form-actions no-margin-bottom" style="text-align:center; padding-top: 20px; paddig-left: 250px;">
-<!--                                    <button class="btn btn-primary " type="submit" name="test" style="font-weight: bold"> test</button>-->
-                                    <button class="btn btn-success " type="submit" name="btnSubmit" style="font-weight: bold; margin-right: 10px"><i class="fa fa-handshake"></i> Assign Permit</button>
+								<!--  <button class="btn btn-primary " type="submit" name="test" style="font-weight: bold"> test</button>-->
+                                    <button class="btn btn-success " type="submit" name="btnSubmit" style="font-weight: bold; margin-right: 10px"><i class="fa fa-handshake"></i> Grant Permit</button>
                                     <a href="dashboard.php" class="btn btn-danger " type="reset" style="font-weight: bold"><i class="fa fa-times"></i>  Cancel</a>
                                 </div>
                                 </form>

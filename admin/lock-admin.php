@@ -15,8 +15,9 @@ $curstate = "Inactive";
 $admin = new Admin();
 $admin->changeAccountState($curstate, $adminId);
 if(!empty($admin)){
-echo "<script>alert('Success!\\n \\nThis admin acount has been de-activated successfully! The admin cannot accessed the system again..')</script>";
-echo"<script>window.location.href='adminaccounts.php'</script>";
+echo "<script>alert('Success!\\nThis admin account has been de-activated successfully! The admin cannot accessed the system again..')</script>";
+echo"<script>window.location.href='accounts.php'</script>";
+//echo"<script>window.location.href='adminaccounts.php'</script>";
 }
 
 ?>

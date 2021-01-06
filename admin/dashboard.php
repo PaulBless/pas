@@ -42,8 +42,10 @@ $total_approved = "";
 
 //run code below to get last total users, total applications,
 //and total permits from db
-$sql_admin = "select count(*) as totadmin from admin_account where status='Active'";
-$sql_users = "select count(*) as totusers from users_account where status='Active'";
+//$sql_admin = "select count(*) as totadmin from admin_account where status='Active'";
+$sql_admin = "select count(*) as totadmin from admin_account";
+//$sql_users = "select count(*) as totusers from users_account where status='Active'";
+$sql_users = "select count(*) as totusers from users_account";
 $sql_total_applications = "select count(*) as totapplications from applications";
 $sql_total_permits = "select count(*) as totpermits from permits";
 $sql_total_defer = "select count(*) as totdefer from applications where status='Deferred'";
@@ -131,9 +133,9 @@ if($result_approved->num_rows > 0){
     
 <!--    <link href="../assets/datatable/css/bootstrap-table.css" rel="stylesheet" />-->
 
-       <style>
-           /* custom styling to sub-menus*/
-        .panel .my-sub-link:hover{
+    <style>
+      /* custom styling to sub-menus*/
+      .panel .my-sub-link:hover{
     /*            background-color: #33b35a;*/
     /*            color: white;*/
                 background: #343a40;
@@ -230,7 +232,7 @@ if($result_approved->num_rows > 0){
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                        <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                        <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
                     </ul>
                 </li>
                  <!--panel item-->
@@ -243,8 +245,8 @@ if($result_approved->num_rows > 0){
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel ">
@@ -269,7 +271,7 @@ if($result_approved->num_rows > 0){
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -277,10 +279,13 @@ if($result_approved->num_rows > 0){
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
-                <!--menu item-->
+                <!--Task & Chat Menu items - Hide-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+				<!-- end this item-->
+                <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
                         <i class="fa fa-signal"></i> Reports Menu
@@ -296,7 +301,7 @@ if($result_approved->num_rows > 0){
                 </li>
                 
                 <!--menu item exit-->
-                <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
+                <li><a href="logout.php" id="logout"><i class="fa fa-power-off"></i> Logout </a></li>
 
             </ul>
 
@@ -310,10 +315,16 @@ if($result_approved->num_rows > 0){
                 <div class="row">
                     <div class="col-lg-12">
                        <!--page title/section-->
-                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Admin Dashboard </h5>
+                        <h5 class=""><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Admin Dashboard </h5>
                     </div>
                 </div>
                   <hr />
+                  <?php 
+				 ## get loggedin date-time
+			$last_login_date = "";
+			if(isset($_SESSION['login_date_time']))
+			$last_login_date = $_SESSION['login_date_time'];
+				?>
                   
                  <!--BLOCK SECTION -->
                  <div class="row">

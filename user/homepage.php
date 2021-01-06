@@ -39,7 +39,7 @@ if(isset($_SESSION['role'])){
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../admin/assets/logo.jpg" type="image/jpg">  
+    <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
       
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -107,7 +107,7 @@ if(isset($_SESSION['role'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-<!--                <img src="../assets/images/uwada-logo.jpg" width="25" height="25">-->
+<!--                <img src="../assets/images/logo.jpg" width="25" height="25">-->
                <a class="app-name"> E-Permit System</a>
                 <!-- add search button-->
                 </header>
@@ -178,10 +178,11 @@ if(isset($_SESSION['role'])){
                 <!--menu item-->
                 <li class="panel"><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submissions </a></li>
+                <li class="panel"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
                 <li class="panel"><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+<!--                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
+               
                 <!--menu item exit-->
                 <li class="panel"><a href="../logout.php" onclick=""><i class="fa fa-power-off"></i> Logout</a></li>
 
@@ -210,19 +211,20 @@ if(isset($_SESSION['role'])){
                                 Electronic Permit System
                             </div>                   
                             <div class="app-details" style="padding: 20px">
-                            <p>Lorem ipsum dolor sit amet, luaute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <p>This is an electronic web based system or application designed and developed for internal use in managing and processing building applications permits. 
+                            
                             </p> 
                             <p>
-                            Lorem ipsum dolor sit amet, luaute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+                            The application is designed with user functionalities that enable easy and efficient application, processing, tracking, monitoring and generating of building application permits.
                             </p>
                             <p>
-                            Lorem ipsum dolor sit amet, luaute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+                            This is a complete web based information management system build for smart use in district assemblies for a complete end-to-end processing and reporting of permits.
                             </p>
                             <p>
-                            Lorem ipsum dolor sit amet, luaute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+                            It comes with features such as registering new applications, searching through application records, filtering individual applications, generating and granting unique building permits  numbers, etc.
                             </p>
                             <p>
-                            Lorem ipsum dolor sit amet, luaute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+                             
                             </p>
                             </div>
                         </div>

@@ -1,8 +1,18 @@
 <?php
 	session_start();
 	session_destroy();
-//	header('Location: ./index.php');
-//	exit; 
+## add database connection
+require_once '../functions/db_connection.php';
+
+## get loggedin user ID
+$userID = "";
+if(isset($_SESSION['id']))
+	$userID = $_SESSION['id'];
+
+## proceed to update table
+##capture logout date and time
+$logout_sql = mysqli_query($connect_db, "UPDATE userlog AS s LEFT JOIN( SELECT * FROM userlog ) AS l ON l.id = s.id SET s.logout = NOW() WHERE s.userId='$userID'
+");
 ?>
 
 
@@ -23,7 +33,7 @@
     <meta name="author" content="Paul Eshun">
     
     <!-- browser image -->
-    <link rel="icon" href="./assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="./assets/images/logo.jpg" type="image/jpg">    
      <!-- bootstrap csss -->
     <link href="./assets/css/bootstrap.css" rel="stylesheet">
     <!-- page main css -->

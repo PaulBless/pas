@@ -113,7 +113,7 @@ $db_handle = new databaseController();
     <![endif]-->
     
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />

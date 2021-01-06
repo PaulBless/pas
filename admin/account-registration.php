@@ -25,7 +25,7 @@ if(isset($_POST['register']))
 	<head>
 		<meta charset="utf-8">
 		<title>E-Permit System</title>
-		    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+		    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
         <!--Login css-->
 		<link rel="stylesheet" href="../assets/css/mystyles.css">
 		<link rel="stylesheet" href="../assets/font-awesome/css/fontawesome-all.css">
@@ -56,7 +56,7 @@ if(isset($_POST['register']))
 	<body>
 		<div class="container register">
             <div class="top">
-                <img class="logoimg" src="../assets/images/uwada-logo.jpg">
+                <img class="logoimg" src="../assets/images/logo.jpg">
                 <h1>E-Permit System</h1><span class="sub-title">Admin Account Registration!</span>
             </div>
 			<form action="" method="post" id="registration">

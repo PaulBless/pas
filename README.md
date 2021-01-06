@@ -22,8 +22,8 @@ Admin Login Details
    Password: 123456
 
 User Login Details
-1. Username: ebenezer
-   Password: eps12345
+1. Username: test
+   Password: test123
 
 2. Username: azoro
    Password: eps12345

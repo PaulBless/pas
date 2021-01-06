@@ -9,7 +9,7 @@
 <html>
    <head>
        <!--browser icon-->
-    <link rel="icon" href="../../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../../assets/images/logo.jpg" type="image/jpg">    
        <link rel="stylesheet" href="../../assets/css/bootstrap.css">
        <link rel="stylesheet" href="../../assets/font-awesome/css/fontawesome-all.css">
        
@@ -38,7 +38,7 @@ padding: 25px;
    <div class="navbar-menu" id="page-navbar">
            <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
         <a href="#" class="navbar-brand" style="font-weight: 600;">
-        <img src="../../assets/images/uwada-logo.jpg" height="28" alt="">
+        <img src="../../assets/images/logo.jpg" height="28" alt="">
         E-Permit System</a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>

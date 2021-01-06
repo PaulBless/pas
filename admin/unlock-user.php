@@ -12,8 +12,9 @@ $userId = $_GET['userid'];
 $user = new Users();
 $user->unlockAccount($userId);
 if(!empty($user)){
-echo "<script>alert('Success!\\n \\nThis User acount has been successfully unlocked! The user can now accessed the system again..')</script>";
-echo"<script>window.location.href='manage-users.php'</script>";
+echo "<script>alert('Success!\\nThis User account has been successfully unlocked! The user can now accessed the system again..')</script>";
+echo"<script>window.location.href='accounts.php'</script>";
+//echo"<script>window.location.href='accounts.php'</script>";
 }
 
 ?>

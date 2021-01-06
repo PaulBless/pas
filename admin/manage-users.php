@@ -53,7 +53,7 @@ if(isset($_POST['btnlock'])){
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../admin/assets/logo.jpg" type="image/jpg">  
+    <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
       
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -187,7 +187,7 @@ if(isset($_POST['btnlock'])){
   
         
           <!-- MENU SECTION -->
-    <div id="left" >
+    	<div id="left" >
             <div class="media user-media well-small">
                 <div class="media-body">
                     <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
@@ -219,7 +219,7 @@ if(isset($_POST['btnlock'])){
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                        <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                        <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
               </ul>
                 </li>
                  <!--panel item-->
@@ -232,8 +232,8 @@ if(isset($_POST['btnlock'])){
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel ">
@@ -258,7 +258,7 @@ if(isset($_POST['btnlock'])){
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -267,9 +267,24 @@ if(isset($_POST['btnlock'])){
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+                <!-- Report menu item-->
+                <li class="panel hidden">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                        <i class="fa fa-signal"></i> Reports Menu
+                        <span class="pull-right">
+                        <i class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="report-nav">
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                    </ul>
+                </li>
                 <!--menu item exit-->
                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -361,9 +376,9 @@ if(isset($_POST['btnlock'])){
                 
                 <!--check application status, to enable edit button-->
                    <?php if($records['status'] != "Active"): ?>
-                    <a href="unlock-user.php?userid=<?php echo $records['userid']; ?>" onclick="return confirm('Are you sure you want to re-activate or unlock this user account?')"  class="btn btn-info btn-sm "> <span class="fa fa-unlock"></span> Unlock</a>
+                    <a title="Click to unlock user account" href="unlock-user.php?userid=<?php echo $records['userid']; ?>" onclick="return confirm('Are you sure you want to re-activate or unlock this user account?')"  class="btn btn-info btn-sm "> <span class="fa fa-unlock"></span> Unlock</a>
                            <?php else: ?>
-                    <a href="lock-user.php?userid=<?php echo $records['userid']; ?>" onclick="return confirm('This user account will be locked, meaning the user cannot access the system again!')" class="btn btn-warning btn-sm"> <span class="fa fa-lock"></span> Lock</a>
+                    <a title="Click to lock user account" href="lock-user.php?userid=<?php echo $records['userid']; ?>" onclick="return confirm('This user account will be locked, meaning the user cannot access the system again!')" class="btn btn-warning btn-sm"> <span class="fa fa-lock"></span> Lock</a>
                    <?php endif; ?> 
                    
                 <!--edit user link button-->
@@ -377,7 +392,7 @@ if(isset($_POST['btnlock'])){
 <!--                <button class="btn btn-danger btn-sm" name="delUser" data-id="<?php //echo   $records['userid'];?>" data-toggle="modal" data-href="#confirm-delUser" data-target="#confirm-delUser"><i class="fa fa-trash"></i> Delete</button>-->
                 
                 <!--delete link-->
-                 <a class="btn btn-danger btn-sm" href="delete-user.php?userid=<?php echo htmlentities($records['userid']);?>" onclick="return confirm('Do you really want to delete this user account?')"> <i class="fa fa-trash"></i> Delete </a>
+                 <a title="Click to delete user" class="btn btn-danger btn-sm" href="delete-user.php?userid=<?php echo htmlentities($records['userid']);?>" onclick="return confirm('Do you really want to delete this user account?')"> <i class="fa fa-trash"></i> Delete </a>
                 </td>
                 </tr>
             <?php
@@ -395,34 +410,7 @@ if(isset($_POST['btnlock'])){
                 </div>
             </div>
         </div>   
-        </div>
        
-<!--modals-->
-       <div class="col-lg-12">
-            <div class="modal fade in" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title" id="H2">Add New Location</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form role="form" id="insert_new" name="" action="">
-                            <div class="form-group">
-                            <label>Location name</label>
-                            <input class="form-control" name="location" id="location">
-                            <p class="help-block">Example (Adeiso)</p>
-                            </div>                            
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            <button type="button" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
         
             </div> <!--end inner-->
         </div> 

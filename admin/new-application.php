@@ -14,9 +14,13 @@ $db_handle = new databaseController();
 
 
 //global variables
-$last_id = "";                 
+$last_id = "";                 //variable to hold last saved application id
 $application_id = "";         //application number
-$currentyear = date("Y");     //current year
+$currentyear = date("Y");     //current year: format YYYY
+$uniqueApplicationNo = "";		//variable to generate unique application numbers 
+$this_year = date('y');			//year format: YY to get last two digits
+$check_app_id = "";
+$check_app_no = "";
 
 //query to fetch locations
 $sql = "SELECT * from locality order by loc_name asc";
@@ -30,6 +34,48 @@ $rsLanduse =mysqli_query($connect_db, $get);
 $select = "SELECT * from app_types order by type_name asc";
 $rs1 =mysqli_query($connect_db, $select);
 
+//query to fetch last application year
+$res = "SELECT applicationid,datecreated,application_no from applications order by datecreated desc";
+$rs2 =mysqli_query($connect_db, $res);
+$myrows =mysqli_fetch_array($rs2);
+if($myrows > 0){
+	//no record found
+	$check_date = date('Y', strtotime($myrows['datecreated'])); //last date 
+	$check_app_id = ($myrows['applicationid']);		//last id
+	$check_app_no = ($myrows['application_no']);		//last application no
+	 // echo "<script>alert('Last application year is : $check_date')</script>";
+	## - last application date/year same with current year
+	if($check_date == $currentyear)
+	{
+
+			# get last application number,
+			## and split to get first four digit,
+			## remove the year part and increment by 1 as new application number
+			$first_four = substr($check_app_no, 0, 4);
+			$check_app_id = $first_four + 1;	## set last id to 1
+			$application_id = sprintf("%04d", $check_app_id);
+			$uniqueApplicationNo = $application_id ."/". $this_year;
+			// echo $uniqueApplicationNo;
+	}
+	## - last application year less than current year, and no record of application no
+	if($check_date < $currentyear)
+	{
+			// echo "<script>alert('current year is > than last year, and no record of application #')</script>";
+			$check_app_id = 1;	## set last id to 1
+			$application_id = sprintf("%04d", $check_app_id);
+			$uniqueApplicationNo = $application_id ."/". $this_year;
+			// echo $uniqueApplicationNo;
+
+	}
+
+	}else{ 
+	// echo "<script>alert('No records in application table')</script>";
+	  $check_app_id = 1;
+	 $application_id = sprintf("%04d", $check_app_id);
+	$uniqueApplicationNo = $application_id ."/". $this_year;
+	 // echo $uniqueApplicationNo;
+	}
+
 
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
@@ -38,31 +84,10 @@ if (!isset($_SESSION['loggedin'])) {
 }
 
 
-//run code below to get last application id from db
-//after fetch application number, and increment to generate new
-//$sql = "SELECT application_no FROM Applications ORDER BY application_no DESC LIMIT 1";
-$sql = "select applicationid from applications order by applicationid desc limit 1";
-$result = $connect_db->query($sql);
-if ($result->num_rows > 0) {
-    // output data from row
-    while($row = $result->fetch_assoc()) {
-        $last_id = $row["applicationid"];   //get last application_no
-        $last_id += 1; //increment the number by 1
-        $def = "/";
-        $application_id = sprintf($currentyear ."/". "%04d", $last_id);
-    }
-}else{
-    //no record of application id found in db
-    //therefore assign new application id first
-    $last_id = 1;
-    $application_id = sprintf($currentyear ."/". "%04d" .$last_id);
-}
-
-
 //function generate application numbers
 function getApplicationNos($start, $count, $digits){
     $result  = array();
-    $now_date = date("Ym");
+    $now_date = date("ym");
     
     for ($n = $start; $n < $start + $count; $n++){
         $result[] = str_pad($n, $digits, "0", STR_PAD_LEFT);
@@ -73,7 +98,7 @@ function getApplicationNos($start, $count, $digits){
 
 //try get numbers
 for($i=$number;$i<=100;$i++){
-//    echo sprintf($date_now ."%05d", $i) . "<br>";
+//    echo sprintf("%05d", $i ."/". $currentyear) . "<br>";
 }
 
 
@@ -110,18 +135,18 @@ if(isset($_POST['btnSubmit'])){
     if ($stmt->num_rows > 0) {
 	$stmt->bind_result($fullname, $app_number);
 	$stmt->fetch(); 	//record exists, fetch results 
-        $error = "Record Exists..\\n \\nThe application record with applicant name: '".$fullname. "' and Application No: ".$app_number. " is already added or registered.. \\nCannot save duplicate records!";
+        $error = "Record Exists..\\nThe application record with applicant name: '".$fullname. "' and Application No: ".$app_number. " is already added or registered with same phone number in database.. \\nCannot save duplicate records!";
         echo "<script>alert('".$error."')</script>";
     }else{
     //create instance of application class
     $new_application = new Applications();
     //insert the record
-    $insertid = $new_application->addApplication($name, $gender, $mobile, $residence, $occupation, $contactname, $contactnumber, $location, $project, $sub_date, $application_id, $_SESSION['uname'], $appstate, $landuseID, $categoryID);
+    $insertid = $new_application->addApplication($name, $gender, $mobile, $residence, $occupation, $contactname, $contactnumber, $location, $project, $sub_date, $uniqueApplicationNo, $_SESSION['uname'], $appstate, $landuseID, $categoryID);
     if(empty($insertid)){
     echo "<script>alert('System Error!\\n \\nCould not process the request..')</script>";
     }
         else{
-    $message = "Application successfully saved.\\nApplication No: ".$application_id;
+    $message = "Application successfully saved.\\nApplication No: ".$uniqueApplicationNo;
     echo "<script>alert('".$message."\\n\\nPlease Note: Application numbers are generated to easy track an application, keep it safe.')</script>";
     
         }
@@ -143,13 +168,13 @@ if(isset($_POST['btnSubmit'])){
     <meta charset="UTF-8" />
     <title>E-Permit System  </title>
      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="" name="description" />
+	<meta content="Building permit application system" name="description" />
 	<meta content="Paul Eshun" name="author" />
      <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../admin/assets/logo.jpg" type="image/jpg">  
+    <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
       
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -306,7 +331,7 @@ if(isset($_POST['btnSubmit'])){
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                             <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                             <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
                </ul>
                 </li>
                  <!--panel item-->
@@ -319,8 +344,8 @@ if(isset($_POST['btnSubmit'])){
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel active">
@@ -345,7 +370,7 @@ if(isset($_POST['btnSubmit'])){
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -354,9 +379,24 @@ if(isset($_POST['btnSubmit'])){
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+                <!-- Report menu item-->
+                <li class="panel hidden">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                        <i class="fa fa-signal"></i> Reports Menu
+                        <span class="pull-right">
+                        <i class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="report-nav">
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                    </ul>
+                </li>
                 <!--menu item exit-->
                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -377,7 +417,8 @@ if(isset($_POST['btnSubmit'])){
                     </div>
                 </div>
                   <hr />
-                  
+                 <?php //echo $uniqueApplicationNo; ?>
+				 
                  <!--HOME SECTION -->
             <div class="row">
                 <div class="col-lg-12">
@@ -386,9 +427,12 @@ if(isset($_POST['btnSubmit'])){
                         <div class="icons"><i class="fa fa-file"></i>
                         </div>
                         <h5>ADD NEW APPLICATION</h5></header>
-                        
+                      
                     <div class="panel panel-default">
-                        <div class="panel-body">
+  
+						<div class="text-warning" style="text-align: center;"><b>Please Note:</b> <span style="font-style: italic">All fields marked with * are required </span></div>
+                        
+						<div class="panel-body">
                                
                         <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
                         
@@ -397,14 +441,14 @@ if(isset($_POST['btnSubmit'])){
                         <br>
                          <!--name field-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Applicant Full Name </label>
+                            <label class="control-label col-lg-4">Applicant Full Name <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="text" id="name" name="name" placeholder="Full Name" class="form-control"/>
                             </div>
                         </div>
                        <!--gender-->                        
                         <div class="form-group">
-                          <label for="gender" class="control-label col-lg-4">Gender</label>
+                          <label for="gender" class="control-label col-lg-4">Gender <span class="text-danger">*</span></label>
                           <div class="col-lg-5">
                           <label class="radio-inline"><input type="radio" name="gender" value="Male" required>Male</label>
                           <label class="radio-inline"><input type="radio" name="gender" value="Female" required>Female</label>
@@ -412,34 +456,34 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                         <!--phone-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Phone number</label>
+                            <label class="control-label col-lg-4">Phone number <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="tel" class="form-control" name="mobile" placeholder="Phone number" id="mobile" pattern="[0][0-9]{9}" maxlength="10"/>
                             </div>
                         </div>              
                         <!--residence/address-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Town of Residence</label>
+                            <label class="control-label col-lg-4">Town of Residence <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <input type="text" name="residence" id="residence" class="form-control" placeholder="Place of residence"> </div>
                         </div>
                         <!--occupation-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Occupation</label>
+                            <label class="control-label col-lg-4">Occupation <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="text" id="occupation" name="occupation" placeholder="Occupation of applicant" class="form-control" />
                             </div>
                         </div>
                         <!--contact person name-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Name of Contact Person</label>
+                            <label class="control-label col-lg-4">Name of Contact Person <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="text" id="contactname" name="contactname" placeholder="Emergency contact name" class="form-control" />
                             </div>
                         </div>
                         <!--contact person mobile number-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Contact Mobile Number</label>
+                            <label class="control-label col-lg-4">Contact Mobile Number <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="tel" id="contactnumber" name="contactnumber" placeholder="Emergency contact number" pattern="[0][0-9]{9}" maxlength="10" class="form-control" />
                             </div>
@@ -452,7 +496,7 @@ if(isset($_POST['btnSubmit'])){
                         <br>
                         <!--site location-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Site Location </label>
+                            <label class="control-label col-lg-4">Site Location <span class="text-danger">*</span></label>
 <!--
                             <div class="col-lg-4">
                              <input name="location" id="location" class="form-control" placeholder="Location of site or building (eg. Adeiso)" />
@@ -474,7 +518,7 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                         <!--development-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Project Development Name</label>
+                            <label class="control-label col-lg-4">Project Development Name <span class="text-danger">*</span></label>
                             <div class="col-lg-6">
                                 <textarea style="" class="form-control" id="project" name="project" cols="6" rows="2"></textarea>
                             </div>
@@ -486,7 +530,7 @@ if(isset($_POST['btnSubmit'])){
 						<br>
 						<!--land use type-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Landuse Type </label>
+                            <label class="control-label col-lg-4">Landuse Type <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <!--get location lists from db-->
                             <!-- to display location lists-->
@@ -503,7 +547,7 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                         <!--land category-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Application Category </label>
+                            <label class="control-label col-lg-4">Application Category <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <!--get location lists from db-->
                             <!-- to display location lists-->
@@ -520,7 +564,7 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                         <!--date-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Date Encoded</label>
+                            <label class="control-label col-lg-4">Date Encoded <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <input id="date2" class="form-control" type="date" name="date2" format="">
                             </div>

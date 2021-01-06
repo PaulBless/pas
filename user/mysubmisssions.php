@@ -71,7 +71,7 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../admin/assets/logo.jpg" type="image/jpg">  
+    <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
       
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -134,7 +134,7 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
             color: #5b6574;
 		     }
 		 .loading{
-            opacity:1.0;
+            opacity:0.7;
             background:#c1c1c1 url(../assets/images/spin.gif) no-repeat center;
             position:fixed;
             width:100%;
@@ -233,10 +233,11 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
                 <!--menu item-->
                 <li class="panel"><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
                 <!--menu item-->
-                <li class="panel active"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submissions  </a></li>
+                <li class="panel active"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms  </a></li>
                 <li class="panel"><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+<!--                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
+                
                 <!--menu item exit-->
                 <li class="panel"><a href="../logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 

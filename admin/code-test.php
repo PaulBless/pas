@@ -118,7 +118,7 @@ if(isset($_POST['btnRegister'])){
     <![endif]-->
     
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -194,7 +194,7 @@ if(isset($_POST['btnRegister'])){
                             <li><a href="update-password.php"><i class="fa fa-lock"></i> Change Password </a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="logout.php"><i class="fa fa-sign-out-alt"></i> Logout </a>
+                            <li><a href="#" id="logout"><i class="fa fa-sign-out-alt"></i> Logout </a>
                             </li>
                         </ul>
 
@@ -239,7 +239,7 @@ if(isset($_POST['btnRegister'])){
                 <!--menu item-->
                 <li><a href=""><i class="fa fa-comments"></i> Chat Option </a></li>
                 <!--menu item exit-->
-                <li><a href="logout.php"><i class="fa fa-power-off"></i> Exit Application </a></li>
+                <li><a href="#" id="logout"><i class="fa fa-power-off"></i> Exit Application </a></li>
 
             </ul>
         </div>

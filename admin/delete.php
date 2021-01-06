@@ -39,9 +39,14 @@ if ($stmt = $connect_db->prepare('DELETE FROM `applications` WHERE applicationid
     $stmt->execute();
     
 ## display success message
-    echo "<script>alert('Record Deleted!\\n\\Application record successfully deleted!');window.history.back();</script>";
-//    echo"<script>window.location.href='dashboard.php'</script>";
-    }
+//    echo "<script>alert('Record Deleted!\\n\\Application record successfully deleted!');window.history.back();</script>";
+	?>
+                <script type="text/javascript">
+                alert("This application record has been deleted..");
+                window.location = "applications.php";
+                </script>
+                <?php
+	}
 else{
     //show any errors
     echo "<script>alert('Error!!\\n Could not proceess..')</script>";
@@ -67,10 +72,13 @@ if ($stmt = $connect_db->prepare('DELETE FROM `locality` WHERE id= ?')){
     ## execute the query
     $stmt->execute();
     
-## display success message
-    echo "<script>alert('Record Deleted!\\n\\nLocation successfully deleted!')</script>";
-    echo"<script>window.history.go(-1); return false;'</script>";
-    }
+	?>
+                <script type="text/javascript">
+                alert("This location record has been deleted..");
+                window.location = "locations.php";
+                </script>
+                <?php
+	}
 else{
     //show any errors
     echo "<script>alert('Error!!\\n Could not proceess..')</script>";
@@ -94,9 +102,13 @@ if ($stmt = $connect_db->prepare('DELETE FROM `landuse` WHERE id= ?')){
     $stmt->execute();
     
 # display success message
-    echo "<script>alert('Record Deleted!\\n\\nLanduse successfully deleted!')</script>";
-    echo"<script>window.location.href='landuse.php'</script>";
-    }
+   ?>
+               <script type="text/javascript">
+                alert("This landuse record has been deleted..");
+                window.location = "landuse.php";
+                </script>
+                <?php
+	}
 else{
     //show any errors
     echo "<script>alert('Error!!\\n Could not proceess..')</script>";
@@ -121,8 +133,12 @@ if ($stmt = $connect_db->prepare('DELETE FROM `check_list` WHERE id= ?')){
     $stmt->execute();
     
 ## display success message
-    echo "<script>alert('Record Deleted!\\nChecklist successfully deleted!')</script>";
-    echo"<script>window.location.href='check-lists.php'</script>";
+    ?>
+                <script type="text/javascript">
+                alert("This checklist record has been deleted..");
+                window.location = "check-lists.php";
+                </script>
+                <?php
     }
 else{
     //show any errors

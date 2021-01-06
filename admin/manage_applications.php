@@ -112,7 +112,7 @@ $db_handle = new databaseController();
     <![endif]-->
     
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -319,8 +319,8 @@ $db_handle = new databaseController();
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-user-plus"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage_users.php"><i class="fa fa-user-secret"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-cog"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="manage_users.php"><i class="fa fa-user-secret"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-cog"></i> Logs List</a></li>
                     </ul>
                 </li>
 
@@ -345,7 +345,7 @@ $db_handle = new databaseController();
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href=""><i class="fa fa-thumbs-up"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-thumbs-up"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href=""><i class="fa fa-link"></i> Building Permits </a></li>
                     </ul>
                 </li>
@@ -375,7 +375,7 @@ $db_handle = new databaseController();
                 <!--menu item-->
                 <li><a href=""><i class="fa fa-comments"></i> Chat Option </a></li>
                 <!--menu item exit-->
-                <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
+                <li><a href="#" id="logout"><i class="fa fa-power-off"></i> Logout </a></li>
 
             </ul>
 

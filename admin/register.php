@@ -68,7 +68,7 @@ if(isset($_POST['btnRegister'])){
     <meta content="">
     <title>E-Permit System - Admin Account Registration</title>
     <!--favicon-->
-    <link rel="icon" type="image/jpg" href="../assets/images/uwada-logo.jpg">
+    <link rel="icon" type="image/jpg" href="../assets/images/logo.jpg">
     <!-- stylesheets-->
     <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
@@ -143,11 +143,12 @@ if(isset($_POST['btnRegister'])){
 </head>
 
 <body>
+   
     <div class="container" id="page">
         <div class="row">
            <!-- top title: -->
             <div class="top-title">
-<!--                <img src="../assets/images/uwada-logo.jpg" width="60px" height="60px">-->
+<!--                <img src="../assets/images/logo.jpg" width="60px" height="60px">-->
                 <h2> E-Permit System </h2>
                 <span><h4>Administrator Account Registration</h4></span>
             </div>
@@ -184,8 +185,6 @@ if(isset($_POST['btnRegister'])){
                                 <input onblur="chk_phone" type="tel" class="form-control" name="phone" placeholder="Your mobile number" pattern="[0][0-9]{9}" maxlength="10" id="phone-number" value=""/>
                             </div>
                         </div><!--end-->
-<!--                        <br>-->
-<!--                        <br>-->
                         
                         <!--account info-->
                         <legend>Account Information</legend>

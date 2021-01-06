@@ -6,6 +6,7 @@ error_reporting(0);
 
 //ensure db is added before processing script
 require_once('functions/db_connection.php');
+//require_once('checkAdminUser.php');
 
 // Now we check if the data from the login form was submitted, isset() will check if the data exists.
 if (isset($_POST['btnLogin'])) {   
@@ -28,7 +29,7 @@ if (isset($_POST['btnLogin'])) {
 		
     //check user status
      if($user_status === "Locked") {
-		 echo "<script>alert('Access Denied!\\n\\n Your account is locked, you cannot login..Please contact your system administrator')</script>";
+		 echo "<script>alert('Access Denied!\\n\\nYour account is currently locked, you cannot login into the system... Please contact your system admin')</script>";
  		echo "<script>window.location.href='index.php'</script>";
 	 } 
 		
@@ -51,7 +52,7 @@ if (isset($_POST['btnLogin'])) {
         $login_time = date('h:i:sa');
             
         // query for insert userlog in to data base
-        mysqli_query($connect_db,"insert into userlogs(userId,login,logout) values('".$_SESSION['id']."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+        mysqli_query($connect_db,"insert into userlog(userId,login,logout) values('".$_SESSION['id']."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
                         
         //query for insert user activity
         mysqli_query($connect_db, "insert into user_activities(activity,date_created) values('".$user_name.", successfully login into the system.', '$logdate')");
@@ -72,10 +73,10 @@ if (isset($_POST['btnLogin'])) {
 	}
     else {
         ## display alert popup
-        echo "<script>alert('Login Error\\n\\nWrong password, please check..')</script>"; }
+        echo "<script>alert('Login Error\\nWrong password, please check..')</script>"; }
     } else {
 		## display alert popup
-    echo "<script>alert('Login Error\\n \\nInvalid username!')</script>";
+    echo "<script>alert('Login Error\\nInvalid username!')</script>";
     }
 
 	$stmt->close();    //close sql
@@ -93,7 +94,6 @@ if (isset($_POST['btnLogin'])) {
     
     <!--meta information-->
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0;url=login.php">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -103,37 +103,23 @@ if (isset($_POST['btnLogin'])) {
     <!-- browser image -->
     <link rel="icon" href="./assets/images/logo.jpg" type="image/jpg">    
      <!-- bootstrap csss -->
-<!--    <link href="./assets/css/bootstrap.css" rel="stylesheet">-->
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
     <!-- page main css -->
-<!--
     <link href="./assets/css/pas-styles.css" rel="stylesheet">
     <link href="./assets/font-awesome/css/fontawesome-all.css" rel="stylesheet">
--->
 
-<!--
-  	<script src="./assets/js/jquery.min.js"></script>
+  <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/popper.min.js"></script>
     <script src=".assets/js/bootstrap.min.js"></script>
--->
-<!--
     <script type="text/javascript">
         $(function(){
           $("#user_id").focus(); 
        });    
     </script>
--->
-    
-    <script language="javascript">
-    	window.location.href = "login.php"
-	</script>
-	
 </head>
        
 <body class="page-login"> 
-      Go to <a href="login.php">login.php</a>
-      
-      <!--login container-->
-<!--
+       <!--login container-->
     <div class="login-container d-flex align-items-center justify-content-center">
         <form class="login-form text-center" action="" method="post" role="form">
         <div class="logo"><img src="./assets/images/logo.jpg" width="110" height="110"/><span style="display: block"><h4 class="app-title">E-Permit System</h4></span>
@@ -160,9 +146,7 @@ if (isset($_POST['btnLogin'])) {
         </div>
     
         </form>
-    
     </div>
--->
     
 <!-- scripts-->
 <!--

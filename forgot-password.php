@@ -30,7 +30,7 @@ if(isset($_POST['submit']))
     <meta name="author" content="Paul Eshun">
     
     <!-- browser image -->
-    <link rel="icon" href="./assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="./assets/images/logo.jpg" type="image/jpg">    
      <!-- Custom CSS -->
     <link href="./assets/css/bootstrap.css" rel="stylesheet">
     <!-- login-page main css -->
@@ -44,7 +44,7 @@ if(isset($_POST['submit']))
     <!--login container-->
     <div class="forgot-password-container d-flex align-items-center justify-content-center">
     <form class="forgot-form text-center" method="post" role="form" action="">
-        <div class="logo"><img src="./assets/images/uwada-logo.jpg" width="120" height="120"/><span style="display: block"><h3 class="app-title font-weight-semibold">Permit Application System</h3></span><br/><span><h6>Enter your username and e-mail below and we will send you a new password..</h6></span>
+        <div class="logo"><img src="./assets/images/logo.jpg" width="120" height="120"/><span style="display: block"><h3 class="app-title font-weight-semibold">Permit Application System</h3></span><br/><span><h6>Enter your username and e-mail below and we will send you a new password..</h6></span>
               
         <!-- Display error message-->
            <div class="error" style="color: red"><?php if($msg != "") echo $msg . "<br>"; ?></div>

@@ -17,6 +17,8 @@ $db_handle = new databaseController();
 $last_id = "";                 
 $application_id = "";         //application number
 $currentyear = date("Y");     //current year
+$uniqueApplicationNo = "";		//variable to generate unique application numbers 
+$this_year = date('y');			//year format: YY
 
 //query to fetch locations
 $sql = "SELECT * from locality order by loc_name asc";
@@ -32,33 +34,54 @@ $get = "SELECT * from landuse order by land_use asc";
 $rsLanduse =mysqli_query($connect_db, $get);
 
 
+//query to fetch last application year
+$res = "SELECT applicationid,datecreated,application_no from applications order by datecreated desc";
+$rs2 =mysqli_query($connect_db, $res);
+$myrows =mysqli_fetch_array($rs2);
+if($myrows > 0){
+	//no record found
+	$check_date = date('Y', strtotime($myrows['datecreated'])); //last date 
+	$check_app_id = ($myrows['applicationid']);		//last id
+	$check_app_no = ($myrows['application_no']);		//last application no
+	 // echo "<script>alert('Last application year is : $check_date')</script>";
+	## - last application date/year same with current year
+	if($check_date == $currentyear)
+	{
+
+			# get last application number,
+			## and split to get first four digit,
+			## remove the year part and increment by 1 as new application number
+			$first_four = substr($check_app_no, 0, 4);
+			$check_app_id = $first_four + 1;	## set last id to 1
+			$application_id = sprintf("%04d", $check_app_id);
+			$uniqueApplicationNo = $application_id ."/". $this_year;
+			// echo $uniqueApplicationNo;
+	}
+	## - last application year less than current year, and no record of application no
+	if($check_date < $currentyear)
+	{
+			// echo "<script>alert('current year is > than last year, and no record of application #')</script>";
+			$check_app_id = 1;	## set last id to 1
+			$application_id = sprintf("%04d", $check_app_id);
+			$uniqueApplicationNo = $application_id ."/". $this_year;
+			// echo $uniqueApplicationNo;
+
+	}
+
+	}else{ 
+	// echo "<script>alert('No records in application table')</script>";
+	  $check_app_id = 1;
+	 $application_id = sprintf("%04d", $check_app_id);
+	$uniqueApplicationNo = $application_id ."/". $this_year;
+	 // echo $uniqueApplicationNo;
+	}
+
+
+
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: ./index.php');
 	exit;
-}
-
-
-//run code below to get last application id from db
-//after fetch application number, and increment to generate new
-//$sql = "SELECT application_no FROM Applications ORDER BY application_no DESC LIMIT 1";
-$sql = "select applicationid from applications order by applicationid desc limit 1";
-$result = $connect_db->query($sql);
-if ($result->num_rows > 0) {
-    // output data from row
-    while($row = $result->fetch_assoc()) {
-        $last_id = $row["applicationid"];   //get last application_no
-        $last_id += 1; //increment the number by 1
-        $def = "/";
-        $application_id = sprintf($currentyear ."/". "%04d", $last_id);
-//            echo $application_id;
-    }
-}else{
-    //no record of application id found in db
-    //therefore assign new application id first
-    $last_id = 1;
-    $application_id = $currentyear ."/". "%04d" .$last_id;
-//    echo $application_id;
 }
 
 
@@ -125,7 +148,7 @@ if(isset($_POST['btnSubmit'])){
         //create instance of application class
     $new_application = new Applications();
     //insert the record
-    $insertid = $new_application->addApplication($name, $gender, $mobile, $residence, $occupation, $contactname, $contactnumber, $location, $project, $sub_date, $application_id, $_SESSION['name'], $status, $landuseID, $categoryID);
+    $insertid = $new_application->addApplication($name, $gender, $mobile, $residence, $occupation, $contactname, $contactnumber, $location, $project, $sub_date, $uniqueApplicationNo, $_SESSION['name'], $status, $landuseID, $categoryID);
     
     if(empty($insertid)){
         //show error message in case of qrong sql query
@@ -142,7 +165,7 @@ if(isset($_POST['btnSubmit'])){
     echo "<div class='alert alert-success fade in col-lg-8 col-md-offset-2' style='top: 8px; transition: all 0.3s ease-in-out'>"
     . "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>"
     . "<span class='fa fa-bell'></span>" 
-    . "&nbsp;&nbsp;Application successfully saved! </br> <strong>Application No: '$application_id' </strong>."
+    . "&nbsp;&nbsp;Application successfully saved! </br> <strong>Application No: '$uniqueApplicationNo' </strong>."
     . "</div>";
         }
         }
@@ -169,7 +192,7 @@ if(isset($_POST['btnSubmit'])){
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../admin/assets/logo.jpg" type="image/jpg">  
+    <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
       
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -207,7 +230,7 @@ if(isset($_POST['btnSubmit'])){
             color: #5b6574;
 		     }
 		 .loading{
-            opacity:1.0;
+            opacity:0.7;
             background:#c1c1c1 url(../assets/images/spin.gif) no-repeat center;
             position:fixed;
             width:100%;
@@ -306,12 +329,13 @@ if(isset($_POST['btnSubmit'])){
                 <!--menu item-->
                 <li class="panel"><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submissions </a></li>
+                <li class="panel"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
                 <li class="panel"><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
                 <!--menu item-->
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+<!--                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
+                
                 <!--menu item exit-->
-                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Exit Application </a></li>
+                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Logout  </a></li>
 
             </ul>
 
@@ -328,7 +352,8 @@ if(isset($_POST['btnSubmit'])){
                     </div>
                 </div>
                   <hr />
-                  
+
+
                  <!--HOME SECTION -->
             <div class="row">
                 <div class="col-lg-12">
@@ -339,6 +364,9 @@ if(isset($_POST['btnSubmit'])){
                         <h5>ADD NEW APPLICATION</h5></header>
                         
                     <div class="panel panel-default">
+                       	
+                       	<div class="text-warning" style="text-align: center;"><b>Please Note:</b> <span style="font-style: italic">All fields marked with * are required </span></div>
+
                         <div class="panel-body">
                                
                         <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
@@ -348,14 +376,14 @@ if(isset($_POST['btnSubmit'])){
                        <br>
                        <!--name field-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Applicant Full Name </label>
+                            <label class="control-label col-lg-4">Applicant Full Name <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="text" id="name" name="name" placeholder="Full Name" class="form-control"/>
                             </div>
                         </div>
                        <!--gender-->                        
                         <div class="form-group">
-                          <label for="gender" class="control-label col-lg-4">Gender</label>
+                          <label for="gender" class="control-label col-lg-4">Gender <span class="text-danger">*</span></label>
                           <div class="col-lg-5">
                           <label class="radio-inline"><input type="radio" name="gender" value="Male" required>Male</label>
                           <label class="radio-inline"><input type="radio" name="gender" value="Female" required>Female</label>
@@ -363,34 +391,34 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                         <!--phone-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Phone number</label>
+                            <label class="control-label col-lg-4">Phone Number <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="tel" class="form-control" name="mobile" placeholder="Phone number" id="mobile" pattern="[0][0-9]{9}" maxlength="10"/>
                             </div>
                         </div>              
                         <!--residence/address-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Town of Residence</label>
+                            <label class="control-label col-lg-4">Town of Residence <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <input type="text" name="residence" id="residence" class="form-control" placeholder="Place of residence"> </div>
                         </div>
                         <!--occupation-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Occupation</label>
+                            <label class="control-label col-lg-4">Occupation <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="text" id="occupation" name="occupation" placeholder="Occupation of applicant" class="form-control" />
                             </div>
                         </div>
                         <!--contact person name-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Name of Contact Person</label>
+                            <label class="control-label col-lg-4">Name of Contact Person <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="text" id="contactname" name="contactname" placeholder="Emergency contact name" class="form-control" />
                             </div>
                         </div>
                         <!--contact person mobile number-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Contact Mobile Number</label>
+                            <label class="control-label col-lg-4">Contact Mobile Number <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                                 <input type="tel" id="contactnumber" name="contactnumber" placeholder="Emergency contact number" pattern="[0][0-9]{9}" maxlength="10" class="form-control" />
                             </div>
@@ -402,7 +430,7 @@ if(isset($_POST['btnSubmit'])){
                         <br>
                         <!--site location-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Site Location </label>
+                            <label class="control-label col-lg-4">Site Location <span class="text-danger">*</span> </label>
 <!--
                             <div class="col-lg-4">
                                 <input name="location" id="location" class="form-control" placeholder="Location of site or building (eg. Adeiso)" />
@@ -425,7 +453,7 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                         <!--development-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Project Development Name</label>
+                            <label class="control-label col-lg-4">Project Development Name <span class="text-danger">*</span></label>
                             <div class="col-lg-6">
                                 <textarea style="" class="form-control" id="project" name="project" cols="6" rows="2"></textarea>
                             </div>
@@ -436,7 +464,7 @@ if(isset($_POST['btnSubmit'])){
                         <br>
                         <!--land use type-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Landuse Type </label>
+                            <label class="control-label col-lg-4">Landuse Type <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <!--get landuse lists from db-->
                             <!-- to display landuse lists-->
@@ -453,7 +481,7 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                           <!--land category-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Application Category </label>
+                            <label class="control-label col-lg-4">Application Category <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <!--get location lists from db-->
                             <!-- to display location lists-->
@@ -470,7 +498,7 @@ if(isset($_POST['btnSubmit'])){
                         </div>
                         <!--date-->
                         <div class="form-group">
-                            <label class="control-label col-lg-4">Encoded Date</label>
+                            <label class="control-label col-lg-4">Encoded Date <span class="text-danger">*</span></label>
                             <div class="col-lg-4">
                             <input id="date2" class="form-control" type="date" name="date2">
                             </div>

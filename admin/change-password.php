@@ -38,44 +38,53 @@ if (isset($_SESSION['id'])){
 //fetch user data
 $admin = new Admin();
 $fetch = $admin->getAdminById($uid);
-//get passcode
+//get stored passcode from db
 $user_password = $fetch[0]['password'];
 
-//process data on form submission
-if(isset($_POST['btnupdate'])){
+//testing code
+if(isset($_POST['test']))
+{
+
+	
+}
+
+
+//process form date to execute request 
+if(isset($_POST['btnchange'])){
 	$username = $_POST['username'];
     $oldpwd = $_POST['oldpassword'];
     $newpwd = $_POST['newpassword'];
-    $confirmpwd = $_POST['cfmnewpwd'];
-    
-    $pwd_length = strlen($newpwd);
-    
-    //check old password validity
-    if(password_verify($oldpwd, $user_password)){
-        $msg = "Password Error\\n \\nThe old password you entered is incorrect, please check..";
-        echo "<script>alert('".$msg."'); window.location='update-password.php';</script>";
-    }
-    //check old and new password identical
-    if($oldpwd === $newpwd){
-        $msg = "Error\\n \\nOld password and new password cannot be the same. Please enter different password values";
-        echo "<script>alert('".$msg."'); window.location='update-password.php';</script>";
-    }
-    //check new passwords values identical
-    if($newpwd !== $confirmpwd){
-        $msg = "Error\\n \\nNew password and confirm password do not match";
-        echo "<script>alert('".$msg."'); window.location='update-password.php';</script>";
-    }
-    //check password length
-    if($pwd_length < 6){
-         $msg = "Error\\n \\nWeak password, atleast '6' characters length accepted";
-        echo "<script>alert('".$msg."'); window.location='update-password.php';</script>";
-    }
-    
-	//show success msg
-    $message = "Profile updated successfully";
-    echo "<script>alert('".$message."')</script>";
+    $confirmpwd = $_POST['confirmnewpass'];
+        
+	$password_length = strlen($_POST['newpassword']);
+	$newpass_encrypt = password_hash($_POST['newpassword'], PASSWORD_DEFAULT);
+	$oldpass_encrypt = password_hash($user_password, PASSWORD_DEFAULT);
+	
+	## validations
+	if(password_verify($_POST['oldpassword'], $user_password)) #valid old password: proceed
+	{
+			if($_POST['newpassword'] == $_POST['confirmnewpass']) #passwords identical
+			{
+				if($password_length >= 6 ) ## check password length
+				{
+					echo "<script>alert('processing.. please wait')</script>";
+					## process request
+					$myadmin = new Admin();
+					$update_passcode = $myadmin->changePassword($newpass_encrypt, $uid);
+					## show success msg
+    				$message = "Password changed successfully\\nYour new password is: $newpwd\\n\\nYou will be required to login again";
+    				echo "<script>alert('".$message."');window.location='restart_session.php';</script>";
+				}else { 
+					echo "<script>alert('Password strength very weak, it must be atleast 6 characters long')</script>";
+					  }
+			}else{
+				echo "<script>alert('The new password and confirm password must match (be the same values)')</script>";
+				 }
+	}else{	
+		echo "<script>alert('The old password is incorrect')</script>";
+		 }
        
-    }
+ }
 
 
 ?>
@@ -100,7 +109,7 @@ if(isset($_POST['btnupdate'])){
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="../admin/assets/css/main.css" />
@@ -219,8 +228,8 @@ if(isset($_POST['btnupdate'])){
         </div>
         <!-- END HEADER SECTION -->
 
-    <!-- MENU SECTION -->
-    <div id="left" >
+		<!-- MENU SECTION -->
+		<div id="left" >
             <div class="media user-media well-small">
                 <div class="media-body">
                     <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
@@ -252,7 +261,7 @@ if(isset($_POST['btnupdate'])){
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                             <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                             <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
                </ul>
                 </li>
                  <!--panel item-->
@@ -265,8 +274,8 @@ if(isset($_POST['btnupdate'])){
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel ">
@@ -291,7 +300,7 @@ if(isset($_POST['btnupdate'])){
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -300,9 +309,24 @@ if(isset($_POST['btnupdate'])){
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+                <!-- Report menu item-->
+                <li class="panel hidden">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                        <i class="fa fa-signal"></i> Reports Menu
+                        <span class="pull-right">
+                        <i class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="report-nav">
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                    </ul>
+                </li>
                 <!--menu item exit-->
                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -359,7 +383,7 @@ if(isset($_POST['btnupdate'])){
                                 <input type="text" class="form-control" name="username" value="<?php echo $fetch[0]['username']; ?>" readonly/>
                             </div>
                         </div>
-                        <!--password-->
+                        <!--old password-->
                         <div class="form-group">
                             <label class="col-lg-4 control-label">Old Password</label>
                             <div class="col-lg-4">
@@ -367,19 +391,19 @@ if(isset($_POST['btnupdate'])){
                             </div>
                           <span class="lbl-error col-lg-4" id="oldpwd-error"></span>
                         </div>
-                        <!--input field-->
+                        <!--new password 1-->
                         <div class="form-group">
                             <label class="control-label col-lg-4">New Password</label>
                             <div class="col-lg-4">
-                                <input type="password" id="newpassword" name="newpassword" value="" placeholder="Enter your new password" class="form-control" required/>
+                                <input type="password" id="newpassword" name="newpassword" value="" placeholder="Enter your new password" class="form-control" minlength="6" maxlength="30" required/>
                             </div>
                             <span class="lbl-error col-lg-4" id="newpwd-error"></span>
                         </div>
-                        <!--- email -->
+                        <!--- new password 2 -->
                         <div class="form-group">
                             <label class="control-label col-lg-4">Confirm New Password</label>
                             <div class="col-lg-4">
-                                <input type="password" id="cfmnewpwd" name="confirmnewpass" value="" placeholder="Confirm your new password" class="form-control" required/>
+                                <input type="password" id="cfmnewpwd" name="confirmnewpass" value="" placeholder="Confirm your new password" class="form-control" minlength="6" maxlength="30" required/>
                             </div>
                             <span class="lbl-error col-lg-4" id="email-error"></span>
                         </div>
@@ -388,7 +412,9 @@ if(isset($_POST['btnupdate'])){
                         <div class="form-actions no-margin-bottom" style="text-align:center;">
 
 						<!-- submit button-->
-                       <button type="submit" name="btnchange" value="" id="btnchange" class="btn_change btn btn-primary" style="font-weight: bold"><i class="fa fa-save"></i> Change Password</button>
+<!--                       <button type="submit" name="test" value="" id="test" class="btn_change btn btn-info" style="font-weight: bold"> Submit</button>-->
+                       
+                       <button type="submit" name="btnchange" value="" id="btnchange" class="btn_change btn btn-primary" style="font-weight: bold"> Change Password</button>
                         <a class="btn btn-danger" type="reset" href="dashboard.php" style="margin-left: 25px; font-weight: bold"><i class="fa fa-times"></i> Cancel</a>
                         </div>
                         <br>

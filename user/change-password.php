@@ -18,7 +18,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="../admin/assets/css/main.css" />
@@ -90,7 +90,7 @@
                             <li><a href="change-password.php"><i class="fa fa-lock"></i> Change Password </a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="logout.php"><i class="fa fa-sign-out-alt"></i> Logout </a>
+                            <li><a href="#" id="logout"><i class="fa fa-sign-out-alt"></i> Logout </a>
                             </li>
                         </ul>
 
@@ -163,8 +163,8 @@
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class=""><a href=""><i class="fa fa-user-plus"></i> Add New User </a></li>
-                        <li class=""><a href=""><i class="fa fa-user-secret"></i> Manage Users </a></li>
-                        <li class=""><a href=""><i class="fa fa-cog"></i> User Logs</a></li>
+                        <li class=""><a href=""><i class="fa fa-user-secret"></i> Accounts </a></li>
+                        <li class=""><a href=""><i class="fa fa-cog"></i> Logs List</a></li>
                     </ul>
                 </li>
 
@@ -189,7 +189,7 @@
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li><a href=""><i class="fa fa-thumbs-up"></i> Grant A Permit </a></li>
+                        <li><a href=""><i class="fa fa-thumbs-up"></i> Grant New Permit </a></li>
                         <li><a href=""><i class="fa fa-link"></i> Building Permits </a></li>
                     </ul>
                 </li>

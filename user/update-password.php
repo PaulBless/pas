@@ -30,7 +30,7 @@ if(isset($_POST['test']))
 {
 	$password_length = strlen($_POST['newPassword']);
  	## validations
-	if(md5($_POST['oldPassword'])==md5($password))	//valid old password
+	if(md5($_POST['oldPassword'])==($password))	//valid old password
 	{
 		if(md5($_POST['newPassword']) !== md5($password))//different old and new pass
 		{
@@ -59,19 +59,19 @@ if(isset($_POST['btnChange'])){
     $stored_pwd =  "";
 		
 	//check validity of old password
-	if(md5($_POST['oldPassword'])==md5($password))
+	if(md5($_POST['oldPassword'])==($password))
 	{
 		//do nothing
 	}else{
-		 $msg = "Passwords Match Error\\nThe old password you entered is incorrect, please check..";
+		 $msg = "Wrong Password\\nThe old password you entered is incorrect, please check..";
         echo "<script>alert('".$msg."'); window.location='update-password.php';</script>";
 	}
 		
 	//check old and new passwords are identical
-	if(md5($_POST['newPassword'])==md5($password))
+	if(md5($_POST['newPassword'])==($password))
 	{
 		//do nothing
-		 $msg = "Error\\n \\nThe old password and the new password cannot be the same you, please enter different values..";
+		 $msg = "Error\\nThe old password and the new password cannot be the same, please enter different values..";
         echo "<script>alert('".$msg."'); window.location='update-password.php';</script>";
 	}else{
 		 //do nothing
@@ -79,7 +79,7 @@ if(isset($_POST['btnChange'])){
 	
     //check new passwords values identical
     if($newpwd !== $confirmpwd){
-        $msg = "Error\\n \\nNew password and confirm password do not match";
+        $msg = "Passwords Match Error\\nNew password and confirm password do not match, please check..";
         echo "<script>alert('".$msg."'); window.location='update-password.php';</script>";
     }
 	
@@ -97,7 +97,7 @@ if(isset($_POST['btnChange'])){
     $new_user->changePassword($entered_newpwd, $_SESSION['id']);
     
     //display success message
-    $msg = "Success\\n \\nPassword successfully changed. You will be required to login again... \\n\\nNew password is: ".$newpwd;
+    $msg = "Success\\n \\nPassword successfully changed. You will be required to login again... \\n\\nYour New Password is: ".$newpwd;
     echo "<script type='text/javascript'>alert('".$msg."'); window.location='../restart_session.php';</script>";
 //    header ('Location: ../restart_session.php');
     }else{
@@ -124,7 +124,7 @@ if(isset($_POST['btnChange'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-<!--                <img src="../assets/images/uwada-logo.jpg" width="25" height="25">-->
+<!--                <img src="../assets/images/logo.jpg" width="25" height="25">-->
                <a class="app-name"> E-Permit System</a>
                 <!-- add search button-->
                 </header>
@@ -190,15 +190,16 @@ if(isset($_POST['btnChange'])){
                 </li>
 
                 <!--menu item -->
-                <li><a href="new-application.php"><i class="fa fa-plus"></i> Add New Application </a></li>
+                <li><a href="addapplication.php"><i class="fa fa-plus"></i> Add New Application </a></li>
                 <!--menu item-->
                 <li><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
                 <!--menu item-->
-                <li><a href="view-applications.php"><i class="fa fa-info"></i> Submitted Applications </a></li>
+                <li><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
+                <li><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits</a></li>
                 <!--menu item-->
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+<!--                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
                 <!--menu item exit-->
-                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Exit Application </a></li>
+                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
             </ul>
 
@@ -275,10 +276,10 @@ if(isset($_POST['btnChange'])){
                         </div>
                     </div>
                      <!--buttons group-->
-                        <div class="form-actions no-margin-bottom" style="text-align:center;">
+                    <div class="form-actions no-margin-bottom" style="text-align:center;">
                         <input type="submit" name="btnChange" value="Change Password" class="btn btn-primary" style="margin-right: 15px; font-weight: bold">
                        
-<!--                         <input type="submit" name="test" value="Test Password" class="btn btn-success" style="margin-right: 15px; font-weight: bold">-->
+                         <input type="submit" name="test" value="Test Password" class="btn btn-success" style="margin-right: 15px; font-weight: bold">
                         <a class="btn btn-danger" type="reset" href="homepage.php" style="margin-left: 15px; font-weight: bold"><i class="fa fa-times"></i> Cancel</a>
                         </div>
 <!--

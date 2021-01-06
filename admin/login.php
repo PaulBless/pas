@@ -8,7 +8,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>E-Permit System - Admin Login</title>
-		    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+		    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
         <!--Login css-->
 <!--        <link rel="stylesheet" href="../assets/css/bootstrap.css">-->
 		<link rel="stylesheet" href="../assets/css/mystyles.css">
@@ -18,7 +18,7 @@
 	<body>
 		<div class="container login">
             <div class="top">
-                <img class="logoimg" src="../assets/images/uwada-logo.jpg">
+                <img class="logoimg" src="../assets/images/logo.jpg">
                 <h1>E-Permit System</h1><span class="sub-title">Admin Dashboard - Please Login!</span>
             </div>
 			<form action="" method="post" name="frmLogin" id="frmLogin" class="frm-login">

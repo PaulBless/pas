@@ -38,7 +38,7 @@ $stmt->close();
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-<!--                <img src="../assets/images/uwada-logo.jpg" width="25" height="25">-->
+<!--                <img src="../assets/images/logo.jpg" width="25" height="25">-->
                <a class="app-name"> E-Permit System</a>
                 <!-- add search button-->
                 </header>
@@ -105,15 +105,16 @@ $stmt->close();
                 </li>
 
                 <!--menu item -->
-                <li><a href="new-application.php"><i class="fa fa-plus"></i> Add New Application </a></li>
+                <li><a href="addapplication.php"><i class="fa fa-plus"></i> Add New Application </a></li>
                 <!--menu item-->
                 <li><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
                 <!--menu item-->
-                <li><a href="view-applications.php"><i class="fa fa-eye"></i> View Applications </a></li>
+                <li><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
                 <!--menu item-->
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                <li><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
+               
                 <!--menu item exit-->
-                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Exit Application </a></li>
+                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Logout  </a></li>
 
             </ul>
 

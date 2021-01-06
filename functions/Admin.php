@@ -26,7 +26,7 @@ class Admin
         $query = "INSERT INTO admin_account (fullname,mobileno,email, username,password,status,regdate) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $paramType = "sssssss";
         $paramValue = array(
-            $name,
+            ucwords($name),
             $phone,
             $email,
             $username,
@@ -80,7 +80,7 @@ class Admin
         $query = "DELETE FROM admin_account WHERE adminid = ?";
         $paramType = "i";
         $paramValue = array(
-            $userid
+            $adminid
         );
         $this->db_handle->update($query, $paramType, $paramValue);
     }

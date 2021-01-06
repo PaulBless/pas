@@ -12,8 +12,9 @@ $userId = $_GET['userid'];
 $user = new Users();
 $user->deleteUser($userId);
 if(!empty($user)){
-echo "<script>alert('Success!\\n \\nUser has been deleted successfully!')</script>";
-echo"<script>window.location.href='manage-users.php'</script>";
+echo "<script>alert('Success!\\nUser has been deleted successfully!')</script>";
+echo"<script>window.location.href='accounts.php'</script>";
+//echo"<script>window.location.href='accounts.php'</script>";
 }
 
 ?>

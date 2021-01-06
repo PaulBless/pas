@@ -12,8 +12,9 @@ $userId = $_GET['userid'];
 $user = new Users();
 $user->lockAccount($userId);
 if(!empty($user)){
-echo "<script>alert('Success!\\n \\nThis User acount has been locked successfully! The user cannot accessed the system again..')</script>";
-echo"<script>window.location.href='manage-users.php'</script>";
+echo "<script>alert('Success!\\nThis User account has been locked successfully! The user cannot accessed the system again..')</script>";
+echo"<script>window.location.href='accounts.php'</script>";
+//echo"<script>window.location.href='accounts.php'</script>";
 }
 
 ?>

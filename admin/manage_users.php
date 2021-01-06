@@ -42,7 +42,7 @@ if (!isset($_SESSION['loggedin'])) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="../admin/assets/css/main.css" />
@@ -157,7 +157,7 @@ if (!isset($_SESSION['loggedin'])) {
                             <li><a href="change-password.php"><i class="fa fa-lock"></i> Change Password </a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="logout.php"><i class="fa fa-sign-out-alt"></i> Logout </a>
+                            <li><a href="#" id="logout"><i class="fa fa-sign-out-alt"></i> Logout </a>
                             </li>
                         </ul>
 
@@ -230,8 +230,8 @@ if (!isset($_SESSION['loggedin'])) {
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-user-plus"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage_users.php"><i class="fa fa-user-secret"></i> Manage Users </a></li>
-                        <li class="my-sub0-link"><a href="user-logs.php"><i class="fa fa-cog"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="manage_users.php"><i class="fa fa-user-secret"></i> Accounts </a></li>
+                        <li class="my-sub0-link"><a href="loglist.php"><i class="fa fa-cog"></i> Logs List</a></li>
                     </ul>
                 </li>
 
@@ -256,7 +256,7 @@ if (!isset($_SESSION['loggedin'])) {
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li><a href=""><i class="fa fa-thumbs-up"></i> Grant A Permit </a></li>
+                        <li><a href=""><i class="fa fa-thumbs-up"></i> Grant New Permit </a></li>
                         <li><a href=""><i class="fa fa-link"></i> Building Permits </a></li>
                     </ul>
                 </li>
@@ -299,7 +299,7 @@ if (!isset($_SESSION['loggedin'])) {
                 <div class="row">
                     <div class="col-lg-12">
                        <!--page title/section-->
-                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Main Menu <i class="fa fa-chevron-right"></i> System Users <i class="fa fa-chevron-right"></i> Manage Users </h5>
+                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Main Menu <i class="fa fa-chevron-right"></i> System Users <i class="fa fa-chevron-right"></i> Accounts </h5>
                     </div>
                 </div>
                   <hr />

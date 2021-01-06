@@ -21,7 +21,7 @@ LOGIN PAGE
 .login-container .app-title
 {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
     text-transform: uppercase;
     color: #3a6248;
     border-bottom: 1px solid #dee0e4;
@@ -169,7 +169,7 @@ FORGOT PASSWORD PAGE
 .forgot-password-container .app-title
 {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
     text-transform: uppercase;
     color: #3a6248;
 }
@@ -197,6 +197,12 @@ FORGOT PASSWORD PAGE
     font-weight: 600;
     color: #fff;
     min-height: 48px; 
+}
+
+.forgot-form .login-link{
+    padding-top: 15px;
+    padding-bottom: 0px;
+/*	margin-top:  25px;*/
 }
 
 .submit-link .btn-custom:hover, btn-custom:active, btn-custom:focus, btn-custom:active:focus{

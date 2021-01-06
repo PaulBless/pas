@@ -39,13 +39,15 @@ $log_userpass = $_POST['password'];
    
     //now verify the password.
 	if (password_verify($log_userpass, $userpwd)) {
-        		
+
 		// Verification success! User has loggedin!
 		// Create sessions so we know the user is logged in, they basically act like cookies but remember the data on the server.
 		session_regenerate_id();
 		$_SESSION['loggedin'] = TRUE;
 		$_SESSION['uname'] = $fname;
 		$_SESSION['id'] = $userid;
+		date_default_timezone_set("Africa/Accra");
+		$_SESSION['login_date_time'] = date('Y-m-d H:i:sa');
 		
 		// if remember me clicked . store values in $_COOKIE  array
 		if(!empty($_POST["rememberme"])) {
@@ -62,7 +64,7 @@ $log_userpass = $_POST['password'];
 		}
 	}
 		//save login details
-		$sql = mysqli_query($connect_db, "insert into userlogs(userId, login, logout) values ('".$_SESSION['id']."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+		$sql = mysqli_query($connect_db, "insert into userlogs(userId, login, logout) values ('".$_SESSION['id']."', CURRENT_TIMESTAMP, '')");
 		
 		//save user activity
 		$sql_act = mysqli_query($connect_db, "insert into user_activities(activity, date_created) values ('".$_SESSION['uname'].", successfully logged into the  system.','".date('d/M/Y')."')");
@@ -108,7 +110,7 @@ $log_userpass = $_POST['password'];
     <meta name="author" content="Paul Eshun">
     
     <!-- browser image -->
-    <link rel="icon" href="../assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
      <!-- bootstrap csss -->
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
     <!-- page main css -->
@@ -116,11 +118,15 @@ $log_userpass = $_POST['password'];
     <link href="../assets/font-awesome/css/fontawesome-all.css" rel="stylesheet">
     
     <style lang="" type="text/css">
-        .show-loading{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, 50%);
+        .loading{
+            opacity: 0.5;
+            background:#fefefe url(../assets/images/loader.gif) no-repeat center;
+            position:fixed;
+            width:100%;
+            height:100%;
+            top:0px;
+            left:0px;
+            z-index:2000;
             display: none;
         }
     </style>
@@ -136,15 +142,14 @@ $log_userpass = $_POST['password'];
    </head>
     
     
-<body class="page-login"> 
-    
+<body class="page-login" onload=""> 
         <!-- loader icon-->
-       <div class="show-loading"><img src="../assets/images/ajax-loader-small.gif" height="90px" width="90px"></div>
+       <div class="loading"></div>
        <!--login container-->
     <div class="login-container d-flex align-items-center justify-content-center">
        <!-- begin login form--> 
         <form class="login-form text-center" action="" method="post" role="form">
-        <div class="logo"><img src="../assets/images/uwada-logo.jpg" width="100" height="100"/><span style="display: block"><h4 class="app-title">E-Permit System</h4></span>
+        <div class="logo"><img src="../assets/images/logo.jpg" width="100" height="100"/><span style="display: block"><h4 class="app-title">E-Permit System</h4></span>
         <span class="hint"><h6>Admin Login Portal</h6></span>  
         <!-- display error message -->
         <p class="text-danger text-bold"><?php echo $_SESSION['msg'];?>
@@ -162,7 +167,7 @@ $log_userpass = $_POST['password'];
                 <label for="remember">Remember me</label>
             </div>
            <!--forgot password link-->
-            <a class="forgot-pwd font-weight-semibold f-pwd" href="forgot-password.php">Forgot Password?</a>    
+            <a class="forgot-pwd font-weight-semibold f-pwd" href="forgot-password.php" >Forgot Password?</a>    
         </div>
         <div class="login-link">
         <button id="submit-btn" class="btn btn-custom mt-3 btn-block font-weight-bold rounded-pill btn-login" name="btnLogin" onclick="">Login</button>
@@ -178,6 +183,7 @@ $log_userpass = $_POST['password'];
         </form>
     </div>
     
+  
 <!-- scripts-->
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/popper.min.js"></script>
@@ -186,12 +192,25 @@ $log_userpass = $_POST['password'];
     <script type="text/javascript">
         $(document).ready(function(){
            
-            //show loader on login button click
-            $("$submit-btn").click(function(){
-           $(".show-loading").show(); 
-        });
+			
         });
       
     </script>
+    
+    <script type="text/javascript" lang="javascript">
+		function process(){
+			$('.loading').show();
+			$.ajax({
+			url:'./checkAdminUser.php',
+			method:'GET',
+//			data:{id:$id},
+			success:function(){
+					setTimeout(function(){
+						$('.loading').fadeToggle();		
+					},1500)
+				}
+			})
+		}
+	</script>
 </body>
 </html>

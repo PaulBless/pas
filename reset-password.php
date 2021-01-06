@@ -26,7 +26,7 @@ session_start();
     <meta name="author" content="Paul Eshun">
     
     <!-- browser image -->
-    <link rel="icon" href="./assets/images/uwada-logo.jpg" type="image/jpg">    
+    <link rel="icon" href="./assets/images/logo.jpg" type="image/jpg">    
      <!-- Custom CSS -->
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
     <!-- login-page main css -->
@@ -39,7 +39,7 @@ session_start();
     <!--change password container-->
     <div class="change-pwd-container d-flex align-items-center justify-content-center">
     <form class="change-pwd-form text-center" method="post" role="form" action="change-password.php">
-        <div class="logo"><img src="./assets/images/uwada-logo.jpg" width="120" height="120"/><span style="display: block"><h3 class="app-title font-weight-semibold">Permit Application System</h3></span><br/><span><h6>Complete the form to change your password..</h6></span>
+        <div class="logo"><img src="./assets/images/logo.jpg" width="120" height="120"/><span style="display: block"><h3 class="app-title font-weight-semibold">Permit Application System</h3></span><br/><span><h6>Complete the form to change your password..</h6></span>
               
         <!-- Display error message-->
             <?php echo '' ?>

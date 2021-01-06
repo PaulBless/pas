@@ -84,7 +84,7 @@ if(isset($_POST['btnSubmit'])){
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../admin/assets/logo.jpg" type="image/jpg">  
+    <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
       
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -199,7 +199,7 @@ if(isset($_POST['btnSubmit'])){
 
    
          <!-- MENU SECTION -->
-    <div id="left" >
+    	<div id="left" >
             <div class="media user-media well-small">
                 <div class="media-body">
                     <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
@@ -231,7 +231,7 @@ if(isset($_POST['btnSubmit'])){
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                            <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                            <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
                 </ul>
                 </li>
                  <!--panel item-->
@@ -244,8 +244,8 @@ if(isset($_POST['btnSubmit'])){
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel ">
@@ -270,7 +270,7 @@ if(isset($_POST['btnSubmit'])){
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -279,9 +279,24 @@ if(isset($_POST['btnSubmit'])){
                 <li class="panel active "><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+                <!-- Report menu item-->
+                <li class="panel hidden">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                        <i class="fa fa-signal"></i> Reports Menu
+                        <span class="pull-right">
+                        <i class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="report-nav">
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                    </ul>
+                </li>
                 <!--menu item exit-->
                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -298,7 +313,7 @@ if(isset($_POST['btnSubmit'])){
                 <div class="row">
                     <div class="col-lg-12">
                        <!--page title/section-->
-                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Main Menu <i class="fa fa-chevron-right"></i> Applications <i class="fa fa-chevron-right"></i> Defer Application</h5>
+                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Main Menu <i class="fa fa-chevron-right"></i> Committee Decisions on Applications <i class="fa fa-chevron-right"></i> Defer Application</h5>
                     </div>     
                 </div>
                 
@@ -311,7 +326,7 @@ if(isset($_POST['btnSubmit'])){
                     <a href="committee-decisions.php" class="btn btn-warning right btn-sm"><i class="fa fa-arrow-left"></i> Go Back</a>
                     <div class="box">
                         <header><div class="icons"><i class="fa fa-unlink"></i></div>
-                        <h5>DEFER AN APPLICATION</h5></header>
+                        <h5>DEFER APPLICATION BASED ON COMMITTEE DECISION</h5></header>
 
             <?php
             //get application_id
@@ -375,13 +390,13 @@ if(isset($_POST['btnSubmit'])){
                                 <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
 
                                 <div class="form-group">
-                                    <label class="control-label col-lg-4">Specify Reason</label>
+                                    <label class="control-label col-lg-4">Enter Committee Decision / Defer Reason</label>
                                     <div class="col-lg-4">
                                         <input name="reason_defer" id="deferreason" class="form-control" placeholder="" required />
                                     </div>
                                     <div class="col-lg-4">
                                     <!--save button-->
-                                    <button class="btn btn-success" style="font-weight: bold" type="submit" name="btnSubmit"><i class="fa fa-check"></i> Confirm Defer</button>
+                                    <button class="btn btn-danger" style="font-weight: bold" type="submit" name="btnSubmit">Confirm Defer</button>
                                     </div>
                                         </div>                       
                                 </form>

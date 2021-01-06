@@ -40,7 +40,7 @@ if(!isset($_SESSION['loggedin'])){
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
-    <link rel="icon" href="../admin/assets/logo.jpg" type="image/jpg">  
+    <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
       
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="../admin/assets/plugins/bootstrap/css/bootstrap.css" />
@@ -73,7 +73,7 @@ if(!isset($_SESSION['loggedin'])){
 <!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
-  <script type="text/javascript">
+  	<script type="text/javascript">
 	  function pageLoading(){
         $('.loading').show();
         
@@ -186,7 +186,7 @@ if(!isset($_SESSION['loggedin'])){
 
    
           <!-- MENU SECTION -->
-    <div id="left" >
+    	<div id="left" >
             <div class="media user-media well-small">
                 <div class="media-body">
                     <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
@@ -218,7 +218,7 @@ if(!isset($_SESSION['loggedin'])){
                         <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                        <li class="my-sub-link"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                        <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
 
                     </ul>
                 </li>
@@ -232,8 +232,8 @@ if(!isset($_SESSION['loggedin'])){
                     </a>
                     <ul class="collapse" id="form-nav">
                         <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="manage-users.php"><i class="fa fa-arrow-right"></i> Manage Users </a></li>
-                        <li class="my-sub-link"><a href="user-logs.php"><i class="fa fa-arrow-right"></i> User Logs</a></li>
+                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
                     </ul>
                 </li>
                 <li class="panel ">
@@ -258,7 +258,7 @@ if(!isset($_SESSION['loggedin'])){
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant A Permit </a></li>
+                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
                         <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
                     </ul>
@@ -267,9 +267,26 @@ if(!isset($_SESSION['loggedin'])){
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
+<!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <!--menu item-->
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+-->
+               <!-- Report menu item-->
+                <li class="panel hidden">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                        <i class="fa fa-signal"></i> Reports Menu
+                        <span class="pull-right">
+                        <i class="fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="report-nav">
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                    </ul>
+                </li>
+                
+                
                 <!--menu item exit-->
                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
@@ -300,8 +317,8 @@ if(!isset($_SESSION['loggedin'])){
             <div class="panel panel-default">
 <!--             <div class="panel-heading"></div>-->
             
-            <div class="panel-body">
-                <div class="data-table-area mg-tb-15">
+            	<div class="panel-body">
+                	<div class="data-table-area mg-tb-15">
                     <div class="sparkline13-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
                             <div id="toolbar" style="margin-right: 15px;">
@@ -314,18 +331,18 @@ if(!isset($_SESSION['loggedin'])){
 -->
                             <br><br>
                             </div>
-                    <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar" class="table table-bordered table-hover">
+                    <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="" data-show-pagination-switch="" data-show-refresh="" data-key-events="" data-show-toggle="" data-resizable="" data-cookie="" data-cookie-id-table="saveId" data-show-export="" data-click-to-select="" data-toolbar="#toolbar" class="table table-bordered table-hover">
                     <!--table head-->
-                        <thead class="text-warning">
+                        <thead class="text-warning" style="background: #000">
                             <tr>
                             <th>No.</th>
                             <!-- <th data-field="id">ID</th>-->
                             <th data-field="fullname">Applicant Name</th>
                             <th data-field="appid">App. Number</th>
-                            <th data-field="project">Project Name</th>
+                            <th data-field="project">Project Development Name</th>
                             <th data-field="location">Location</th>
                             <th data-field="status">Status </th>
-                            <th data-field="action"></th>
+                            <th data-field="action">Action</th>
 
                             </tr>
                         </thead>
@@ -334,7 +351,7 @@ if(!isset($_SESSION['loggedin'])){
                 ## will add 'status' in sql later to filter result
                 ## fetch applications with status='Approved'
                 // $sql=mysqli_query($connect_db,"SELECT * from `applications` WHERE `status`='Approved' ORDER BY `name` ASC");
-                $sql=mysqli_query($connect_db,"SELECT * from `applications` WHERE `status`='Approved' ORDER BY `name` ASC");
+                $sql=mysqli_query($connect_db,"SELECT * from `applications` WHERE `status`='Approved' ORDER BY `name` ASC");	
                 $cnt=1;
                 while($last=mysqli_fetch_array($sql)){
 
@@ -370,7 +387,7 @@ if(!isset($_SESSION['loggedin'])){
                         </div>
                     </div>       
                          </div>
-                     </div>
+                </div>
                 </div>
             </div>
             </div>   

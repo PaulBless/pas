@@ -1,0 +1,21 @@
+//run code below to get last application id from db
+//after fetch application number, and increment to generate new
+//$sql = "SELECT application_no FROM Applications ORDER BY application_no DESC LIMIT 1";
+$sql = "select applicationid from applications order by applicationid desc limit 1";
+$result = $connect_db->query($sql);
+if ($result->num_rows > 0) {
+    // output data from row
+    while($row = $result->fetch_assoc()) {
+        $last_id = $row["applicationid"];   //get last application_no
+        $last_id += 1; //increment the number by 1
+        $def = "/";
+//        $application_id = sprintf($currentyear ."/". "%04d", $last_id);
+		$application_id = sprintf("%04d", $last_id);
+		$uniqueApplicationNo = $application_id ."/". $this_year;    }
+}else{
+    //no record of application id found in db
+    //therefore assign new application id first
+    $last_id = 1;
+//    $application_id = $currentyear ."/". "%04d" .$last_id;
+	$application_id = sprintf("%04d", $last_id);
+	$uniqueApplicationNo = $application_id ."/". $this_year;}
