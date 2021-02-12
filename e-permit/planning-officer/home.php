@@ -68,7 +68,7 @@ if (!isset($_SESSION['loggedin'])) {
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -267,7 +267,7 @@ if (!isset($_SESSION['loggedin'])) {
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

@@ -11,10 +11,17 @@ require_once '../functions/Applications.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 // If the user is not logged in, redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: logout.php');
+	header('Location: index.php');
 	exit;
 }
 
@@ -45,15 +52,15 @@ if(isset($_POST['btnSubmit'])){
     if (isset($_POST['appnumber']))
         $appNo = ($_POST['appnumber']);
     
-    //2nd: query `defer` table to review application
-    $select = mysqli_query($connect_db, "select * from `defer` WHERE appID='".$reviewId."'");
-    $num=mysqli_fetch_array($select);
-    if($num>0){
+        //2nd: query `defer` table to review application
+        $select = mysqli_query($connect_db, "SELECT * FROM `defer` WHERE appID='".$reviewId."' AND `state`='1'");
+        $num=mysqli_fetch_array($select);
+        if($num>0){
         //get review date
         $selDate = date('d M, Y', strtotime($num['dateReview']));
 
         //show site inspection success alert
-        echo "<script>alert('Response...\\n \\nIt seems this application record had been already reviewed on: ".$selDate." \\nCannot add duplicate records..')</script>";
+        echo "<script>alert('Response...\\nSorry, this application record had been already reviewed on: ".$selDate." \\nCannot add duplicate records..')</script>";
         
         }else{
     
@@ -66,8 +73,8 @@ if(isset($_POST['btnSubmit'])){
         //2nd: query `defer` table to review application
         $update = mysqli_query($connect_db, "UPDATE `defer` SET `state`='1', `dateReview`='".$reviewDate."' WHERE appID='".$reviewId."'");
                           
-//		echo "<script>alert('The status of this application record with Application #: ".$appNo." has been successfully reviewed; it is now ready/available for further processing.')</script>";
-//		echo "<script>window.location.href='reviewlists.php'</script>";
+        //	echo "<script>alert('The status of this application record with Application #: ".$appNo." has been successfully reviewed; it is now ready/available for further processing.')</script>";
+        //		echo "<script>window.location.href='reviewlists.php'</script>";
         //show success message
         echo "<div class='alert alert-info fade in col-lg-6 col-md-offset-3' style='top: 10px; transition: all 0.3s ease-in-out 0s'>"
         . "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>"
@@ -75,27 +82,28 @@ if(isset($_POST['btnSubmit'])){
         . "<strong>&nbsp;&nbsp;The status of this application record with Application Number: ".$appNo." has been successfully reviewed; it is now ready for further processing!</strong>."
         . "</div>";"<script>window.location.href='reviewlists.php'</script>";
         }
-    }
+}
 
 ?>
 
 
  <?php //include('../includes/header.php'); ?>
     
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> 
 <html lang="en"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
 <head class="">
+
     <meta charset="UTF-8" />
     <title>E-Permit System  </title>
      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
      <!--[if IE]>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
     <link rel="icon" href="../assets/images/logo.jpg" type="image/jpg">    
@@ -107,8 +115,8 @@ if(isset($_POST['btnSubmit'])){
     <link rel="stylesheet" href="../assets/font-awesome/css/fontawesome-all.css" />
     <!--END GLOBAL STYLES -->
 
-      <!--page level scripts-->
-<!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
+    <!--page level scripts-->
+    <!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
     <!--scripts-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
@@ -116,21 +124,22 @@ if(isset($_POST['btnSubmit'])){
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
     
       
-       <Style>
+    <style>
            /* custom styling to sub-menus*/
         .panel .my-sub-link:hover{
-    /*            background-color: #33b35a;*/
-    /*            color: white;*/
+            /*  background-color: #33b35a;*/
+            /*  color: white;*/
                 background: #343a40;
                 transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
             }
-    </Style>
+    </style>
     
-	</head>
+</head>
    
+
 <!--   BEGIN THE PAGE BODY-->
-    <body class="padTop53 " onload="" onreset="" >
-    	<div class="spinning"></div>
+<body class="padTop53 " onload="" onreset="" >
+    <div class="spinning"></div>
     
  <!-- MAIN WRAPPER -->
     <div id="wrap" >
@@ -144,7 +153,7 @@ if(isset($_POST['btnSubmit'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -263,17 +272,17 @@ if(isset($_POST['btnSubmit'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                    <!--
+                                    <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                    <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                    -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -329,7 +338,7 @@ if(isset($_POST['btnSubmit'])){
                     <div class="panel panel-default">
                        <div class="panel-body">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><i class="fa fa-building" style=""></i>  Application Details</div>
+                            <div class="panel-heading"><i class="fa fa-building" ></i>  Application Details</div>
                                 <div class="panel-body">
                                     <form class="form-horizontal" method="post">
                            <!--get record from db-->
@@ -408,7 +417,7 @@ if(isset($_POST['btnSubmit'])){
                                         <input name="defdate" id="defdate" value="<?php echo (date('d M, Y', strtotime($rsData['dateDefer']))); ?>" class="form-control" readonly/>
                                     </div>
                                 </div> 
-<!--                               <input type="checkbox" name="review" required/> I confirm the review of this application for further processing, and development approval.-->
+                                <!--                               <input type="checkbox" name="review" required/> I confirm the review of this application for further processing, and development approval.-->
                                 <div class="form-actions no-margin-bottom" style="text-align:center; padding-bottom: 20px;">
                             <button class="btn btn-success " type="submit" name="btnSubmit" style="font-weight: bold; margin-right: 15px"><i class="fa fa-check"></i> Confirm Review</button>
                             <a href="dashboard.php" class="btn btn-danger" style="font-weight: bold" type="reset"><i class="fa fa-times"></i>  Cancel</a>
@@ -431,7 +440,7 @@ if(isset($_POST['btnSubmit'])){
 
 <!-- FOOTER -->
     <div id="footer" class="">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

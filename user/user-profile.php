@@ -11,6 +11,14 @@ if (!isset($_SESSION['loggedin'])) {
 //include database connection
 include '../functions/db_connection.php';
 
+require_once '../functions/db_connection.php';
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 // We don't have the password or email info stored in sessions so instead we can get the results from the database.
   $stmt = $connect_db->prepare('SELECT fullname, mobileno, email, department_name, password, email, role, status, regdate FROM users_account WHERE userid = ?');
@@ -39,7 +47,7 @@ $stmt->close();
                 <header class="navbar-header">
                 <!--app name/title-->
 <!--                <img src="../assets/images/logo.jpg" width="25" height="25">-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -107,11 +115,11 @@ $stmt->close();
                 <!--menu item -->
                 <li><a href="addapplication.php"><i class="fa fa-plus"></i> Add New Application </a></li>
                 <!--menu item-->
-                <li><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
+                <li><a href="application-lists.php"><i class="fa fa-th"></i> Application Lists </a></li>
                 <!--menu item-->
                 <li><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
                 <!--menu item-->
-                <li><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
+                <li><a href="building-permits.php"><i class="fa fa-star"></i> Permits Granted </a></li>
                
                 <!--menu item exit-->
                 <li><a href="../logout.php"><i class="fa fa-power-off"></i> Logout  </a></li>

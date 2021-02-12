@@ -4,13 +4,12 @@ error_reporting(0);
 
 require_once '../functions/db_connection.php';
 
-////invoke db classes
-//require_once '../functions/databaseController.php';
-//require_once '../functions/Applications.php';
-//require_once '../functions/Users.php';
-//
-////new instance of db controller
-//$db_handle = new databaseController();
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 //check user loggedin
@@ -21,8 +20,8 @@ if(!isset($_SESSION['loggedin'])){
 
 //add new record
 if(isset($_POST['btnAdd'])){
-    $landuse =mysql_real_escape_string($_POST['landuse']);
-    $comment = mysql_real_escape_string($_POST['comment']);
+    $landuse = trim(htmlspecialchars($_POST['landuse']));
+    $comment = trim(htmlspecialchars($_POST['comment']));
 
     //preparing the SQL statement will prevent SQL injection.
     if ($stmt = $connect_db->prepare('SELECT land_use FROM landuse WHERE land_use = ?')) {
@@ -71,11 +70,11 @@ if(isset($_POST['btnAdd'])){
 <head>
     <meta charset="UTF-8" />
     <title>E-Permit System  </title>
-     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
      <!--[if IE]>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
     <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
@@ -90,27 +89,28 @@ if(isset($_POST['btnAdd'])){
     <!--END GLOBAL STYLES -->
 
      
-<!--  page level styles-->
-<link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <!--  page level styles-->
+    <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
-<script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
-<script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap js plugin -->
+    <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+        
+    <!--jquery -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery datatable scripts -->
+    <!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
+    <script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
+    <!-- end -->
+        
+    <!-- dataTables export buttons scripts-->
+    <link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
+    <script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
+    <script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
     
-<!--jquery -->
-<script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
-<!-- jquery datatable scripts -->
-<!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
-<script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
-<!-- end -->
-    
- <!-- dataTables export buttons scripts-->
-<link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
-<script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
-<script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
-<script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
-<script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
-<script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
     <!-- function to show loader on pageloading-->
 	<script type="text/javascript">
 		function pageLoading(){
@@ -120,8 +120,9 @@ if(isset($_POST['btnAdd'])){
 			}, 1500);
 		}
 	</script>
-<!--	end function here-->
-  <script>
+    
+    <!--end function here-->
+    <script>
         $(document).ready(function () {
             var table = $('#table').DataTable({
                 dom: 'Bfrtip',
@@ -133,7 +134,7 @@ if(isset($_POST['btnAdd'])){
         });
     </script>
 
-<!--  end  -->
+    <!--  end  -->
   
   
     <!--stylesheet-->
@@ -194,7 +195,7 @@ if(isset($_POST['btnAdd'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -257,6 +258,7 @@ if(isset($_POST['btnAdd'])){
                         <i class="fa fa-home"></i> Main Menu
                     </a>                                   
                 </li>
+
                 <!-- menu panel items-->
                 <li class="panel ">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#settings-nav">
@@ -313,17 +315,17 @@ if(isset($_POST['btnAdd'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
+                <!--
                 <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
                 <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -360,8 +362,8 @@ if(isset($_POST['btnAdd'])){
                   <hr />
                   
                  <!--HOME SECTION -->
-        <div class="row">
-        <div class="col-lg-12">                       
+            <div class="row">
+            <div class="col-lg-12">                       
             <a href="manage-permits.php" class="manage_permit btn btn-primary btn-lg btn-rect right" style="font-weight: bold"><i class="fa fa-anchor" style="margin-right: 3px;"> </i>Manage Permits </a>
 
             <div class="box">
@@ -369,7 +371,7 @@ if(isset($_POST['btnAdd'])){
             <h5>BUILDING DEVELOPMENT PERMITS</h5></header>
                         
             <div class="panel panel-default">
-<!--             <div class="panel-heading">List of Applications Granted Permits</div>-->
+            <!--             <div class="panel-heading">List of Applications Granted Permits</div>-->
             
             <div class="panel-body">
                 <div class="data-table-area mg-tb-15">
@@ -377,7 +379,7 @@ if(isset($_POST['btnAdd'])){
                         <div class="datatable-dashv1-list custom-datatable-overright">
                             
                    <table id="table" class="table table-bordered table-hover">
-					   <caption class="" style="padding-bottom: 5px"><span class="label label-warning" style="font-weight: bold; text-transform: uppercase; font-size: 14px">Lists Of Building Permits Granted</span></caption>
+					   <caption class="" style="padding-bottom: 5px"><span class="label label-warning" style="font-weight: bold; text-transform: uppercase; font-size: 14px">Lists Of Permits Granted </span></caption>
 
                     <thead class="text-warning" style="background: #000;">
                         <tr>
@@ -387,15 +389,16 @@ if(isset($_POST['btnAdd'])){
                         <th data-field="fullname">Applicant Name</th>
                         <th data-field="phoneno">Phone No.</th>
                         <th data-field="project">Project Development Name</th>
-                        <th data-field="permitno">Permit Number</th>
-                        <th data-field="date">Date Granted</th>
-<!--                        <th data-field="action"></th>-->
+                        <th data-field="permitno">Development Permit Number</th>
+                        <th data-field="date">Date Applied</th>
+                        <th data-field="date2">Date Granted</th>
+                        <!-- <th data-field="action"></th>-->
                         </tr>
                     </thead>
                     <tbody>
         <?php
              $cnt=1;    //COUNTER
-            $sql_get = "SELECT applicationid,name, phoneno, application_no, project_type, permit_number, dateAssigned from applications INNER JOIN permits ON applications.applicationid=permits.application_id ORDER BY name ASC";
+            $sql_get = "SELECT `applicationid`,`name`, `phoneno`, `application_no`, `project_type`, `datecreated`, `permit_number`, `dateAssigned` FROM `applications` INNER JOIN `permits` ON `applications`.`applicationid`=`permits`.`application_id` ORDER BY `dateAssigned`,`name` ASC";
             $result1 = $connect_db->query($sql_get);
             if($result1->num_rows > 0){
                 while($row = $result1->fetch_assoc())
@@ -408,15 +411,16 @@ if(isset($_POST['btnAdd'])){
                     <td><?php echo $row['name']; ?></td>
                     <td><?php echo $row['phoneno']; ?></td>
                     <td><?php echo $row['project_type']; ?></td>
-                    <td class="text-danger"><?php echo ($row['permit_number']); ?></td>
-                    <td><?php echo (date('d M, Y', strtotime($row['dateAssigned']))); ?></td>
-<!--
+                    <td class="text-success"><?php echo ($row['permit_number']); ?></td>
+                    <td class="text-info"><?php echo (date('d M, Y', strtotime($row['datecreated']))); ?></td>
+                    <td class="text-danger"><?php echo (date('d M, Y', strtotime($row['dateAssigned']))); ?></td>
+                    <!--                     
                     <td class="datatable-ct">
                      <a href="giveout.php?applicationID=<?php echo $row['applicationid'];?>" ><button class="handOverBtn btn btn-info btn-sm btn-rect" id="appId" style="font-weight: bold">Give </button></a>
                      <button class="btn btn-danger btn-sm btn-rect" data-toggle="modal" data-target="#showModal"><i class="fa fa-trash"></i> </button>
                         
                     </td>  
--->
+                    -->
                 </tr>
             <?php
             $cnt=$cnt+1;        
@@ -437,7 +441,7 @@ if(isset($_POST['btnAdd'])){
        
 <!--modals form-->
     <div class="col-lg-12">
-        <div class="modal fade in" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+        <div class="modal fade in" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -465,7 +469,7 @@ if(isset($_POST['btnAdd'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

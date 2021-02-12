@@ -4,13 +4,13 @@ error_reporting(0);
 
 require_once '../functions/db_connection.php';
 
-////invoke db classes
-//require_once '../functions/databaseController.php';
-//require_once '../functions/Applications.php';
-//require_once '../functions/Users.php';
-//
-////new instance of db controller
-//$db_handle = new databaseController();
+
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 //check user loggedin
@@ -21,8 +21,8 @@ if(!isset($_SESSION['loggedin'])){
 
 //add new record
 if(isset($_POST['btnAdd'])){
-    $landuse =mysql_real_escape_string($_POST['landuse']);
-    $comment = mysql_real_escape_string($_POST['comment']);
+    $landuse =($_POST['landuse']);
+    $comment = ($_POST['comment']);
 
     //preparing the SQL statement will prevent SQL injection.
     if ($stmt = $connect_db->prepare('SELECT land_use FROM landuse WHERE land_use = ?')) {
@@ -89,70 +89,70 @@ if(isset($_POST['btnAdd'])){
     <!--END GLOBAL STYLES -->
 
      
-<!--  page level styles-->
-<link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <!--  page level styles-->
+    <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
-<script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
-<script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap js plugin -->
+    <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+        
+    <!--jquery -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery datatable scripts -->
+    <!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
+    <script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
+    <!-- end -->
+        
+    <!-- dataTables export buttons scripts-->
+    <link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
+    <script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
+    <script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
     
-<!--jquery -->
-<script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
-<!-- jquery datatable scripts -->
-<!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
-<script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
-<!-- end -->
-    
- <!-- dataTables export buttons scripts-->
-<link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
-<script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
-<script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
-<script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
-<script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
-<script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
-  
-  <script>
-        $(document).ready(function () {
-            var table = $('#table').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                     'excel', 'pdf'
-                ]
+    <script>
+            $(document).ready(function () {
+                var table = $('#table').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'excel', 'pdf'
+                    ]
+                });
+
             });
-
-        });
     </script>
 
-<!--  end  -->
-  
-  
-    <!--stylesheet-->
-    <style type="text/css">
-        legend{
-            font-size: 15px;
-            font-weight: bold;
-            color: #5b6574;
-        }
-        
-        .panel .my-sub-link:hover{
-        /*   background-color: #33b35a;*/
-        /*   color: white;*/
-            background: #343a40;
-            transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
-        }
-		.spinner{
-			background: #ccc url(../assets/images/spin.gif) center no-repeat;
-			position: fixed;
-			width: 100%;
-			height: 100%;
-			top: 0px;
-			left: 0px;
-			display: none;
-			opacity: 0.4;
-			z-index: 9999;
-		}
-        
-    </style>
+    <!--  end  -->
+    
+    
+        <!--stylesheet-->
+        <style type="text/css">
+            legend{
+                font-size: 15px;
+                font-weight: bold;
+                color: #5b6574;
+            }
+            
+            .panel .my-sub-link:hover{
+            /*   background-color: #33b35a;*/
+            /*   color: white;*/
+                background: #343a40;
+                transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
+            }
+            .spinner{
+                background: #ccc url(../assets/images/spin.gif) center no-repeat;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                display: none;
+                opacity: 0.4;
+                z-index: 9999;
+            }
+            
+        </style>
 </head>    <!-- END HEAD -->
 
    
@@ -172,7 +172,7 @@ if(isset($_POST['btnAdd'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -291,18 +291,18 @@ if(isset($_POST['btnAdd'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -355,12 +355,12 @@ if(isset($_POST['btnAdd'])){
                         <div class="datatable-dashv1-list custom-datatable-overright">
                             
                     <table id="table" class="table table-bordered table-hover">
-            			<caption class="" style="margin-bottom: 3px"><span class="label label-warning" style="font-weight: bold; font-size: 12.5px; text-transform: uppercase; color: black ">applications granted permits</span></caption>
+            			<caption class="" style="margin-bottom: 3px"><span class="label label-warning" style="font-weight: bold; font-size: 13px; text-transform: uppercase; color: black ">manage applications granted permits</span></caption>
                     <thead class="text-warningg" style="background: #f0ae4d">
                         <tr>
                         <th>No.</th>
                         <!-- <th data-field="id">ID</th>-->
-                        <th data-field="appno">App. Number</th>
+                        <th data-field="appno">Application #</th>
                         <th data-field="fullname">Applicant Name</th>
                         <th data-field="project">Project Name.</th>
                         <th data-field="permitno">Permit Number</th>
@@ -386,7 +386,7 @@ if(isset($_POST['btnAdd'])){
                     <td><?php echo ($row['permit_number']); ?></td>
                     <td><?php echo (date('d M, Y', strtotime($row['dateAssigned']))); ?></td>
                     <td class="datatable-ct">
-                     <a href="giveout.php?applicationID=<?php echo $row['applicationid'];?>" ><button class="handOverBtn btn btn-info btn-sm btn-rect" id="appId" style="font-weight: bold">Hand Over </button></a>
+                     <a href="giveout.php?applicationID=<?php echo $row['applicationid'];?>" ><button class="handOverBtn btn btn-success btn-sm btn-rect" id="appId" style="font-weight: bold">H O </button></a>
                      <button class="btn btn-danger btn-sm btn-rect" data-toggle="modal" data-target="#showModal"><i class="fa fa-trash"></i> </button>
                         
                     </td>  
@@ -410,7 +410,7 @@ if(isset($_POST['btnAdd'])){
        
 <!--modals form-->
     <div class="col-lg-12">
-        <div class="modal fade in" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+        <div class="modal fade in" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -420,7 +420,8 @@ if(isset($_POST['btnAdd'])){
                     <div class="modal-body">
                         <!--land use name-->
                             <div class="text-danger">
-                            Please, this record cannot be deleted. All applications and permits are archived for future references and purposes. Permission denied!
+                            Sorry, cannot complete the request. <br> <br> <b>REASON:</b> Please, this record cannot be deleted because all applications granted permits are archived for future references and purposes. Permission denied!<br> <br>
+                            <p class="text-primary"> You can only hand over the application or permits to the righful owner/applicant.. </p> 
                             </div>                             
                     </div>
                     <div class="modal-footer">
@@ -438,7 +439,7 @@ if(isset($_POST['btnAdd'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

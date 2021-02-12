@@ -45,11 +45,10 @@ if(isset($_POST['btnRegister'])){
         "message" => "Account registration failed..",
         "type" => "error"
         );
-    header ('location: register.php');
+    header ('location: accounts.php');
     } else{
-        $message = "Admin account successfully registered.\\n\\nLogin Details\\n------------------------\\nUsername: ".$username. "\\nPassword: ".$password." ";
+        $message = "User record saved.\\n\\nLogin Details\\n------------------------\\nUsername: ".$username. "\\nPassword: ".$password." ";
         echo "<script>alert('".$message."'); document.location.href='accounts.php'</script>";;
-//        echo "<script>alert('".$message."'); document.location.href='index.php'</script>";;
         } 
     
 }

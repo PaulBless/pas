@@ -18,10 +18,10 @@ $db_handle = new databaseController();
 
 
 // If the user is not logged in redirect to the login page...
-//if (!isset($_SESSION['loggedin'])) {
-//	header('Location: index.php');
-//	exit;
-//}
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: ../index.php');
+	exit;
+}
 
 
 //process data on form submission
@@ -149,7 +149,7 @@ if(isset($_POST['btnSubmit'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -217,13 +217,13 @@ if(isset($_POST['btnSubmit'])){
                 <!--menu item -->
                 <li><a href="addapplication.php"><i class="fa fa-plus"></i> Add New Application </a></li>
                 <!--menu item-->
-                <li><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
+                <li><a href="application-lists.php"><i class="fa fa-th"></i> Application Lists </a></li>
                 <!--menu item-->
-                <li><a href="view-applications.php"><i class="fa fa-info"></i> Submitted Applications </a></li>
+                <li><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
                 <!--menu item-->
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                <li><a href="building-permits.php"><i class="fa fa-bookmark"></i> Permits Granted </a></li>
                 <!--menu item exit-->
-                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Exit Application </a></li>
+                <li><a href="../logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
 
             </ul>
         </div>
@@ -238,7 +238,7 @@ if(isset($_POST['btnSubmit'])){
                        <!--page title/section-->
                         <h5><span class="fa fa-home"></span> E-Permit 
                         <i class="fa fa-chevron-right"></i> User Dashboard 
-                        <i class="fa fa-chevron-right"></i> Search Applications </h5>
+                        <i class="fa fa-chevron-right"></i> Chat </h5>
                     </div>
                 </div>
         <hr />
@@ -272,7 +272,7 @@ if(isset($_POST['btnSubmit'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

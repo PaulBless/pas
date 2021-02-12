@@ -217,7 +217,7 @@ $db_handle = new databaseController();
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -339,14 +339,14 @@ $db_handle = new databaseController();
                 </li>
                 <li class="panel">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#chart-nav">
-                        <i class="fa fa-briefcase"></i> Building Permits
+                        <i class="fa fa-briefcase"></i> Permits Granted
                         <span class="pull-right">
                         <i class="fa fa-angle-right"></i>
                         </span>
                     </a>
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href=""><i class="fa fa-thumbs-up"></i> Grant New Permit </a></li>
-                        <li class="my-sub-link"><a href=""><i class="fa fa-link"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href=""><i class="fa fa-link"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -513,7 +513,7 @@ $db_handle = new databaseController();
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

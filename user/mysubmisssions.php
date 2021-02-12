@@ -4,6 +4,12 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 //include db connection file
 include '../functions/db_connection.php';
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 //invoke controller classes
 require_once '../functions/databaseController.php';
@@ -30,7 +36,7 @@ $rsLanduse =mysqli_query($connect_db, $get);
 
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: ./index.php');
+	header('Location: ../index.php');
 	exit;
 }
 
@@ -165,7 +171,7 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -182,16 +188,16 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
                     <!--USER SETTINGS SECTIONS -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i id="icon" class="fa fa-user "></i>&nbsp;Howdy, <?=$_SESSION['name']?>
+                            <i id="icon" class="fa fa-user "></i>&nbsp;Welcome, <?=$_SESSION['name']?>
                             <i id="icon" class="fa fa-chevron-down"></i>
                         </a>
 
                         <ul class="dropdown-menu dropdown-user">
-                            <li><a href="my-profile.php"><i class="fa fa-user-circle"></i> My Profile </a>
+                            <li><a href="user-profile.php"><i class="fa fa-user-circle"></i> My Profile </a>
                             </li>
                             <li><a href="#"><i class="fa fa-tags"></i> My Tasks </a>
                             </li>
-                            <li><a href="change-password.php"><i class="fa fa-lock"></i> Change Password </a>
+                            <li><a href="update-password.php"><i class="fa fa-lock"></i> Change Password </a>
                             </li>
                             <li class="divider"></li>
                             <li><a href="../logout.php"><i class="fa fa-sign-out-alt"></i> Logout </a>
@@ -231,10 +237,10 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
                 <!--menu item -->
                 <li class="panel "><a href="addapplication.php"><i class="fa fa-plus"></i> Add New Application </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
+                <li class="panel"><a href="application-lists.php"><i class="fa fa-th"></i> Application Lists</a></li>
                 <!--menu item-->
                 <li class="panel active"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms  </a></li>
-                <li class="panel"><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
+                <li class="panel"><a href="building-permits.php"><i class="fa fa-star"></i> Permits Granted </a></li>
                 <!--menu item-->
 <!--                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
                 
@@ -380,7 +386,7 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
 
 	<!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

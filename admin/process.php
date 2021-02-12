@@ -6,7 +6,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 include '../functions/db_connection.php';
 include '../functions/databaseController.php';
-include '../functions/Users.php';
 include '../functions/Admin.php';
 
 $db_handle = new databaseController();
@@ -41,7 +40,7 @@ $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
 $appQuery = "select * from applications WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
-$appRecords = mysqli_query($connect_db, $appQuery);
+$appRecords=mysqli_query($connect_db, $appQuery);
 $data = array();
 
 while ($row = mysqli_fetch_assoc($appRecords)) {

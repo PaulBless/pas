@@ -5,6 +5,12 @@ error_reporting(E_ALL ^ E_NOTICE);
 //include db connection file
 include '../functions/db_connection.php';
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 // If the user is not logged in redirect to the login page...
@@ -114,8 +120,8 @@ if(isset($_POST['btnSubmit'])){
         }
         
         .panel .my-sub-link:hover{
-/*            background-color: #33b35a;*/
-/*            color: white;*/
+    /*            background-color: #33b35a;*/
+    /*            color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
         }
@@ -150,7 +156,7 @@ if(isset($_POST['btnSubmit'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -267,7 +273,7 @@ if(isset($_POST['btnSubmit'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -365,7 +371,7 @@ if(isset($_POST['btnSubmit'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

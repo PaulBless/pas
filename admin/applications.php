@@ -12,6 +12,15 @@ require_once '../functions/Applications.php';
 $application = new Applications();
 $dbresults = $application->getApplications();
 
+
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
+
 //count total lists
 $total = "select count(*) as lists from applications";
 $result = $connect_db->query($total);
@@ -25,7 +34,7 @@ if ($result->num_rows > 0) {
 }
 
 if(!isset($_SESSION['loggedin'])){
-    header('Location: ./index.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -75,25 +84,25 @@ if(isset($_POST['delete_btn']))
      <!--  page level styles-->
 	<link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
-<script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
-<script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
-    
-<!--jquery -->
-<script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
-<!-- jquery datatable scripts -->
-<!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
-<script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
-<!-- end -->
-    
- <!-- dataTables export buttons scripts-->
-<link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
-<script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
-<script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
-<script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
-<script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
-<script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
-  <script type="text/javascript">
+    <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap js plugin -->
+    <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+        
+    <!--jquery -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery datatable scripts -->
+    <!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
+    <script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
+    <!-- end -->
+        
+    <!-- dataTables export buttons scripts-->
+    <link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
+    <script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
+    <script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
+    <script type="text/javascript">
 		function pageLoading(){
 			$('.loading').show();
 			setTimeout(function(){
@@ -101,7 +110,8 @@ if(isset($_POST['delete_btn']))
 			}, 3500);
 		}
 	</script>
-  <script>
+    
+    <script>
         $(document).ready(function () {
             var table = $('#table').DataTable({
                 dom: 'Bfrtip',
@@ -113,7 +123,7 @@ if(isset($_POST['delete_btn']))
         });
     </script>
 
-<!--  end  -->
+    <!--  end  -->
   
   
     <!--stylesheet-->
@@ -174,7 +184,7 @@ if(isset($_POST['delete_btn']))
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -292,7 +302,7 @@ if(isset($_POST['delete_btn']))
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -300,11 +310,11 @@ if(isset($_POST['delete_btn']))
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                menu item
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+            <!--
+                            <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                            menu item
+                            <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+            -->
                 <!-- end here-->
                 <!-- Report menu item-->
                 <li class="panel hidden">
@@ -370,7 +380,7 @@ if(isset($_POST['delete_btn']))
                             <th data-field="fullname">Applicant Name</th>
                             <th data-field="mobile">Mobile No</th>
                             <th data-field="project">Project Name</th>
-<!--                            <th data-field="location">Site Location</th>-->
+                            <!--                            <th data-field="location">Site Location</th>-->
                             <th data-field="appid">App. Number</th>
                             <th data-field="date">Date Encoded</th>
                             <th data-field="status">Status</th>
@@ -381,7 +391,7 @@ if(isset($_POST['delete_btn']))
             <?php
                 ## will add 'status' in sql later to filter results
                 ## query by status='new': since user must edit application
-                $sql=mysqli_query($connect_db, "SELECT * from `applications` ORDER BY `datecreated` ASC");
+                $sql=mysqli_query($connect_db, "SELECT * FROM `applications` ORDER BY `datecreated` ASC");
                 $cnt=1;
                 while($last=mysqli_fetch_array($sql)){
 
@@ -392,13 +402,13 @@ if(isset($_POST['delete_btn']))
                     <td><?php echo $last['name']; ?></td>
                     <td><?php echo $last['phoneno']; ?></td>
                     <td><?php echo $last['project_type']; ?></td>
-<!--
+                    <!--
                     <td><?php //get locality name by binding with id param
                     $getSiteLocality=mysqli_query($connect_db, "select loc_name from locality where id='".$last['location']."'");
                     //$result = mysqli_fetch_array($getSiteLocality);
                     //fetch corresponding data
                     //echo $last['location']; //echo $result['loc_name']; ?></td>
--->
+                    -->
                     <td><?php echo $last['application_no']; ?></td>
                     <td><?php echo date('d M, Y', strtotime($last['datecreated'])); ?></td>
                     <td><?php echo ($last['status']); ?></td>
@@ -422,7 +432,7 @@ if(isset($_POST['delete_btn']))
                     <?php if($last['status'] != "New"): ?>
                         <button class="btn btn-danger btn-sm" id="" data-toggle="modal" data-target="#showModal"><i class="fa fa-trash"></i></button>
                                 <?php else: ?>
-						<a class="btn btn-danger btn-sm" href="delete.php?applicationId=<?php echo htmlentities($last['applicationid']);?>" onclick="return confirm('The selected record with Application Number: <?php  echo htmlentities($last['application_no']); ?> will be permanently deleted? You cannot undo this action. Press OK to continue if you want to delete!')"> <span class="fa fa-trash"></span> </a>
+						<a class="btn btn-danger btn-sm" href="./ajax/deleteapplication.php?applicationId=<?php echo htmlentities($last['applicationid']);?>" onclick="return confirm('The selected record with Application Number: <?php  echo htmlentities($last['application_no']); ?> will be permanently deleted? You cannot undo this action. Press OK to continue if you want to delete!')"> <span class="fa fa-trash"></span> </a>
                		<?php endif; ?>  
                                 
 						</td>
@@ -446,7 +456,7 @@ if(isset($_POST['delete_btn']))
  
        <!-- delete modal -->
         <div class="col-lg-12">
-        <div class="modal fade in" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+        <div class="modal fade in" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -475,7 +485,7 @@ if(isset($_POST['delete_btn']))
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

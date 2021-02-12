@@ -4,13 +4,13 @@ error_reporting(0);
 
 require_once '../functions/db_connection.php';
 
-////invoke db classes
-//require_once '../functions/databaseController.php';
-//require_once '../functions/Applications.php';
-//require_once '../functions/Users.php';
-//
-////new instance of db controller
-//$db_handle = new databaseController();
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 
 //check user loggedin
@@ -21,8 +21,8 @@ if(!isset($_SESSION['loggedin'])){
 
 //add new record
 if(isset($_POST['btnAdd'])){
-    $landuse =mysql_real_escape_string($_POST['landuse']);
-    $comment = mysql_real_escape_string($_POST['comment']);
+    $landuse =trim(htmlspecialchars($_POST['landuse']));
+    $comment = trim(htmlspecialchars($_POST['comment']));
 
     //preparing the SQL statement will prevent SQL injection.
     if ($stmt = $connect_db->prepare('SELECT land_use FROM landuse WHERE land_use = ?')) {
@@ -100,9 +100,9 @@ if(isset($_POST['btnAdd'])){
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
     
       <!--jquery3.3.1 library-->
-<!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
-      <!--datatable js-->
-<!--    -->
+    <!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
+        <!--datatable js-->
+    <!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
   
@@ -174,7 +174,7 @@ if(isset($_POST['btnAdd'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -252,7 +252,7 @@ if(isset($_POST['btnAdd'])){
                         <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
                         <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
                         <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
-     </ul>
+                    </ul>
                 </li>
                  <!--panel item-->
                 <li class="panel">
@@ -292,17 +292,17 @@ if(isset($_POST['btnAdd'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -347,20 +347,20 @@ if(isset($_POST['btnAdd'])){
             <h5>LAND USE</h5></header>
                         
             <div class="panel panel-default">
-<!--             <div class="panel-heading"></div>-->
+                <!--             <div class="panel-heading"></div>-->
             
             <div class="panel-body">
                 <div class="data-table-area mg-tb-15">
                     <div class="sparkline13-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
                             <div id="toolbar" style="margin-right: 15px;">
-<!--
-                                <select class="form-control">
-                                    <option value="">Export Basic</option>
-                                    <option value="all">Export All</option>
-                                    <option value="selected">Export Selected</option>
-                                </select>
--->
+                                <!--
+                                                                <select class="form-control">
+                                                                    <option value="">Export Basic</option>
+                                                                    <option value="all">Export All</option>
+                                                                    <option value="selected">Export Selected</option>
+                                                                </select>
+                                -->
                             <br> <br>
                             </div>
                     <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="" data-show-pagination-switch="" data-show-refresh="" data-key-events="" data-show-toggle="" data-resizable="" data-cookie="" data-cookie-id-table="saveId" data-show-export="" data-click-to-select="" data-toolbar="#toolbar" class="table table-striped table-bordered table-hover">
@@ -387,13 +387,11 @@ if(isset($_POST['btnAdd'])){
                 <td><?php echo $last['land_use'] ?></td>
                 <td><?php echo $last['comments'] ?></td>
                 <td class="datatable-ct">
-                <!--edit button-->
+                <!-- edit button-->
                 <a href="landuse-edit.php?landuse_id=<?php echo $last['id'];?>" ><button class="btn btn-info btn-sm" id="landuseId"><i class="fa fa-pencil-alt"></i> Edit</button></a>
 
-                <!--process application link-->
-<!--                <a href="delete.php?landuse_id=<?php //echo $last['id'];?>" ><button class="btn btn-danger btn-sm" id="landuseId"><i class="fa fa-trash"></i> Delete</button></a>-->
-<!--                delete link-->
-                <a class="btn btn-danger btn-sm" href="delete.php?landuseId=<?php echo htmlentities($last['id']);?>" onclick="return confirm('The selected landuse record will be deleted?')"> 
+                <!-- delete link-->
+                <a class="btn btn-danger btn-sm" href="./ajax/deletelanduse.php?landuseId=<?php echo htmlentities($last['id']);?>" onclick="return confirm('The selected landuse record will be deleted?')"> 
                 <i class="fa fa-trash" style="margin-right: 4px;"></i>Delete</a>
                 </td>
                 </tr>
@@ -413,7 +411,7 @@ if(isset($_POST['btnAdd'])){
        
 <!--modals form-->
     <div class="col-lg-12">
-        <div class="modal fade in" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+        <div class="modal fade in" id="formModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -452,7 +450,7 @@ if(isset($_POST['btnAdd'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

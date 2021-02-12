@@ -10,6 +10,14 @@ if(!isset($_SESSION['loggedin'])){
     exit;
 }
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
+
 if(isset($_POST['btnDelete']))
 {	
 	//get button value
@@ -54,10 +62,12 @@ if(isset($_POST['btnDelete']))
 
      
 <!--  page level styles-->
+<link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
 <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
+<!--scripts-->
 <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
+<!-- bootstrap js plugin -->
 <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     
 <!--jquery -->
@@ -96,7 +106,7 @@ if(isset($_POST['btnDelete']))
 
 	   function Loader() {
   		document.getElementById("loader").style.display = "none";
-//  		document.getElementById("myDiv").style.display = "block";
+        //  		document.getElementById("myDiv").style.display = "block";
 	   }
 	   
 	</script>
@@ -167,8 +177,8 @@ if(isset($_POST['btnDelete']))
             left:0px;
             z-index:2000;
             display: none;
-/*			-webkit-animation: spin 2s linear infinite;*/
-/*			animation: spin 2s linear infinite;*/
+            /*			-webkit-animation: spin 2s linear infinite;*/
+            /*			animation: spin 2s linear infinite;*/
         }	
 		@keyframes spin {
 				0% { transform: rotate(0deg); }
@@ -213,7 +223,7 @@ if(isset($_POST['btnDelete']))
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -331,17 +341,17 @@ if(isset($_POST['btnDelete']))
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -361,12 +371,12 @@ if(isset($_POST['btnDelete']))
 
             </ul>
 
-        </div>
-        <!--END MENU SECTION -->
+    </div>
+    <!--END MENU SECTION -->
 
        
-        <!--PAGE CONTENT -->
-        <div id="content">
+    <!--PAGE CONTENT -->
+    <div id="content">
                      
             <div class="inner" style="min-height: 700px;">
                 <div class="row">
@@ -381,6 +391,7 @@ if(isset($_POST['btnDelete']))
         <div class="row">
         <div class="col-lg-12">                       
             <a href="location-addnew.php" data-toggle="" data-target="" onclick="showLoader()" class="add_new btn btn-primary right" style="font-weight: bold" id="addnew"><i class="fa fa-plus"></i> Add New Location</a>
+            <!-- <a href="#add_modal" data-toggle="modal" data-target="#add_modal" class="add_new btn btn-primary right" style="font-weight: bold" id="addnew"><i class="fa fa-plus"></i> Add New Location</a> -->
             
           
             <div class="box">
@@ -405,7 +416,7 @@ if(isset($_POST['btnDelete']))
                             </thead>
                             <tbody>
                 <?php
-                    $sql=mysqli_query($connect_db,"SELECT * from locality order by loc_name ASC");
+                    $sql=mysqli_query($connect_db,"SELECT * FROM `locality` ORDER BY `loc_name` ASC");
                     $cnt=1;
                     while($last=mysqli_fetch_array($sql)){
 
@@ -419,12 +430,12 @@ if(isset($_POST['btnDelete']))
                         <!--process application link-->
                         <a href="edit-location.php?loc_id=<?php echo $last['id'];?>"  ><button class="btn btn-info btn-sm" id="locId" name=""><i class="fa fa-pencil-alt"></i> Edit</button></a>
                         <!--delete link-->
-                        <a class="btn_delete btn btn-danger btn-sm" href="delete.php?locId=<?php echo htmlentities($last['id']);?>" onclick="return confirm('Do you really want to delete this site location?')" data-loc-id="<?php echo htmlentities($last['id']);?>"> <i class="fa fa-trash" style="margin-right: 3px"></i>Delete</a>
+                        <a class="btn_delete btn btn-danger btn-sm" href="./ajax/deletelocality.php?locId=<?php echo htmlentities($last['id']);?>" onclick="return confirm('Do you really want to delete this site location: <?php echo htmlentities($last['loc_name'])?>?')" data-loc-id="<?php echo htmlentities($last['id']);?>"> <i class="fa fa-trash" style="margin-right: 3px"></i>Delete</a>
                         
                         <!-- delete button testing -->
-<!--                        <input type="submit" class="mybtn_delete btn btn-success" name="btnDelete" data-loc-id="<?php //echo ($last['id']); ?>" value="<?php //echo ($last['id']); ?>">-->
-                        
-<!--                        <button type="submit" class="mybtn_delete btn btn-success" name="btnDelete" data-loc-id="<?php //echo ($last['id']); ?>" value="<?php //echo ($last['id']); ?>">Delete</button>-->
+                        <!-- <input type="submit" class="mybtn_delete btn btn-success" name="btnDelete" data-loc-id="<?php //echo ($last['id']); ?>" value="<?php //echo ($last['id']); ?>">-->
+                                                
+                        <!-- <button type="submit" class="mybtn_delete btn btn-success" name="btnDelete" data-loc-id="<?php //echo ($last['id']); ?>" value="<?php //echo ($last['id']); ?>">Delete</button>-->
                         </td>
                         </tr>
             <?php
@@ -445,25 +456,25 @@ if(isset($_POST['btnDelete']))
        
 <!--modals-->
        <div class="col-lg-12">
-            <div class="modal fade in" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="">
+            <div class="modal fade in" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header ">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             <h4 class="modal-title" id="H2">Add New Location</h4>
                         </div>
                         <div class="modal-body">
-                            <form role="form" id="insert_new" name="" action="">
+                            <form role="form" id="defaultForm" name="" action="./ajax/addlocation.php">
                             <div class="form-group">
-                            <label>Location name</label>
-                            <input class="form-control" name="location" id="location">
+                            <label class="">Location name</label>
+                            <input class="form-control col-lg-6" name="location" id="location" required>
                             <p class="help-block">Example (Adeiso)</p>
                             </div>                            
                             </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                            <button type="button" class="btn btn-primary"><i class="fa fa-save"></i> Save </button>
+                        <div class="modal-footer " >
+                            <button type="submit" id="save" name="add_location" class="btn btn-success btn-md pull-left "><i class="fa fa-save"></i> Save </button>
+                            <button type="button" class="btn btn-default btn-md " data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                         </div>
                     </div>
                 </div>
@@ -475,17 +486,16 @@ if(isset($_POST['btnDelete']))
     </div>
 
 <!-- FOOTER -->
-    <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
-    </div>
-    <!--END FOOTER -->
+<div id="footer">
+    <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer "  href="">Jecmas </a>&nbsp;</p>
+</div>
+<!--END FOOTER -->
     
-<!-- PAGE LEVEL SCRIPTS -->
+    <!-- PAGE LEVEL SCRIPTS -->
     <script src="../admin/assets/plugins/dataTables/jquery.dataTables.js"></script>
     <script src="../admin/assets/plugins/dataTables/dataTables.bootstrap.js"></script>
-  <!--END PAGE LEVEL SCRIPT-->
+    <!--END PAGE LEVEL SCRIPT-->
 
-    
     <!-- data table JS
     ============================================ -->
     <script src="../assets/datatable/js/bootstrap-table.js"></script>
@@ -495,62 +505,70 @@ if(isset($_POST['btnDelete']))
     <script src="../assets/datatable/js/data-table/bootstrap-editable.js"></script>
     <script src="../assets/datatable/js/data-table/bootstrap-table-resizable.js"></script>
     <script src="../assets/datatable/js/data-table/colResizable-1.5.source.js"></script>
-<!--    <script src="../assets/datatable/js/data-table/bootstrap-table-export.js"></script>-->
+    <!--    <script src="../assets/datatable/js/data-table/bootstrap-table-export.js"></script>-->
    <!-- validation scripts-->
 
     
    
 <script type="text/javascript">
 	$(document).ready(function() {
-	//confirm logout on button click
-        $('.logout').click(function(){
-			alert ("Logout button clicked");
-//            if(confirm("Are you sure you want to logout?"))
-//                window.location.href = "http://127.0.0.1/pas/admin/index.php";
-//
-//            return false;
+    
+        //bootstrap form-control fields validation
+        $('#defaultForm').bootstrapValidator({
+            //        live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+            //            valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                location: {
+                    group: '.col-lg-6',
+                    validators: {
+                        notEmpty: {
+                            message: 'Location cannot be empty, required!'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z]+$/,
+                            message: 'The location can only consist of alphabet'
+                        },
+                    }
+                },
+                lastname: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                            message: 'Lastname cannot be empty, required!'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z ]+$/,
+                            message: 'The lastname can only consist of alphabet'
+                        },
+                    }
+                },
+            
+                }
+            });
+        
+        // Validate the form manually
+        $('#validateBtn').click(function() {
+            $('#defaultForm').bootstrapValidator('validate');
         });
 
-
-		//delete record function 
-		$('.mybtn_delete').click(function(){
-	//		e.preventDefault();   
-	   var locId = $(this).attr('data-loc-id');
-	   var parent = $(this).parent("td").parent("tr");
-//		$('.spinning').show();	//show loadericon
-		//begin ajax request
-//		$.ajax({        
-//			type: 'POST',	//type of request
-//			url: 'delete.php',	//url to process
-//			data: 'locId='+locId,	//data to bind
-//			
-//			before:function(data){
-//				$('.spinning').show();
-//			}
-//			success:function(){
-//				$('.spinning').hide();
-//			}
-//		});
-		
-		if(locid != ''){
-	  	alert ("Location ID: " +locId);
-		}else{
-			alert ("no id for selection");
-			}
-		
-		});
-	
-		
-    // Validate the form manually
-    $('#validateBtn').click(function() {
-        $('#defaultForm').bootstrapValidator('validate');
-    });
-
-    $('#resetBtn').click(function() {
-        $('#defaultForm').data('bootstrapValidator').resetForm(true);
-    });
-		
+        $('#resetBtn').click(function() {
+            $('#defaultForm').data('bootstrapValidator').resetForm(true);
+        });
+    
 });
+
+//delete record function 
+$('#save').click(function(e){
+        var location = $('#location').val();
+        if(location ==""){
+            alert('Please enter location name..');
+        }
+	});
 
 </script>
 
@@ -575,8 +593,9 @@ if(isset($_POST['btnDelete']))
 			}, 500);
 		}
 	</script>
-<!--end function here-->
+    <!--end function here-->
    
+
     </body>
 </html>
 

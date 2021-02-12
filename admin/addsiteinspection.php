@@ -11,10 +11,17 @@ require_once '../functions/Applications.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 // If the user is not logged in, redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: logout.php');
+	header('Location: index.php');
 	exit;
 }
 
@@ -47,7 +54,7 @@ if(isset($_POST['btnSubmit']))
         echo "<script>alert('Please wait... Checking if site inspection has been carried on this application.') </script>";
         
         //show site inspection success alert
-        echo "<script>alert('Response...\\n \\nSite inspection of this application has been successfully carried out on: ".$inspectDate." \\nCannot add duplicate records..')</script>";
+        echo "<script>alert('Response...\\n \\nSite inspection of this application has been successfully carried out on: ".$inspectDate." \\nCannot add duplicate records..'); window.location.href='carryinspection.php'</script>";
         
     }
     else{
@@ -64,12 +71,12 @@ if(isset($_POST['btnSubmit']))
             $query =  "INSERT INTO `inspections` (applicationID, inspID, remarks, inspDate) VALUES ('".$appID."', '".$user."', '".$remarks."', '".$date."')";
             $ins_query=mysqli_query($connect_db, $query);
             //show success message
-            echo "<div class='alert alert-success fadeIn col-lg-6 col-md-offset-3' style='top: 10px; transition: all 0.3s ease-in-out 0s'>"
-            . "<a href='#' class='close' data-dismiss='alert' aria-label='close'><i class='fa fa-times'></i></a>"
-            . "<strong><span class='fa fa-gift'></span> </strong>" 
-            . "<strong>&nbsp;&nbsp;Success!</strong> <br>Site inspection details successfully specified to this application.."
-            . "</div>"; 
-//        echo"<script>window.location.href='carryinspection.php'</script>";
+            // echo "<div class='alert alert-success fadeIn col-lg-6 col-md-offset-3' style='top: 10px; transition: all 0.3s ease-in-out 0s'>"
+            // . "<a href='#' class='close' data-dismiss='alert' aria-label='close'><i class='fa fa-times'></i></a>"
+            // . "<strong><span class='fa fa-gift'></span> </strong>" 
+            // . "<strong>&nbsp;&nbsp;Success!</strong> <br>Site inspection details successfully specified to this application.."
+            // . "</div>"; 
+            echo"<script>alert('Site inspection details successfully specified to this application development');window.location.href='carryinspection.php'</script>";
         
         }   
 }
@@ -84,12 +91,6 @@ if(isset($_POST['btnSubmit']))
 <!--[if !IE]><!--> 
 <html lang="en"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
-<head>
-    <meta charset="UTF-8" />
-    <title>E-Permit System  </title>
-     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="" name="description" />
-	<meta content="" name="author" />
      <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
@@ -151,7 +152,7 @@ if(isset($_POST['btnSubmit']))
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -269,7 +270,7 @@ if(isset($_POST['btnSubmit']))
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -404,7 +405,7 @@ if(isset($_POST['btnSubmit']))
                                     </div>
                                 </div>
                               
-                                <div class="form-actions no-margin-bottom" style="text-align:center; padding-top: 20px; paddig-left: 250px;">
+                                <div class="form-actions no-margin-bottom" style="text-align:center; padding-top: 20px; ">
 <!--                                    <button class="btn btn-primary " type="submit" name="test" style="font-weight: bold"> test</button>-->
                                     <button class="submitBtn btn btn-success " type="submit" name="btnSubmit" style="font-weight: bold; margin-right: 15px"><i class="fa fa-save"></i> Save Record</button>
                                     <a href="dashboard.php" class="btn btn-danger " type="reset" style="font-weight: bold"><i class="fa fa-times"></i>  Cancel</a>
@@ -482,7 +483,7 @@ if(isset($_POST['btnSubmit']))
         $('#form2').on('submit', function(){
             var permitno = document.getElementById('remarks').value;
             if(permitno == null || permitno ==""){
-                alert "Enter site inspection remarks";
+                alert ("Enter site inspection remarks");
             }else{//do nothing
             }            
         });

@@ -7,13 +7,6 @@ error_reporting(0);
 ##include db connection
 require_once '../functions/db_connection.php';
 
-//function triggers to save user login credentials
-function saveLoginDetails($logid){
-	$sql = mysqli_query($connect_db, "insert into userlogs(userId, login, logout) values ($logid, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
-	if($sql == true){
-		
-	}
-}
 
 ## proceed to execute on clicking login button
 if(isset($_POST['btnRecover'])){
@@ -23,7 +16,7 @@ $log_username = $_POST['username'];
 $log_usermail = $_POST['email'];
 
 	//preparing the SQL statement will prevent SQL injection.
-    if ($stmt = $connect_db->prepare('SELECT adminid, fullname, password FROM admin_account WHERE username = ?')) {
+    if ($stmt = $connect_db->prepare('SELECT adminid, fullname, `password` FROM `admin_account` WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), 
     //in our case the username is a string so we use "s"
 	$stmt->bind_param('s', $log_username);
@@ -101,13 +94,13 @@ $log_usermail = $_POST['email'];
     
 
    <script type="text/javascript"> 
-//        jQuery(function(){ jQuery("input[name=username]").focus();}); 
-//       $(function(){
-//          $("user_id").focus(); 
-//       });
+    //        jQuery(function(){ jQuery("input[name=username]").focus();}); 
+    //       $(function(){
+    //          $("user_id").focus(); 
+    //       });
     </script>
    
-   </head>
+</head>
     
     
 <body class="page-forgot-pwd" onload=""> 
@@ -132,16 +125,16 @@ $log_usermail = $_POST['email'];
          
        
         <div class="login-link">
-        <button id="submit-btn" class="btn btn-custom mt-3 btn-block font-weight-bold rounded-pill btn-login" name="btnRecover" onclick="">Submit</button>
+        <button id="submit-btn" class="btn btn-custom mt-0 btn-block font-weight-bold rounded-pill btn-login" name="btnRecover" onclick="">Submit</button>
         </div>
          <!--register link-->
             <div class="login-link font-weight-normal " style="margin-top: 10px;">Already have an account? <a class="new-register font-weight-semibold f-reg" href="index.php" style="color: #3a6248">Login</a></div>
-<!--            <div class="register-link font-weight-normal ">Don't have an account? <a class="new-register font-weight-semibold f-reg" href="register.php">Register</a></div>-->
-<!--
-        <div class="bottom-textt ">
-            <p class="lower-text">Powered by <a class="developer" href="">Jecmas Ghana</a></p>
-        </div>
--->
+                <!--            <div class="register-link font-weight-normal ">Don't have an account? <a class="new-register font-weight-semibold f-reg" href="register.php">Register</a></div>-->
+                <!--
+                        <div class="bottom-textt ">
+                            <p class="lower-text">Powered by <a class="developer" href="">Jecmas Ghana</a></p>
+                        </div>
+                -->
         </form>
     </div>
     
@@ -155,7 +148,7 @@ $log_usermail = $_POST['email'];
         $(document).ready(function(){
            
 			$('#submit-btn').click(function(){
-				alert 'button clicked';
+				// alert ('button clicked');
 			});
         });
       

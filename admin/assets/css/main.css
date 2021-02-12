@@ -96,10 +96,10 @@
 .infographic-box .headline {
     display: block;
     font-size: 1em;
-    text-transform: uppercase;
+    text-transform: capitalize;
     font-weight: 300;
     text-align: right;
-    color: #fff;
+    color: #252525;
 }
 .infographic-box .value {
     font-size: 2.3em;
@@ -124,9 +124,8 @@
 
 /*                Important For top hover dropwown                */
 
-
-      #top > .navbar .dropdown-menu > li > a:hover, #top > .navbar .dropdown-menu > li > a:focus {
-background-repeat: repeat-x;
+#top > .navbar .dropdown-menu > li > a:hover, #top > .navbar .dropdown-menu > li > a:focus {
+  background-repeat: repeat-x;
    background-image: linear-gradient(to bottom, #EEECEC  0%, #E2E2E2  100%) !important;
 }
 

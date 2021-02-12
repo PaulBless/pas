@@ -13,6 +13,12 @@ require_once '../functions/Admin.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
@@ -55,6 +61,7 @@ if(isset($_POST['btnupdate'])){
 	    $message = "Profile updated successfully";
 	    echo "<script>alert('".$message."')</script>";
 	    echo "<script>window.location.href='dashboard.php'</script>";
+	    // echo "<script>window.history.back()'</script>";
 	   
 }
 
@@ -89,7 +96,7 @@ if(isset($_POST['btnupdate'])){
     <!--END GLOBAL STYLES -->
 
       <!--page level scripts-->
-<!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
+    <!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
     <!--scripts-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
@@ -114,8 +121,8 @@ if(isset($_POST['btnupdate'])){
             color: #5b6574;
         }
         .panel .my-sub-link:hover{
-/*            background-color: #33b35a;*/
-/*            color: white;*/
+            /*            background-color: #33b35a;*/
+            /*            color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
         }
@@ -133,7 +140,7 @@ if(isset($_POST['btnupdate'])){
 			
         }
     </style>
-   </head>    <!-- END HEAD -->
+</head>    <!-- END HEAD -->
 
    
     <!-- BEGIN BODY -->
@@ -152,7 +159,7 @@ if(isset($_POST['btnupdate'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -269,18 +276,18 @@ if(isset($_POST['btnupdate'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -329,7 +336,7 @@ if(isset($_POST['btnupdate'])){
                         <div class="btn-group">
                         <a class="accordion-toggle btn btn-xs minimize-box" data-toggle="collapse"
                         href="#collapseForm">
-<!--                        <i class="fa fa-chevron-up"></i>-->
+                            <!--                        <i class="fa fa-chevron-up"></i>-->
                         </a>
                         </div>
                         </li>
@@ -411,7 +418,7 @@ if(isset($_POST['btnupdate'])){
                         <div class="form-actions no-margin-bottom" style="text-align:center;">
 
 						<!-- submit button-->
-                       <button type="submit" name="btnupdate" value="" id="btnSave" class="btn btn-success" style="font-weight: bold; letter"><i class="fa fa-edit"></i> Update Profile</button>
+                       <button type="submit" name="btnupdate" value="" id="btnSave" class="btn btn-success" style="font-weight: bold; "><i class="fa fa-edit"></i> Update Profile</button>
                         <a class="btn btn-danger" type="reset" href="dashboard.php" style="margin-left: 25px; font-weight: bold"><i class="fa fa-times"></i> Cancel</a>
                         </div>
                         <br>
@@ -431,7 +438,7 @@ if(isset($_POST['btnupdate'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     
@@ -441,69 +448,69 @@ if(isset($_POST['btnupdate'])){
 <script type="text/javascript">
 	$(document).ready(function() {
      
-    //bootstrap form-control fields validation
-    $('#form-adduser').bootstrapValidator({
-//        live: 'disabled',
-        message: 'This value is not valid',
-        feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            fullname: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                        message: 'Fullname cannot be empty, required!'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z -]+$/,
-                        message: 'The fullname can only consist of alphabet'
-                    },
-                }
-            }, 
-			username: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                        message: 'Username cannot be empty, required!'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z -]+$/,
-                        message: 'The username can only consist of alphabet'
-                    },
-                }
+        //bootstrap form-control fields validation
+        $('#form-adduser').bootstrapValidator({
+            //        live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+            //            valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
             },
-            email: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                        message: 'Email address is required'
-                    },
-                    emailAddress: {
-                        message: 'The input is not a valid email address'
-                    }
-                }
-            },
-            mobile: {
-                group: '.col-lg-4',
-                validators: {
-                    digits: {
-                        message: 'Phone number should be digits only'
-                    },
-                    notEmpty: {
-                            message: 'Phone number is required'
+            fields: {
+                fullname: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                            message: 'Fullname cannot be empty, required!'
                         },
-                    stringLength: {
-                        min: 1,
-                        max: 10,
-                        message: 'Phone number is not complete'
-                            },
+                        regexp: {
+                            regexp: /^[a-zA-Z -]+$/,
+                            message: 'The fullname can only consist of alphabet'
+                        },
+                    }
+                }, 
+                username: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                            message: 'Username cannot be empty, required!'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z -]+$/,
+                            message: 'The username can only consist of alphabet'
+                        },
+                    }
+                },
+                email: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                            message: 'Email address is required'
+                        },
+                        emailAddress: {
+                            message: 'The input is not a valid email address'
                         }
-                    },
-        }
-    });
+                    }
+                },
+                mobile: {
+                    group: '.col-lg-4',
+                    validators: {
+                        digits: {
+                            message: 'Phone number should be digits only'
+                        },
+                        notEmpty: {
+                                message: 'Phone number is required'
+                            },
+                        stringLength: {
+                            min: 1,
+                            max: 10,
+                            message: 'Phone number is not complete'
+                                },
+                            }
+                        },
+            }
+        });
     
     
     // keypress event
@@ -515,12 +522,11 @@ if(isset($_POST['btnupdate'])){
         }
     });
     
- 
     
     //last-name validation
     jQuery("#fullname").keypress(function(ev){
         var x = $(this).val();
-        if ((ev.keyCode < 65 || ev.keyCode > 90) && (ev.keyCode < 97 || ev.keyCode > 122 ) && (ev.keyCode == 32)){
+        if ((ev.keyCode < 65 || ev.keyCode > 90) && (ev.keyCode < 97 || ev.keyCode > 122 ) && (ev.keyCode == 32) && (ev.keyCode == 8)){
             ev.preventDefault();
         }
     });
@@ -534,7 +540,7 @@ if(isset($_POST['btnupdate'])){
     $('#resetBtn').click(function() {
         $('#defaultForm').data('bootstrapValidator').resetForm(true);
     });
-});
+    });
  
 	$('#btnSave').click(function(){
         var addBtn = document.querySelector('.btn-success');
@@ -559,6 +565,7 @@ if(isset($_POST['btnupdate'])){
         setTimeout(function(){
             $('.loading').fadeOut();
         }, 1000);
+    }
     </script>
    
     </body>

@@ -12,6 +12,13 @@ require_once '../functions/Applications.php';
 //new instance of db controller
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 if(!isset($_SESSION['loggedin'])){
     header('Location: ./index.php');
@@ -86,19 +93,19 @@ if(isset($_POST['process'])){
      
       <!--page level styles-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
-<!--
-    <link rel="stylesheet" href="assets/css/jquery-ui.css">
-    <link rel="stylesheet" href="../admin/assets/plugins/tagsinput/jquery.tagsinput.css">
-    <link rel="stylesheet" href="../admin/assets/plugins/chosen/chosen.min.css">
--->
+    <!--
+        <link rel="stylesheet" href="assets/css/jquery-ui.css">
+        <link rel="stylesheet" href="../admin/assets/plugins/tagsinput/jquery.tagsinput.css">
+        <link rel="stylesheet" href="../admin/assets/plugins/chosen/chosen.min.css">
+    -->
      <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
      <link href="../admin/assets/plugins/switch/static/stylesheets/bootstrap-switch.css" rel="stylesheet" />
     
-<!--
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/normalize.css" rel="stylesheet" />
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/jquery.steps.css" rel="stylesheet" />
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/wizardMain.css" rel="stylesheet" />
--->
+    <!--
+        <link href="../admin/assets/plugins/jquery-steps-master/demo/css/normalize.css" rel="stylesheet" />
+        <link href="../admin/assets/plugins/jquery-steps-master/demo/css/jquery.steps.css" rel="stylesheet" />
+        <link href="../admin/assets/plugins/jquery-steps-master/demo/css/wizardMain.css" rel="stylesheet" />
+    -->
     <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
     <!--scripts-->
@@ -106,10 +113,10 @@ if(isset($_POST['process'])){
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
     
       <!--jquery3.3.1 library-->
-<!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
-      <!--datatable js-->
-<!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
-<!--    -->
+    <!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
+        <!--datatable js-->
+    <!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
+    <!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
   
@@ -135,12 +142,12 @@ if(isset($_POST['process'])){
    
     <!-- BEGIN BODY -->
 <body class="padTop53">
-<!--
-    <div class="alert alert-warning fadeInDown" style="visibility: visible; animation-duration: 1500ms; animation-delay: 300ms; animation-name: fadeInDown;" role="alert" id="myAlert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> <span class="sr-only">Close</span></button>
-        <strong>Important!!</strong> Before continuing to process this application, make sure all relevants documents, files and information are specified and/or attached.
-    </div>
--->
+    
+        <div class="alert alert-warning fadeInDown hidden" style="visibility: visible; animation-duration: 1500ms; animation-delay: 300ms; animation-name: fadeInDown;" role="alert" id="myAlert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> <span class="sr-only">Close</span></button>
+            <strong>Important!!</strong> Before continuing to process this application, make sure all relevants documents, files and information are specified and/or attached.
+        </div>
+   
  
    <!-- MAIN WRAPPER -->
     <div id="wrap" >
@@ -154,7 +161,7 @@ if(isset($_POST['process'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -272,7 +279,7 @@ if(isset($_POST['process'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -680,7 +687,7 @@ if(isset($_POST['process'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

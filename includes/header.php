@@ -51,19 +51,7 @@
             
         }
 
-		.spinning {
-/*
-            opacity:0.5;
-            background:#ccc url('../assets/images/spinner.gif') no-repeat center;
-            position:fixed;
-            width:100%;
-            height:100%;
-            top:0px;
-            left:0px;
-            z-index:2000;
-            display: none;
-*/
-            }
+		
     </style>
 <!--    enable tooltips-->
 <script>

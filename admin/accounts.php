@@ -14,9 +14,16 @@ $db_handle = new databaseController();
 
 // If the user is not logged in, redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: logout.php');
+	header('Location: index.php');
 	exit;
 }
+
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 //get user action type
@@ -64,7 +71,7 @@ if (isset($_GET['reviewId'])) {
     <!--END GLOBAL STYLES -->
 
       <!--page level scripts-->
-<!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
+    <!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
     <!--scripts-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
@@ -79,11 +86,11 @@ if (isset($_GET['reviewId'])) {
 		}
 	</script>
       
-       <Style>
+    <style>
            /* custom styling to sub-menus*/
         .panel .my-sub-link:hover{
-    /*            background-color: #33b35a;*/
-    /*            color: white;*/
+            /*            background-color: #33b35a;*/
+            /*            color: white;*/
                 background: #343a40;
                 transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
             }
@@ -98,9 +105,9 @@ if (isset($_GET['reviewId'])) {
 			z-index: 2000;
 			display: none;
 		}
-    </Style>
+    </style>
     
-	</head>
+</head>
    
 <!--   BEGIN THE PAGE BODY-->
     <body class="padTop53 " onload="pageLoading()" onreset="" >
@@ -118,7 +125,7 @@ if (isset($_GET['reviewId'])) {
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -237,17 +244,17 @@ if (isset($_GET['reviewId'])) {
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+            <!--
+                            <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                            <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+            -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -308,8 +315,8 @@ if (isset($_GET['reviewId'])) {
                        <div class="panel-body" style="margin-top: 10px;">
                         <div class="panel panel-default">
 
-                            <div class="panel-heading" style="text-align: center; font-size: 16px; font-weight: bold; color:#007bff;"><i class="" style=""></i>  Admin Accounts</div>
-                                <div class="panel-body" style="">
+                            <div class="panel-heading" style="text-align: center; font-size: 16px; font-weight: bold; color:#007bff;"><i class="fa fa-user-md" ></i>  Admin Accounts</div>
+                                <div class="panel-body">
                                     <table id="table" data-toggle="table" data-pagination="" data-search="true" data-show-columns="" data-show-pagination-switch="" data-show-refresh="" data-key-events="" data-show-toggle="" data-resizable="" data-cookie="" data-cookie-id-table="saveId" data-show-export="" data-click-to-select="" data-toolbar="#toolbar" class="table table-bordered table-hover" width="100%">
             
                     			<thead class="text-warning" style="background: #000">
@@ -375,24 +382,24 @@ if (isset($_GET['reviewId'])) {
                         <!--get user accounts details-->
                         <div class="panel-body">
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="text-align: center; font-size: 16px; font-weight: bold; color:#21a9f2;"><i class=""></i> User Accounts</div>
+                            <div class="panel-heading" style="text-align: center; font-size: 16px; font-weight: bold; color:#21a9f2;"><i class="fa fa-users"></i> User Accounts</div>
                             <div class="panel-body">
                               
                               <table id="table" data-toggle="table" data-pagination="" data-search="true" data-show-columns="" data-show-pagination-switch="" data-show-refresh="" data-key-events="" data-show-toggle="" data-resizable="" data-cookie="" data-cookie-id-table="saveId" data-show-export="" data-click-to-select="" data-toolbar="#toolbar" class="table table-bordered table-hover" width="100%">
             
                     			<thead class="text-warning" style="background: #000">
                         		<tr class="">
-                        <th class="">No.</th>
-                        <th data-field="userid" class="hidden">ID</th>
-                        <th data-field="fullname">Full Name</th>
-                        <th data-field="mobile">Mobile No</th>
-                        <th data-field="email">Email</th>
-                        <th data-field="username">Username</th>
-                        <th data-field="password" class="hidden">Password</th>
-                        <th data-field="role" class="">Role</th>
-                        <th data-field="status">Status</th>
-                        <th data-field="regdate">Date Added</th>
-                        <th data-field="action">Action</th>
+                                    <th class="">No.</th>
+                                    <th data-field="userid" class="hidden">ID</th>
+                                    <th data-field="fullname">Full Name</th>
+                                    <th data-field="mobile">Mobile No</th>
+                                    <th data-field="email">Email</th>
+                                    <th data-field="username">Username</th>
+                                    <th data-field="password" class="hidden">Password</th>
+                                    <th data-field="role" class="">Role</th>
+                                    <th data-field="status">Status</th>
+                                    <th data-field="regdate">Date Added</th>
+                                    <th data-field="action">Action</th>
                         </tr>
                     			</thead>
                     			<tbody>
@@ -455,7 +462,7 @@ if (isset($_GET['reviewId'])) {
 
 	<!-- REGISTER ADMIN MODAL FORM -->
 	<div class="col-lg-12">
-        <div class="modal fade in" id="regAdmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+        <div class="modal fade in" id="regAdmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
            <div class="modal-dialog">
                 <div class="modal-content">
                       <div class="modal-header">
@@ -551,7 +558,7 @@ if (isset($_GET['reviewId'])) {
     
 <!-- FOOTER -->
     <div id="footer" class="">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" href="">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

@@ -3,13 +3,12 @@ session_start();
 error_reporting(0);
 
 require_once '../functions/db_connection.php';
-
-////invoke db classes
-//require_once '../functions/databaseController.php';
-//require_once '../functions/Applications.php';
-//
-//new instance of db controller
-//$db_handle = new databaseController();
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 if(!isset($_SESSION['loggedin'])){
@@ -53,26 +52,27 @@ if(!isset($_SESSION['loggedin'])){
 
      
       <!--page level styles-->
- <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
-<script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
-<script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap js plugin -->
+    <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+        
+    <!--jquery -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery datatable scripts -->
+    <script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
+    <!-- end -->
+        
+    <!-- dataTables export buttons scripts-->
+    <link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
+    <script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
+    <script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
     
-<!--jquery -->
-<script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
-<!-- jquery datatable scripts -->
-<script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
-<!-- end -->
-    
- <!-- dataTables export buttons scripts-->
-<link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
-<script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
-<script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
-<script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
-<script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
-<script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
-  <!-- function to show loader on pageloading-->
+    <!-- function to show loader on pageloading-->
 	<script type="text/javascript">
 		function pageLoading(){
 			$('.loading').show();
@@ -81,7 +81,7 @@ if(!isset($_SESSION['loggedin'])){
 			}, 1500);
 		}
 	</script>
-<!--	end function here-->
+    <!--	end function here-->
  
   <script>
         $(document).ready(function () {
@@ -95,7 +95,7 @@ if(!isset($_SESSION['loggedin'])){
         });
     </script>
 
-<!--  end  -->  
+    <!--  end  -->  
   
     <!--stylesheet-->
     <style type="text/css">
@@ -155,7 +155,7 @@ if(!isset($_SESSION['loggedin'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -273,17 +273,17 @@ if(!isset($_SESSION['loggedin'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li class="panel active"><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                    <!--
+                                    <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                    <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                    -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -327,25 +327,25 @@ if(!isset($_SESSION['loggedin'])){
             <h5>COMMITTEE DECISIONS & REMARKS </h5></header>
                         
             <div class="panel panel-default">
-<!--             <div class="panel-heading">Decisions Taken on Applications </div>-->
+                <!--             <div class="panel-heading">Decisions Taken on Applications </div>-->
             
             <div class="panel-body">
                 <div class="data-table-area mg-tb-15">
                   
                     <div class="sparkline13-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
-<!--
-                            <div id="toolbar" style="margin-right: 15px;">
-                                <select class="form-control">
-                                    <option value="">Export Basic</option>
-                                    <option value="all">Export All</option>
-                                    <option value="selected">Export Selected</option>
-                                </select>
-                            <br>
-                            </div>
--->
-                    <table id="table" class="table table-striped table-bordered table-hover" style="">
-                  <caption class="" style="padding-bottom: 5px"><span class="label label-warning" style="font-weight: bold; text-transform: uppercase; font-size: 14px">Lists Of Submitted Applications</span></caption>
+                            <!--
+                                                        <div id="toolbar" style="margin-right: 15px;">
+                                                            <select class="form-control">
+                                                                <option value="">Export Basic</option>
+                                                                <option value="all">Export All</option>
+                                                                <option value="selected">Export Selected</option>
+                                                            </select>
+                                                        <br>
+                                                        </div>
+                            -->
+                    <table id="table" class="table table-striped table-bordered table-hover" >
+                        <caption class="" style="padding-bottom: 5px"><span class="label label-warning" style="font-weight: bold; text-transform: uppercase; font-size: 14px">Lists Of Submitted Applications</span></caption>
 
                     <!--table head-->
                         <thead class="" style="background: #f0ad4e">
@@ -356,7 +356,7 @@ if(!isset($_SESSION['loggedin'])){
                             <th data-field="appid">App. Number</th>
                             <th data-field="project">Project Development Name</th>
                             <th data-field="location">Location</th>
-                            <th data-field="status" class="hidden">Status </th>
+                            <th data-field="status" class="">Status </th>
                             <th data-field="action">Decision Operation</th>
 
                             </tr>
@@ -383,7 +383,7 @@ if(!isset($_SESSION['loggedin'])){
                     //fetch corresponding data
 					if(empty($result['loc_name'])) echo "Invalid Location"; else
                     echo $result['loc_name']; ?></td>
-                    <td class="text-primary hidden"><?php echo $last['status']; ?></td>
+                    <td class="text-primary "><?php echo $last['status']; ?></td>
                     <td class="datatable-ct">
                     <!--process button link-->
                     <a href="approve.php?approveId=<?php echo $last['applicationid'];?>" ><button class="reviewBtn btn btn-success btn-sm" id="appId" onclick="showSpin()" style="font-weight: bold"><i class="fa fa-thumbs-up"></i> Approve </button></a>
@@ -415,7 +415,7 @@ if(!isset($_SESSION['loggedin'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

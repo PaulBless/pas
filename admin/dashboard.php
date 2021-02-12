@@ -13,10 +13,17 @@ require_once '../functions/Admin.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 // If the user is not logged in, redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: logout.php');
+	header('Location: index.php');
 	exit;
 }
 
@@ -133,15 +140,15 @@ if($result_approved->num_rows > 0){
     
 <!--    <link href="../assets/datatable/css/bootstrap-table.css" rel="stylesheet" />-->
 
-    <style>
-      /* custom styling to sub-menus*/
-      .panel .my-sub-link:hover{
-    /*            background-color: #33b35a;*/
-    /*            color: white;*/
-                background: #343a40;
-                transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
-            }
-    </style>
+<style>
+    /* custom styling to sub-menus*/
+    .panel .my-sub-link:hover{
+    /*   background-color: #33b35a;*/
+    /*   color: white;*/
+        background: #343a40;
+        transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
+    }
+</style>
     
  <!-- MAIN WRAPPER -->
     <div id="wrap" >
@@ -155,7 +162,7 @@ if($result_approved->num_rows > 0){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -273,7 +280,7 @@ if($result_approved->num_rows > 0){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -321,9 +328,10 @@ if($result_approved->num_rows > 0){
                   <hr />
                   <?php 
 				 ## get loggedin date-time
-			$last_login_date = "";
-			if(isset($_SESSION['login_date_time']))
-			$last_login_date = $_SESSION['login_date_time'];
+                $last_login_date = "";
+                if(isset($_SESSION['login_date_time']))
+                $last_login_date = $_SESSION['login_date_time'];
+                echo $last_login_date;
 				?>
                   
                  <!--BLOCK SECTION -->
@@ -424,17 +432,17 @@ if($result_approved->num_rows > 0){
                 </ul>
             </div>
             <!--well column-->
-<!--
-            <div class="well well-small">
-                <button class="btn btn-block"> Help Content: How To </button>
-                <button class="btn btn-primary btn-block" > Tickets</button>
-                <button class="btn btn-info btn-block"> New </button>
-                <button class="btn btn-success btn-block"> Users </button>
-                <button class="btn btn-danger btn-block"> Profit </button>
-                <button class="btn btn-warning btn-block"> Sales </button>
-                <button class="btn btn-inverse btn-block"> Stock </button>
-            </div>
--->
+                <!--
+                            <div class="well well-small">
+                                <button class="btn btn-block"> Help Content: How To </button>
+                                <button class="btn btn-primary btn-block" > Tickets</button>
+                                <button class="btn btn-info btn-block"> New </button>
+                                <button class="btn btn-success btn-block"> Users </button>
+                                <button class="btn btn-danger btn-block"> Profit </button>
+                                <button class="btn btn-warning btn-block"> Sales </button>
+                                <button class="btn btn-inverse btn-block"> Stock </button>
+                            </div>
+                -->
            
             <!--column colapsable:facts-->
             <div class="panel panel-primary">

@@ -6,6 +6,12 @@ error_reporting(E_ALL ^ E_NOTICE);
 include '../functions/db_connection.php';
 
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
@@ -110,8 +116,8 @@ if(isset($_POST['btnSubmit'])){
         }
         
         .panel .my-sub-link:hover{
-/*            background-color: #33b35a;*/
-/*            color: white;*/
+        /*            background-color: #33b35a;*/
+        /*            color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
         }
@@ -136,7 +142,7 @@ if(isset($_POST['btnSubmit'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -179,164 +185,164 @@ if(isset($_POST['btnSubmit'])){
         </div>
         <!-- END HEADER SECTION -->
 
-     <!-- MENU SECTION -->
-    <div id="left" >
-            <div class="media user-media well-small">
-                <div class="media-body">
-                    <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
-                    <ul class="list-unstyled user-info">
-                        <li><a class="btn btn-success btn-xs btn-circle" style="width: 10px;height: 12px;"></a> Online  
-                        </li>
-                    </ul>
+        <!-- MENU SECTION -->
+        <div id="left" >
+                <div class="media user-media well-small">
+                    <div class="media-body">
+                        <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
+                        <ul class="list-unstyled user-info">
+                            <li><a class="btn btn-success btn-xs btn-circle" style="width: 10px;height: 12px;"></a> Online  
+                            </li>
+                        </ul>
+                    </div>
+                    <br />
                 </div>
-                <br />
+                
+                <ul id="menu" class="collapse">
+                    <li class="panel ">
+                        <a href="dashboard.php" >
+                            <i class="fa fa-home"></i> Main Menu
+                        </a>                                   
+                    </li>
+                    <!-- menu panel items-->
+                    <li class="panel active">
+                        <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#settings-nav">
+                            <i class="fa fa-cogs"> </i> Settings     
+                            <span class="pull-right">
+                            <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="collapse" id="settings-nav">
+                            <li class="my-sub-link"><a href="general.php"><i class="fa fa-arrow-right"></i> General </a></li>
+                            <li class="my-sub-link"><a href="locations.php"><i class="fa fa-arrow-right"></i> Locations </a></li>
+                            <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
+                            <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
+                            <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
+                            <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
+                        </ul>
+                    </li>
+                    <!--panel item-->
+                    <li class="panel">
+                        <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle collapsed" data-target="#form-nav">
+                            <i class="fa fa-users"></i>  System Users
+                            <span class="pull-right">
+                            <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="collapse" id="form-nav">
+                            <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
+                            <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
+                            <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
+                        </ul>
+                    </li>
+                    <li class="panel ">
+                        <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#pagesr-nav">
+                            <i class="fa fa-folder-open"></i> Permit Applications
+                            <span class="pull-right">
+                            <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="collapse" id="pagesr-nav">
+                            <li class="my-sub-link" id="getObject"><a href="new-application.php"><i class="fa fa-arrow-right"></i> Add New Application </a></li>
+                            <li class="my-sub-link" id="getObject"><a href="process-application.php"><i class="fa fa-arrow-right"></i> Process Application </a></li>
+                            <li class="my-sub-link"><a href="applications.php"><i class="fa fa-arrow-right"></i> Application Lists </a></li>
+                            <li class="my-sub-link"><a href="pendinglists.php"><i class="fa fa-arrow-right"></i> Pending Lists </a></li>
+                        </ul>
+                    </li>
+                    <li class="panel ">
+                        <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#chart-nav">
+                            <i class="fa fa-chart-area"></i> Transactions
+                            <span class="pull-right">
+                            <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="collapse" id="chart-nav">
+                            <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
+                            <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
+                            <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
+                        </ul>
+                    </li>
+                    <!--panel menu item-->
+                    <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
+                    <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
+                    <!--menu item-->
+                    <!--
+                                    <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                    <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                    -->
+                    <!-- Report menu item-->
+                    <li class="panel hidden">
+                        <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
+                            <i class="fa fa-signal"></i> Reports Menu
+                            <span class="pull-right">
+                            <i class="fa fa-angle-down"></i>
+                            </span>
+                        </a>
+                        <ul class="collapse" id="report-nav">
+                            <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
+                            <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
+                            <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
+                        </ul>
+                    </li>
+                    <!--menu item exit-->
+                    <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
+
+                </ul>
+
             </div>
-            
-            <ul id="menu" class="collapse">
-                <li class="panel ">
-                    <a href="dashboard.php" >
-                        <i class="fa fa-home"></i> Main Menu
-                    </a>                                   
-                </li>
-                <!-- menu panel items-->
-                <li class="panel active">
-                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#settings-nav">
-                        <i class="fa fa-cogs"> </i> Settings     
-                        <span class="pull-right">
-                          <i class="fa fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="collapse" id="settings-nav">
-                        <li class="my-sub-link"><a href="general.php"><i class="fa fa-arrow-right"></i> General </a></li>
-                        <li class="my-sub-link"><a href="locations.php"><i class="fa fa-arrow-right"></i> Locations </a></li>
-                        <li class="my-sub-link"><a href="application-types.php"><i class="fa fa-arrow-right"></i> Application Category </a></li>
-                        <li class="my-sub-link"><a href="landuse.php"><i class="fa fa-arrow-right"></i> Land Use</a></li>
-                        <li class="my-sub-link"><a href="check-lists.php"><i class="fa fa-arrow-right"></i> Check Lists</a></li>
-                       <li class="my-sub-link hidden"><a href="adminaccounts.php"><i class="fa fa-arrow-right"></i> Admin Accounts</a></li>
-            </ul>
-                </li>
-                 <!--panel item-->
-                <li class="panel">
-                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle collapsed" data-target="#form-nav">
-                        <i class="fa fa-users"></i>  System Users
-                        <span class="pull-right">
-                        <i class="fa fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="collapse" id="form-nav">
-                        <li class="my-sub-link"><a href="addnew-user.php"><i class="fa fa-arrow-right"></i> Add New User </a></li>
-                        <li class="my-sub-link"><a href="accounts.php"><i class="fa fa-arrow-right"></i> Accounts </a></li>
-                        <li class="my-sub-link"><a href="loglist.php"><i class="fa fa-arrow-right"></i> Logs List</a></li>
-                    </ul>
-                </li>
-                <li class="panel ">
-                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#pagesr-nav">
-                        <i class="fa fa-folder-open"></i> Permit Applications
-                        <span class="pull-right">
-                        <i class="fa fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="collapse" id="pagesr-nav">
-                        <li class="my-sub-link" id="getObject"><a href="new-application.php"><i class="fa fa-arrow-right"></i> Add New Application </a></li>
-                        <li class="my-sub-link" id="getObject"><a href="process-application.php"><i class="fa fa-arrow-right"></i> Process Application </a></li>
-                        <li class="my-sub-link"><a href="applications.php"><i class="fa fa-arrow-right"></i> Application Lists </a></li>
-                        <li class="my-sub-link"><a href="pendinglists.php"><i class="fa fa-arrow-right"></i> Pending Lists </a></li>
-                    </ul>
-                </li>
-                <li class="panel ">
-                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#chart-nav">
-                        <i class="fa fa-chart-area"></i> Transactions
-                        <span class="pull-right">
-                        <i class="fa fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="collapse" id="chart-nav">
-                        <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
-                        <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
-                    </ul>
-                </li>
-                <!--panel menu item-->
-                <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
-                <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
-                <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
-                <!-- Report menu item-->
-                <li class="panel hidden">
-                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
-                        <i class="fa fa-signal"></i> Reports Menu
-                        <span class="pull-right">
-                        <i class="fa fa-angle-down"></i>
-                        </span>
-                    </a>
-                    <ul class="collapse" id="report-nav">
-                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 1 </a></li>
-                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 2 </a></li>
-                        <li class="my-sub-link"><a href=""><i class="fa fa-arrow-right"></i> Report Menu 3 </a></li>
-                    </ul>
-                </li>
-                <!--menu item exit-->
-                <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout </a></li>
+            <!--END MENU SECTION -->
 
-            </ul>
-
-        </div>
-        <!--END MENU SECTION -->
-
-   
     
-        <!--PAGE CONTENT -->
-        <div id="content">
-                     
-            <div class="inner" style="min-height: 700px;">
+        
+            <!--PAGE CONTENT -->
+            <div id="content">
+                        
+                <div class="inner" style="min-height: 700px;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                        <!--page title/section-->
+                            <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Main Menu <i class="fa fa-chevron-right"></i> Application Category <i class="fa fa-chevron-right"></i> Add New </h5>
+                        </div>
+                    </div>
+                    <hr />
+                    
+                    <!--HOME SECTION -->
                 <div class="row">
                     <div class="col-lg-12">
-                       <!--page title/section-->
-                        <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> Main Menu <i class="fa fa-chevron-right"></i> Application Category <i class="fa fa-chevron-right"></i> Add New </h5>
+                    <a href="application-types.php" class="btn btn-warning text-center"> <i class="fa fa-arrow-left" style="margin-right: 3px;"></i> Go Back</a>
+                        <div class="box">
+                            <header>
+                            <div class="icons"><i class="fa fa-th-large"></i>
+                            </div>
+                            <h5>Add Application Category</h5></header>
+                            
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                
+                            <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
+                                        
+                            <!--site location-->
+                            <div class="form-group">
+                                <label class="control-label col-lg-4">Application Category Name</label>
+                                <div class="col-lg-4">
+                                    <input name="typename" id="typename" class="form-control" placeholder="" />
+                                    <p class="help-block">Provide name of application type(eg. individual)</p>
+                                </div>
+                                <div class="col-lg-4">
+                                <!--save button-->
+                                <button class="btn btn-success" type="submit" name="btnSubmit"><i class="fa fa-save"></i> Save</button>
+                                </div>
+                            </div>
+                        
+                            
+                            <br>
+                        
+                            </form>
+                        </div>
                     </div>
                 </div>
-                  <hr />
-                  
-                 <!--HOME SECTION -->
-            <div class="row">
-                <div class="col-lg-12">
-                   <a href="application-types.php" class="btn btn-warning text-center"> <i class="fa fa-arrow-left" style="margin-right: 3px;"></i> Go Back</a>
-                    <div class="box">
-                        <header>
-                        <div class="icons"><i class="fa fa-th-large"></i>
-                        </div>
-                        <h5>Add Application Category</h5></header>
-                        
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                               
-                        <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
-                                    
-                        <!--site location-->
-                        <div class="form-group">
-                            <label class="control-label col-lg-4">Application Category Name</label>
-                            <div class="col-lg-4">
-                                <input name="typename" id="typename" class="form-control" placeholder="" />
-                                <p class="help-block">Provide name of application type(eg. individual)</p>
-                            </div>
-                            <div class="col-lg-4">
-                            <!--save button-->
-                            <button class="btn btn-success" type="submit" name="btnSubmit"><i class="fa fa-save"></i> Save</button>
-                            </div>
-                        </div>
-                     
-                        
-                        <br>
-                       
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>   
-    </div>
+            </div>   
+        </div>
        
        
             </div>
@@ -345,7 +351,7 @@ if(isset($_POST['btnSubmit'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

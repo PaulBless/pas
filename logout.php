@@ -1,8 +1,10 @@
 <?php
-	session_start();
-	session_destroy();
+
+session_start();
+session_destroy();
+
 ## add database connection
-require_once '../functions/db_connection.php';
+require_once './functions/db_connection.php';
 
 ## get loggedin user ID
 $userID = "";

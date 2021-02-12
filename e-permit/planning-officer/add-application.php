@@ -172,7 +172,7 @@ if(isset($_POST['btnSubmit'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -344,7 +344,7 @@ if(isset($_POST['btnSubmit'])){
                         <div class="form-group">
                             <label class="control-label col-lg-4">Proposed Development</label>
                             <div class="col-lg-6">
-                                <textarea style="" class="form-control" id="project" name="project" cols="6" rows="6"></textarea>
+                                <textarea  class="form-control" id="project" name="project" cols="6" rows="6"></textarea>
                             </div>
                         </div>
                         <!--date-->
@@ -376,7 +376,7 @@ if(isset($_POST['btnSubmit'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

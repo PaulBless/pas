@@ -4,6 +4,14 @@ session_start();
 //include database connection
 include '../functions/db_connection.php';
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
+
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: ../index.php');
@@ -125,7 +133,7 @@ if(isset($_POST['btnChange'])){
                 <header class="navbar-header">
                 <!--app name/title-->
 <!--                <img src="../assets/images/logo.jpg" width="25" height="25">-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -142,7 +150,7 @@ if(isset($_POST['btnChange'])){
                     <!--USER SETTINGS SECTIONS -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i id="icon" class="fa fa-user" style=""></i>&nbsp;Welcome, <?=$_SESSION['name']?>
+                            <i id="icon" class="fa fa-user" ></i>&nbsp;Welcome, <?=$_SESSION['name']?>
                             <i id="icon" class="fa fa-chevron-down"></i>
                         </a>
 
@@ -192,10 +200,10 @@ if(isset($_POST['btnChange'])){
                 <!--menu item -->
                 <li><a href="addapplication.php"><i class="fa fa-plus"></i> Add New Application </a></li>
                 <!--menu item-->
-                <li><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
+                <li><a href="application-lists.php"><i class="fa fa-th"></i> Application Lists </a></li>
                 <!--menu item-->
                 <li><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
-                <li><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits</a></li>
+                <li><a href="building-permits.php"><i class="fa fa-star"></i> Permits Granted</a></li>
                 <!--menu item-->
 <!--                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
                 <!--menu item exit-->
@@ -279,12 +287,12 @@ if(isset($_POST['btnChange'])){
                     <div class="form-actions no-margin-bottom" style="text-align:center;">
                         <input type="submit" name="btnChange" value="Change Password" class="btn btn-primary" style="margin-right: 15px; font-weight: bold">
                        
-                         <input type="submit" name="test" value="Test Password" class="btn btn-success" style="margin-right: 15px; font-weight: bold">
+                         <input type="submit" name="test" value="Test Password" class="btn btn-success hidden" style="margin-right: 15px; font-weight: bold">
                         <a class="btn btn-danger" type="reset" href="homepage.php" style="margin-left: 15px; font-weight: bold"><i class="fa fa-times"></i> Cancel</a>
                         </div>
 <!--
                     <div class="form-group">
-                        <div class="col-lg-9 col-lg-offset-3" style="">
+                        <div class="col-lg-9 col-lg-offset-3" >
                             <button type="submit" class="btn btn-primary ">Submit</button>
                         </div>
                     </div>

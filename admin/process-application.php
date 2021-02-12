@@ -12,6 +12,13 @@ require_once '../functions/db_connection.php';
 ////new instance of db controller
 //$db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 //redirect to login page if not loggedIn
 if(!isset($_SESSION['loggedin'])){
@@ -50,16 +57,16 @@ if(!isset($_SESSION['loggedin'])){
     <link rel="stylesheet" href="../admin/assets/css/theme.css" />
     <link rel="stylesheet" href="../admin/assets/css/MoneAdmin.css" />
     <link rel="stylesheet" href="../assets/font-awesome/css/fontawesome-all.css" />
-        <link rel="stylesheet" href="../admin/assets/plugins/Font-Awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../admin/assets/plugins/Font-Awesome/css/font-awesome.css" />
     <!--END GLOBAL STYLES -->
 
      
       <!--page level styles-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
-     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
-     <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
+    <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
     <!-- custom datatable style-->
-<!--    <link rel="stylesheet" href="../assets/css/datatables.min.css">-->
+    <!--    <link rel="stylesheet" href="../assets/css/datatables.min.css">-->
     
     <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
@@ -70,11 +77,11 @@ if(!isset($_SESSION['loggedin'])){
       <!--jquery3.3.1 library-->
     <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
       <!--datatable js-->
-<!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
-<!--    -->
+    <!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
+    <!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
- <script type="text/javascript">
+    <script type="text/javascript">
 		function pageLoading(){
 			$('.loading').show();
 			setTimeout(function(){
@@ -92,7 +99,7 @@ if(!isset($_SESSION['loggedin'])){
         }
         
         .panel .my-sub-link:hover{
-        /*   background-color: #33b35a;*/
+        /* background-color: #33b35a;*/
         /*   color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
@@ -141,7 +148,7 @@ if(!isset($_SESSION['loggedin'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -259,7 +266,7 @@ if(!isset($_SESSION['loggedin'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -365,8 +372,8 @@ if(!isset($_SESSION['loggedin'])){
                     <td><?php echo $cnt; ?></td>
                     <!-- <td><?php //echo $last['applicationid'] ?></td>-->
                     <td><?php echo $last['name']; ?></td>
-<!--                    <td><?php ## echo $last['gender']; ?></td>-->
-<!--                    <td><?php //echo $last['phoneno']; ?></td>-->
+                    <!--  <td><?php ## echo $last['gender']; ?></td>-->
+                    <!--  <td><?php //echo $last['phoneno']; ?></td>-->
                     <td> <?php echo $last['application_no']; ?></td>
                     <td><?php echo $last['project_type']; ?></td>
                     <td><?php 
@@ -408,7 +415,7 @@ if(!isset($_SESSION['loggedin'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

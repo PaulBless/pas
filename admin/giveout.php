@@ -6,9 +6,17 @@ error_reporting(E_ALL ^ E_NOTICE);
 include '../functions/db_connection.php';
 require_once '../functions/databaseController.php';
 require_once '../functions/Applications.php';
-
 //instance of db controller class
 $db_handle = new databaseController();
+
+
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
@@ -37,7 +45,7 @@ if(isset($_POST['btngiveout']))
     $receiver_name=strtoupper($name);
     
     //sql statement
-    $sql_check = "select * from `app_received` where app_id='$id'";
+    $sql_check = "SELECT * FROM `app_received` WHERE app_id='$id'";
     //get application approval records: if exists
     $result = $connect_db->query($sql_check);
     if ($result->num_rows > 0) {
@@ -104,27 +112,17 @@ if(isset($_POST['btngiveout']))
      
       <!--page level styles-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
-     <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
+    <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
     
-<!--
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/normalize.css" rel="stylesheet" />
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/jquery.steps.css" rel="stylesheet" />
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/wizardMain.css" rel="stylesheet" />
--->
+    
     <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
     <!--scripts-->
     <!--jquery 1.0 library-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-    
-      <!--jquery3.3.1 library-->
-<!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
-      <!--datatable js-->
-<!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
-<!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
-  
   
     <!--stylesheet-->
     <style type="text/css">
@@ -161,7 +159,7 @@ if(isset($_POST['btngiveout']))
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -279,17 +277,17 @@ if(isset($_POST['btngiveout']))
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -339,7 +337,7 @@ if(isset($_POST['btngiveout']))
             //get application_id
             $app_id = ($_GET["applicationID"]);
             $id=intval($_GET['applicationID']);
-            $stmt = mysqli_query($connect_db, "SELECT * FROM applications WHERE applicationid='$app_id'");
+            $stmt = mysqli_query($connect_db, "SELECT * FROM `applications` WHERE applicationid='$app_id'");
             $record = mysqli_fetch_array($stmt);
     
             ?>
@@ -374,7 +372,7 @@ if(isset($_POST['btngiveout']))
                                             <td class="s"><?php echo $record['project_type']; ?></td>
                                             <td class=""><?php 
                                             //get locality name by binding with id param
-                                            $getSiteLocality=mysqli_query($connect_db, "select loc_name from locality where id='".$record['location']."'");
+                                            $getSiteLocality=mysqli_query($connect_db, "SELECT `loc_name` FROM `locality` WHERE id='".$record['location']."'");
                                             $result = mysqli_fetch_array($getSiteLocality);
                                             //fetch corresponding data
                                             echo $result['loc_name']; ?></td>
@@ -394,13 +392,13 @@ if(isset($_POST['btngiveout']))
                         Building Permit Information</div>
                             <div class="panel-body">
                                <?php
-            //get application_id
-            $app_id = ($_GET["applicationID"]);
-            $id=intval($_GET['applicationID']);
-            $query = mysqli_query($connect_db, "SELECT * FROM permits WHERE application_id='$app_id'");
-            $data = mysqli_fetch_array($query);
+                                    //get application_id
+                                    $app_id = ($_GET["applicationID"]);
+                                    $id=intval($_GET['applicationID']);
+                                    $query = mysqli_query($connect_db, "SELECT * FROM permits WHERE application_id='$app_id'");
+                                    $data = mysqli_fetch_array($query);
     
-            ?>
+                                ?>
                         <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
 
                                 <div class="form-group hidden">
@@ -434,25 +432,25 @@ if(isset($_POST['btngiveout']))
                         <div class="panel-heading"><i class="fa fa-handshake"></i>
                         Receiver's Information</div>
                             <div class="panel-body">
-                                <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
+                                <form role="form" name="rec_form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
 
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Receiver's Name </label>
                                     <div class="col-lg-4">
-                                        <input name="receiver" id="receiver" class="form-control" required/>
+                                        <input name="receiver" id="receiver" class="form-control" />
                                     </div>
                                 </div> 
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Receiver's Phone #</label>
                                     <div class="col-lg-4">
-                                        <input name="mobile" id="mobile" type="tel" maxlength="10" class="form-control" required/>
+                                        <input name="mobile" id="mobile" type="number" pattern="[0][0-9]{9}" maxlength="10" class="form-control" required/>&nbsp;<span id="errmsg"></span>
                                     </div>
                                 </div>
                                 
                                 <!-- button groups -->
                                 <div class="form-actions no-margin-bottom" style="text-align:center;">
                                 <!-- submit button-->
-                               <button type="submit" name="btngiveout" value="" id="btnSave" class="btn btn-success" style="margin-right: 10px; font-weight: bold"><i class="fa fa-check"></i> HandOver</button>
+                               <button type="submit" name="btngiveout" onclick="return check()" value="" id="btnSave" class="btn btn-success" style="margin-right: 10px; font-weight: bold"> Hand Over</button>
                                 <a class="btn btn-danger" type="reset" href="dashboard.php" style="margin-left: 25px; font-weight: bold"><i class="fa fa-times"></i> Cancel</a>
                                 </div>                       
                                 </form>
@@ -473,42 +471,117 @@ if(isset($_POST['btngiveout']))
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     
         
  <!-- PAGE LEVEL SCRIPTS -->
-    <script src="../admin/assets/plugins/validationengine/css/validationEngine.jquery.css"></script>
-    <!--END PAGE LEVEL SCRIPT-->
-     <script src="../admin/assets/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="../admin/assets/plugins/dataTables/dataTables.bootstrap.js"></script>
-<!--    ------------->
-   
+ <script src="../admin/assets/plugins/validationengine/css/validationEngine.jquery.css"></script>
 
-    <!-- data table JS
-    ============================================ -->
-    <script src="../assets/datatable/js/bootstrap-table.js"></script>
-    <script src="../assets/datatable/js/data-table/tableExport.js"></script>
-    <script src="../assets/datatable/js/data-table/data-table-active.js"></script>
-    <script src="../assets/datatable/js/data-table/bootstrap-table-editable.js"></script>
-    <script src="../assets/datatable/js/data-table/bootstrap-editable.js"></script>
-    <script src="../assets/datatable/js/data-table/bootstrap-table-resizable.js"></script>
-    <script src="../assets/datatable/js/data-table/colResizable-1.5.source.js"></script>
-    <script src="../assets/datatable/js/data-table/bootstrap-table-export.js"></script>
-   <!-- validation scripts-->
+    <!--END PAGE LEVEL SCRIPT-->
+    
+<script type="text/javascript" lang="javascript"> 
+    function check()
+    {
+        dom = document.rec_form
+        if(dom.receiver.value == "")
+        {
+            alert("Please enter receiver's name");
+            dom.receiver.focus();
+            return false;
+        }
+        if(isAlphabetic(dom.receiver.value) )
+        {
+            alert("Receiver's name cannot contain numbers, enter alphabets only");
+            dom.receiver.select();
+            dom.receiver.focus();
+            return false;
+        }
+        if(dom.mobile.value == "")
+        {
+            alert("Please enter mobile number of the receiver");
+            dom.mobile.focus();
+            return false;
+        }
+        if(isNumeric(dom.mobile.value) == false)
+        {
+            alert("Enter only digit for phone numbers");
+            dom.mobile.focus();
+            return false;
+        }
+
+    }
+
+    function isAlphabetic(val)
+    {
+	if (val.match(/[a-zA-Z]+$/))
+	{
+        return false;
+        }
+        else
+        {
+        return true;
+        } 
+    }
 
     
-   
+    function IsNumeric(strString)
+    //  check for valid numeric strings	
+    {
+        var strValidChars = "0123456789";
+        var strChar;
+        var blnResult = true;
+
+        if (strString.length == 0) return false;
+
+        //  test strString consists of valid characters listed above
+        for (i = 0; i < strString.length && blnResult == true; i++)
+            {
+            strChar = strString.charAt(i);
+            if (strValidChars.indexOf(strChar) == -1)
+                {
+                blnResult = false;
+                }
+            }
+        return blnResult;
+    }
+
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
-         
-     //bootstrap form-control fields validation
-    $('#form-newpermit').bootstrapValidator({
-//        live: 'disabled',
+        //submit form function
+        $('#btnSave').click(function(){
+            
+        });
+
+        //called when keyboard is pressed in textbox
+        $('#mobile').keypress(function (e){
+            //if the letter is not digit, then display error and dont type anything
+            if(e.which != 8 && e.which != 0 (e.which <48 || e.which >57))
+            {
+                //display error message
+                $('#errmsg').html("Digits Only").show().fadeOut("slow");
+                return false;
+            }
+        });
+
+        // keypress event
+        //phone-number validation
+        jQuery("#mobile").keypress(function(ev){
+        var x = $(this).val();
+        if (ev.keyCode < 48 || ev.keyCode > 57) {
+        ev.preventDefault();
+            }
+        });
+        
+        //bootstrap form-control fields validation
+        $('#form-newpermit').bootstrapValidator({
+        //        live: 'disabled',
         message: 'This value is not valid',
         feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
+        //            valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
@@ -545,14 +618,14 @@ if(isset($_POST['btngiveout']))
         }
     });
     
-    // Validate the form manually
-    $('#validateBtn').click(function() {
-        $('#defaultForm').bootstrapValidator('validate');
-    });
+        // Validate the form manually
+        $('#validateBtn').click(function() {
+            $('#defaultForm').bootstrapValidator('validate');
+        });
 
-    $('#resetBtn').click(function() {
-        $('#defaultForm').data('bootstrapValidator').resetForm(true);
-    });
+        $('#resetBtn').click(function() {
+            $('#defaultForm').data('bootstrapValidator').resetForm(true);
+        });
 });
 
 </script>

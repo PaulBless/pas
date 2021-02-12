@@ -7,8 +7,8 @@
 
 
 <!DOCTYPE html>
-<<html>
-    <head>
+<html>
+	<head>
 		<meta charset="utf-8">
 		 <!--  Application title -->
 		<title>E-Permit System | Logout</title>
@@ -67,6 +67,6 @@
         <div class="loader"><span class="hint">Updating Password..</span><span style="display: block">Restarting session, please wait...</span></div>
 <!--        <div class="text-hint">Loging out, please wait...</div>-->
     	</div>
-    </body>
+	</body>
 </html>
 

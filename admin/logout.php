@@ -15,15 +15,15 @@ $last_login_date = "";
 if(isset($_SESSION['login_date_time']))
 	$last_login_date = $_SESSION['login_date_time'];
 
-//	$sql = "UPDATE `userlogs` SET `logout`='CURRENT_TIMESTAMP' WHERE userId =$userID AND MAX(login)=$last_login_date";
-//	$run = mysqli_query($connect_db, $sql);
-//if($run == true)
-//{
-//	echo "<script>alert('Session logout')</script>";
-//}
+    //	$sql = "UPDATE `userlogs` SET `logout`='CURRENT_TIMESTAMP' WHERE userId =$userID AND MAX(login)=$last_login_date";
+    //	$run = mysqli_query($connect_db, $sql);
+    //if($run == true)
+    //{
+    //	echo "<script>alert('Session logout')</script>";
+    //}
    
 	
-		$logout_sql = mysqli_query($connect_db, "UPDATE `userlogs` AS s LEFT JOIN( SELECT userid,login,logout FROM userlogs ORDER BY login DESC ) AS l ON l.id = s.id SET s.logout ='CURRENT_TIMESTAMP' WHERE s.userId='$userID' and s.login=$last_login_date");
+    $logout_sql = mysqli_query($connect_db, "UPDATE `userlogs` AS s LEFT JOIN( SELECT userid,login,logout FROM userlogs ORDER BY login DESC ) AS l ON l.id = s.id SET s.logout ='CURRENT_TIMESTAMP' WHERE s.userId='$userID' and s.login=$last_login_date");
 		
 	## unset and destroy session
 	session_unset();

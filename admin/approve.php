@@ -10,6 +10,14 @@ require_once '../functions/Applications.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
+
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: ./index.php');
@@ -115,11 +123,11 @@ if(isset($_POST['btnapprove']))
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
      <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
     
-<!--
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/normalize.css" rel="stylesheet" />
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/jquery.steps.css" rel="stylesheet" />
-    <link href="../admin/assets/plugins/jquery-steps-master/demo/css/wizardMain.css" rel="stylesheet" />
--->
+    <!--
+        <link href="../admin/assets/plugins/jquery-steps-master/demo/css/normalize.css" rel="stylesheet" />
+        <link href="../admin/assets/plugins/jquery-steps-master/demo/css/jquery.steps.css" rel="stylesheet" />
+        <link href="../admin/assets/plugins/jquery-steps-master/demo/css/wizardMain.css" rel="stylesheet" />
+    -->
     <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
     <!--scripts-->
@@ -127,10 +135,10 @@ if(isset($_POST['btnapprove']))
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
     
       <!--jquery3.3.1 library-->
-<!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
-      <!--datatable js-->
-<!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
-<!--    -->
+    <!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
+        <!--datatable js-->
+    <!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
+    <!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
   
@@ -170,7 +178,7 @@ if(isset($_POST['btnapprove']))
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -215,7 +223,7 @@ if(isset($_POST['btnapprove']))
 
    
          <!-- MENU SECTION -->
-    <div id="left" >
+        <div id="left" >
             <div class="media user-media well-small">
                 <div class="media-body">
                     <h5 class="media-heading"><i class="fa fa-user"></i> Login As: Admin!</h5>
@@ -289,17 +297,17 @@ if(isset($_POST['btnapprove']))
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -349,7 +357,7 @@ if(isset($_POST['btnapprove']))
             //get application_id
             $app_id = ($_GET["approveId"]);
             $id=intval($_GET['approveId']);
-            $stmt = mysqli_query($connect_db, "SELECT * FROM applications WHERE applicationid='$app_id'");
+            $stmt = mysqli_query($connect_db, "SELECT * FROM `applications` WHERE applicationid='$app_id'");
             $record = mysqli_fetch_array($stmt);
     
             ?>
@@ -412,7 +420,7 @@ if(isset($_POST['btnapprove']))
                                     </div>
                                     <div class="col-lg-4">
                                     <!--save button-->
-                                    <button class="btn btn-success" style="font-weight: bold" type="submit" name="btnapprove"><i class="fa fa-check"></i> Approve</button>
+                                    <button class="btn btn-success" style="font-weight: bold" type="submit" name="btnapprove"><i class="fa fa-check"></i> Approve for Permit</button>
                                     </div>
                                         </div>                       
                                 </form>
@@ -433,7 +441,7 @@ if(isset($_POST['btnapprove']))
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" href="../jecmasghana/index.html">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

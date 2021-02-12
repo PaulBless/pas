@@ -4,13 +4,13 @@ error_reporting(0);
 
 require_once '../functions/db_connection.php';
 
-////invoke db classes
-//require_once '../functions/databaseController.php';
-//require_once '../functions/Applications.php';
-//require_once '../functions/Users.php';
-//
-////new instance of db controller
-//$db_handle = new databaseController();
+
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 if(!isset($_SESSION['loggedin'])){
@@ -34,11 +34,11 @@ if(!isset($_SESSION['loggedin'])){
 <head>
     <meta charset="UTF-8" />
     <title>E-Permit System  </title>
-     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
      <!--[if IE]>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <!--browser icon-->
     <link rel="icon" href="../assets/images/logo.jpg"logo.jpg" type="image/jpg">  
@@ -49,16 +49,16 @@ if(!isset($_SESSION['loggedin'])){
     <link rel="stylesheet" href="../admin/assets/css/theme.css" />
     <link rel="stylesheet" href="../admin/assets/css/MoneAdmin.css" />
     <link rel="stylesheet" href="../assets/font-awesome/css/fontawesome-all.css" />
-        <link rel="stylesheet" href="../admin/assets/plugins/Font-Awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../admin/assets/plugins/Font-Awesome/css/font-awesome.css" />
     <!--END GLOBAL STYLES -->
 
      
       <!--page level styles-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
-     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
-     <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
+    <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
     <!-- custom datatable style-->
-<!--    <link rel="stylesheet" href="../assets/css/datatables.min.css">-->
+    <!--    <link rel="stylesheet" href="../assets/css/datatables.min.css">-->
     
     <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
@@ -66,11 +66,11 @@ if(!isset($_SESSION['loggedin'])){
     <!--jquery 1.0 library-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
     
-      <!--jquery3.3.1 library-->
-<!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
-      <!--datatable js-->
-<!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
-<!--    -->
+    <!--jquery3.3.1 library-->
+    <!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
+    <!--datatable js-->
+    <!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
+    <!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
     <!-- function to show loader on pageloading-->
@@ -82,7 +82,7 @@ if(!isset($_SESSION['loggedin'])){
 			}, 1500);
 		}
 	</script>
-<!--	end function here-->
+    <!--	end function here-->
   
     <!--stylesheet-->
     <style type="text/css">
@@ -142,7 +142,7 @@ if(!isset($_SESSION['loggedin'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -260,17 +260,17 @@ if(!isset($_SESSION['loggedin'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+            <!--
+                            <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                            <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+            -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -314,22 +314,22 @@ if(!isset($_SESSION['loggedin'])){
             <h5>REVIEW DEFERRED APPLICATIONS </h5></header>
                         
             <div class="panel panel-default">
-<!--             <div class="panel-heading"></div>-->
+                <!--             <div class="panel-heading"></div>-->
             
             <div class="panel-body">
                 <div class="data-table-area mg-tb-15">
                     <div class="sparkline13-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
-<!--
-                            <div id="toolbar" style="margin-right: 15px;">
-                                <select class="form-control">
-                                    <option value="">Export Basic</option>
-                                    <option value="all">Export All</option>
-                                    <option value="selected">Export Selected</option>
-                                </select>
-                            <br>
-                            </div>
--->
+                            <!--
+                                                        <div id="toolbar" style="margin-right: 15px;">
+                                                            <select class="form-control">
+                                                                <option value="">Export Basic</option>
+                                                                <option value="all">Export All</option>
+                                                                <option value="selected">Export Selected</option>
+                                                            </select>
+                                                        <br>
+                                                        </div>
+                            -->
                     <table style="margin-top: 20px" id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="" data-show-pagination-="true" data-show-refresh="" data-key-events="true" data-show-toggle="" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="" data-click-to-select="true" data-toolbar="#toolbar" class="table table-bordered table-hover">
                     <!--table head-->
                         <thead class="text-warning" style="background: #000">
@@ -349,7 +349,7 @@ if(!isset($_SESSION['loggedin'])){
             <?php
                 ## will add 'status' in sql later to filter result
                 ## fetch applications with status='Deferred'
-                $sql=mysqli_query($connect_db,"SELECT * from `applications` WHERE `status`='Deferred' ORDER BY `name` ASC");
+                $sql=mysqli_query($connect_db,"SELECT * FROM `applications` WHERE `status`='Deferred' ORDER BY `name` ASC");
                 $cnt=1;
                 while($last=mysqli_fetch_array($sql)){
                     
@@ -362,7 +362,7 @@ if(!isset($_SESSION['loggedin'])){
                     <td><?php echo $last['project_type']; ?></td>
                     <td><?php 
                     //get locality name by binding with id param
-                    $getSiteLocality=mysqli_query($connect_db, "select loc_name from locality where id='".$last['location']."'");
+                    $getSiteLocality=mysqli_query($connect_db, "SELECT `loc_name` FROM `locality` WHERE id='".$last['location']."'");
                     $result = mysqli_fetch_array($getSiteLocality);
                     //fetch corresponding data
                     echo $result['loc_name']; ?></td>
@@ -403,7 +403,7 @@ if(!isset($_SESSION['loggedin'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

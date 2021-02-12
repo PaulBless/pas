@@ -6,71 +6,69 @@ error_reporting(0);
 
 //ensure db is added before processing script
 require_once('functions/db_connection.php');
-//require_once('checkAdminUser.php');
+
 
 // Now we check if the data from the login form was submitted, isset() will check if the data exists.
 if (isset($_POST['btnLogin'])) {   
     //pass form username and password
     $user_name = $_POST['username'];
-//    $user_pass = $_POST['password'];
+    //$user_pass = $_POST['password'];
     $user_pass =md5($_POST['password']); //encrypt password using Message Digest MD5
 
     // preparing the SQL statement to prevent SQL injection.
-    if ($stmt = $connect_db->prepare('SELECT userid, password, role, status FROM users_account WHERE username = ?')) {
+    if ($stmt = $connect_db->prepare('SELECT   `userid`, `password`, `role`, `status` FROM `users_account` WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 	$stmt->bind_param('s', $user_name);
 	$stmt->execute();  //execute the query
 	$stmt->store_result(); // Store the result to check if the account exists
 
-    if ($stmt->num_rows > 0) {
-	$stmt->bind_result($userid, $stored_password, $user_type, $user_status);
-	$stmt->fetch();
-    
-		
-    //check user status
-     if($user_status === "Locked") {
-		 echo "<script>alert('Access Denied!\\n\\nYour account is currently locked, you cannot login into the system... Please contact your system admin')</script>";
- 		echo "<script>window.location.href='index.php'</script>";
-	 } 
+        if ($stmt->num_rows > 0) {
+        $stmt->bind_result($userid, $stored_password, $user_type, $user_status);
+        $stmt->fetch();
+        
+        //check user status
+        if($user_status === "Locked") {
+            echo "<script>alert('Access Denied!\\n\\nYour account is currently locked, you cannot login into the system... Please contact your system admin')</script>";
+            echo "<script>window.location.href='index.php'</script>";
+        } 
 		
         
-	// Account exists, now we verify the password.
-	//verify password by hashing algorithm
-    if ($user_pass === $stored_password){
-//	if (password_verify($user_pass, $stored_password)) {
-        // Verification success! User has loggedin!
-		//Create sessions so we know the user is logged in, 
-        //they basically act like cookies but is saved on the server.
-		session_regenerate_id();
-		$_SESSION['loggedin'] = TRUE;
-		$_SESSION['name'] = $user_name;   //log-username
-		$_SESSION['id'] = $userid;    //log-userid
-        $_SESSION['role'] = $user_type; //log-usertype
-        $checkRole = $user_type;
+        // Account exists, now we verify the password.
+        //verify password by hashing algorithm
+        if ($user_pass === $stored_password){
+        //	if (password_verify($user_pass, $stored_password)) {
+            // query for insert userlog in to data base
         
-        $logdate = date('d/m/Y');
-        $login_time = date('h:i:sa');
+            // Verification success! User has loggedin!
+            //Create sessions so we know the user is logged in, 
+            //they basically act like cookies but is saved on the server.
+            session_regenerate_id();
+            $_SESSION['loggedin'] = TRUE;
+            $_SESSION['name'] = $user_name;   //log-username
+            $_SESSION['id'] = $userid;    //log-userid
+            $_SESSION['role'] = $user_type; //log-usertype
+            $checkRole = $user_type;
             
-        // query for insert userlog in to data base
-        mysqli_query($connect_db,"insert into userlog(userId,login,logout) values('".$_SESSION['id']."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
-                        
-        //query for insert user activity
-        mysqli_query($connect_db, "insert into user_activities(activity,date_created) values('".$user_name.", successfully login into the system.', '$logdate')");
+            mysqli_query($connect_db,"insert into userlog(userId,login,logout) values('".$_SESSION['id']."', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
             
-        //redirect user based on user_type
-        if($checkRole == 'Engineer'){
-        header('Location: ./e-permit/works-engineer/home.php');   
+            //query for insert user activity
+            mysqli_query($connect_db, "insert into user_activities(activity,date_created) values('".$user_name.", successfully login into the system.', '$logdate')");
+            
+            //get login date and save as sesssion
+            $sql_logindate = mysqli_query($connect_db, "SELECT MAX(`login`) FROM `userlog` WHERE userId='".$userid."'");
+            $get_login = mysqli_fetch_assoc($sql_logindate);
+            $data = $get_login['login'];
+            
+            $_SESSION['login_date_time'] = $data;
+                
+            if($checkRole == 'User'){
+                header('Location: ./user/homepage.php');
+            }
+            elseif($checkRole == 'Officer'){
+                header('Location: ./user/homepage.php');
+            }
+           
         }
-        elseif($checkRole == 'User'){
-            header('Location: ./user/homepage.php');
-        }
-        elseif($checkRole == 'Officer'){
-            header('Location: ./e-permit/planning-officer/home.php');
-        }
-        elseif($checkRole == 'Inspector'){
-            header('Location: ./e-permit/building-inspector/home.php');
-        }
-	}
     else {
         ## display alert popup
         echo "<script>alert('Login Error\\nWrong password, please check..')</script>"; }
@@ -90,7 +88,7 @@ if (isset($_POST['btnLogin'])) {
 <html lang="en">
 <head>
     <!--  Application title -->
-    <title>E-Permit System  - Users LogIn</title>
+    <title>E-Permit System | Users LogIn</title>
     
     <!--meta information-->
     <meta charset="utf-8">
@@ -119,9 +117,9 @@ if (isset($_POST['btnLogin'])) {
 </head>
        
 <body class="page-login"> 
-       <!--login container-->
-    <div class="login-container d-flex align-items-center justify-content-center">
-        <form class="login-form text-center" action="" method="post" role="form">
+   <!--login container-->
+   <div class="login-container d-flex align-items-center justify-content-center">
+       <form class="login-form text-center" action="" method="post" role="form">
         <div class="logo"><img src="./assets/images/logo.jpg" width="110" height="110"/><span style="display: block"><h4 class="app-title">E-Permit System</h4></span>
         <span class="hint"><h6>Users Login Portal</h6></span>   
          </div> 
@@ -139,14 +137,16 @@ if (isset($_POST['btnLogin'])) {
             <a class="forgot-pwd font-weight-semibold f-pwd" href="forgot-password.php">Forgot Password?</a>
         </div>
         <div class="login-link">
-        <button class="btn btn-custom mt-3 btn-block font-weight-bold rounded-pill btn-login" name="btnLogin">Login</button>
+        <button class="btn btn-custom mt-1 btn-block font-weight-bold rounded-pill btn-login" name="btnLogin"> <i class="fa fa-login-alt"></i> Login</button>
         </div>
-        <div class="bottom-text">
+<!--        <div class="register-link font-weight-normal ">Powered by <a class="new-register font-weight-semibold f-reg" href="../jecmasghana/index.html" target="blank">Jecmas Ghana</a></div>-->
+        <div class="bottom-text ">
             <p class="lower-text">Powered by <a class="developer" href="">Jecmas Ghana</a></p>
         </div>
     
-        </form>
-    </div>
+       </form>
+    
+   </div>
     
 <!-- scripts-->
 <!--

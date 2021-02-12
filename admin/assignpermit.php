@@ -11,10 +11,17 @@ require_once '../functions/Applications.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 // If the user is not logged in, redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: logout.php');
+	header('Location: index.php');
 	exit;
 }
 
@@ -34,25 +41,34 @@ if(isset($_SESSION['id']))
 //process form
 if(isset($_POST['btnSubmit']))
 {
-    
+    //check if permit number exists
+    $permit_number = trim(htmlspecialchars($_POST['permitno']));
+    $q = mysqli_query($connect_db, "SELECT `permit_number` FROM `permits` WHERE `permit_number`='$permit_number'");
+    $data = mysqli_fetch_assoc($q);
+    if(!empty($data['permit_number']))
+    {
+        echo "<script>alert('Error! Building development permit number exists..\\nPlease check and enter unique permit numbers');window.history.back()</script>"; 
+        exit();
+    }
+
+    //show waiting response alert
+    echo "<script>alert('Please wait... Checking if site inspection has been carried on this application.') </script>";
+          
     //1st: check if site inspection has been done on this application
     //query from the inspections table ot see existence of applicationID
-    $ret= mysqli_query($connect_db,"SELECT * FROM `inspections` WHERE applicationID='$appID'");
+    $ret= mysqli_query($connect_db, "SELECT * FROM `inspections` WHERE applicationID='$appID'");
     $num=mysqli_fetch_array($ret);
     if($num>0)
     {
-        $inspectDate = $num['inspDate'];
+        $inspectDate = $num['inspDate'];    //get inspection date
 
-        //show waiting response alert
-        echo "<script>alert('Please wait... Checking if site inspection has been carried on this application.') </script>";
-        
         //show site inspection success alert
-        echo "<script>alert('Response...\\n \\nSite inspection of this application has been successfully carried out on: ".$inspectDate." \\nClick OK to proceed assign permit.')</script>";
+        echo "<script>alert('Response...\\nSite inspection has been successfully carried out for this application on: ".$inspectDate." \\nClick OK to proceed assign permit.')</script>";
         
         
         //2: check permit existence
         //query from permits granted table
-        $sql_pe= mysqli_query($connect_db,"SELECT * FROM `permits` WHERE application_id='$appID'");
+        $sql_pe= mysqli_query($connect_db, "SELECT * FROM `permits` WHERE application_id='$appID'");
         $numRows=mysqli_fetch_array($sql_pe);
         if($numRows>0){
             ## get permit assigned details
@@ -60,12 +76,12 @@ if(isset($_POST['btnSubmit']))
             $ass_number = $numRows['permit_number'];
             //error alert: permit number exists
             echo "<script>alert('Ooops...\\n This application has been already granted and assigned building development permit on: ".$ass_date." with permit number: ".$ass_number."\\nCannot assign duplicate permits.')</script>";
-        }else{
-            //3: save permit details
-        //get form data
-        $permitno = $_POST['permitno'];
-        $townsheet = $_POST['townsheet'];
-        $zoning = $_POST['zoning'];
+            }else{
+                //3: save permit details
+            //get form data
+            $permitno = trim(htmlspecialchars($_POST['permitno']));
+            $townsheet = trim(htmlspecialchars($_POST['townsheet']));
+            $zoning = trim(htmlspecialchars($_POST['zoning']));
         
             //insert new permit record
             $query =  "INSERT INTO `permits` (application_id, permit_number, dateAssigned, assignedBy, townsheet, zoning) VALUES ('".$appID."', '".$permitno."', CURRENT_TIMESTAMP, '".$user."', '".$townsheet."', '".$zoning."')";
@@ -127,29 +143,28 @@ if(isset($_POST['btnSubmit']))
     <!--END GLOBAL STYLES -->
 
       <!--page level scripts-->
-<!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
     <!--scripts-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
        
-<!--       bootstrap validator style-->
-    <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
-<!--        bootstrap validator script-->
-    <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
+    <!--       bootstrap validator style-->
+    <!-- <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css"> -->
+    <!--        bootstrap validator script-->
+    <!-- <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script> -->
 
        <style>
            /* custom styling to sub-menus*/
         .panel .my-sub-link:hover{
-    /*            background-color: #33b35a;*/
-    /*            color: white;*/
+            /*            background-color: #33b35a;*/
+            /*            color: white;*/
                 background: #343a40;
                 transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
             }
     </style>
     
-	</head>
+</head>
 <!--   end page head here-->
     
     
@@ -169,7 +184,7 @@ if(isset($_POST['btnSubmit']))
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -288,17 +303,17 @@ if(isset($_POST['btnSubmit']))
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -336,7 +351,7 @@ if(isset($_POST['btnSubmit']))
                  
                  <div class="col-lg-12">
                    <a href="grantpermit.php" class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" style="margin-right: 3px;"></i> Go Back</a>
-                <div class="box">
+                    <div class="box">
                     <header>
                         <div class="icons"><i class="fa fa-puzzle-piece"></i></div>
                         <h5>BUILDING DEVELOPMENT PERMIT APPROVAL</h5>
@@ -350,11 +365,11 @@ if(isset($_POST['btnSubmit']))
                         </div>
                     </header>
                     
-                <div class="panel-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><i class="fa fa-building"></i>
+                <div class="panel-body col-lg-6">
+                    <div class="panel panel-default ">
+                        <div class="panel-heading"><i class="fa fa-th"></i>
                             Application Details</div>
-                            <div class="panel-body">
+                            <div class="panel-body row">
                                <!--get application details: bind with ID-->
                                <?php
                                 $app_id = ($_GET["assignId"]); //application ID
@@ -363,37 +378,43 @@ if(isset($_POST['btnSubmit']))
                                 $record = mysqli_fetch_array($stmt);
 
                                 ?>
-                                <form role="form" id="form-newpermit" method="post" class="form-horizontal px-4 py-3" action="">
+                                <form role="form" id="form-newpermit" method="post" class="form-horizontal col-lg-12 px-4 py-3" action="">
                                 <!--complete application details-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Application Number: </label>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-5">
                                         <input name="appnumber" id="appnumber"  value="<?php echo $record['application_no']; ?>"class="form-control" disabled/>
                                     </div>
                                 </div>  
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Applicant Name: </label>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-8">
                                         <input name="name" id="name"  value="<?php echo $record['name']; ?>"class="form-control" disabled />
                                     </div>
                                 </div>  
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Mobile Number: </label>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-5">
                                         <input name="mobile" id="mobile" value="<?php echo $record['phoneno']; ?>" class="form-control" disabled />
                                     </div>
                                 </div>  
+                                <div class="form-group hidden">
+                                    <label class="control-label col-lg-4">Project Name: </label>
+                                    <div class="col-lg-8">
+                                        <input name="project" id="project" value="<?php echo $record['project_type']; ?>" class="form-control" disabled/>
+                                    </div>
+                                </div> 
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Project Name: </label>
-                                    <div class="col-lg-7">
-                                        <input name="project" id="project" value="<?php echo $record['project_type']; ?>" class="form-control" disabled/>
+                                    <div class="col-lg-8">
+                                        <textarea name="project" id="project" value="<?php echo $record['project_type']; ?>" class="form-control" disabled><?php echo $record['project_type']; ?></textarea>
                                     </div>
                                 </div> 
                                 <div class="form-group">
                                    <!--get site location name-->
                                    <?php $get = mysqli_query($connect_db, "SELECT loc_name FROM locality WHERE id='".$record['location']."'"); $data=mysqli_fetch_array($get); ?>
                                     <label class="control-label col-lg-4">Site Location: </label>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-5">
                                         <input name="location" id="location" value="<?php echo $data['loc_name']; ?>" class="form-control" disabled />
                                     </div>
                                 </div>                       
@@ -403,36 +424,36 @@ if(isset($_POST['btnSubmit']))
                     </div>
                 </div> <!-- end application details here-->    
                             
-                <div class="panel-body">
-                    <div class="panel panel-default">
-                            <div class="panel-heading"><i class="fa fa-certificate"></i> Building Development Approval Details</div>
-                            <div class="panel-body">
-                                <form class="form-horizontal" name="addPermit" id="addPermit" method="post">
+                <div class="panel-body col-lg-6">
+                    <div class="panel panel-default ">
+                            <div class="panel-heading"><i class="fa fa-building"></i> Building Development Approval Details</div>
+                            <div class="panel-body row">
+                                <form class="form-horizontal col-lg-12" name="addPermit" id="addPermit" method="post">
                                 <!--district name-->
                                 <div class="form-group">
-                                    <label class="control-label col-lg-4">Permit Development Number <span class="text-danger">*</span></label>
-                                    <div class="col-lg-4">
+                                    <label class="control-label col-lg-5">Permit Development No. <span class="text-danger">*</span></label>
+                                    <div class="col-lg-7">
                                         <input name="permitno" id="permitno" onblur="" onkeyup="" class="form-control" required/>
                                     </div>
                                 </div>
                                 <!--town sheet-->
                                 <div class="form-group">
-                                    <label class="control-label col-lg-4">Town Sheet No. </label>
-                                    <div class="col-lg-4">
+                                    <label class="control-label col-lg-5">Town Sheet No. </label>
+                                    <div class="col-lg-7">
                                         <input name="townsheet" id="townsheet" class="form-control" />
                                     </div>
                                 </div> 
                                 <!--zoning-->
                                 <div class="form-group">
-                                    <label class="control-label col-lg-4">Zoning </label>
-                                    <div class="col-lg-4">
+                                    <label class="control-label col-lg-5">Zoning </label>
+                                    <div class="col-lg-7">
                                         <input name="zoning" id="zoning" class="form-control" />
                                     </div>
                                 </div>
                                 
-                                <div class="form-actions no-margin-bottom" style="text-align:center; padding-top: 20px; paddig-left: 250px;">
+                                <div class="form-actions no-margin-bottom" style="text-align:center; padding-top: 20px;">
 								<!--  <button class="btn btn-primary " type="submit" name="test" style="font-weight: bold"> test</button>-->
-                                    <button class="btn btn-success " type="submit" name="btnSubmit" style="font-weight: bold; margin-right: 10px"><i class="fa fa-handshake"></i> Grant Permit</button>
+                                    <button class="btn btn-success" type="submit" name="btnSubmit" style="font-weight: bold; margin-right: 10px"><i class="fa fa-handshake"></i> Grant Permit</button>
                                     <a href="dashboard.php" class="btn btn-danger " type="reset" style="font-weight: bold"><i class="fa fa-times"></i>  Cancel</a>
                                 </div>
                                 </form>
@@ -455,11 +476,11 @@ if(isset($_POST['btnSubmit']))
 <script type="text/javascript">
     $(document).ready(function(){
         //bootstrap form-control fields validation
-    $('#addPermit').bootstrapValidator({
-//        live: 'disabled',
+        $('#addPermit').bootstrapValidator({
+            //        live: 'disabled',
         message: 'This value is not valid',
         feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
+        //            valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
@@ -470,19 +491,18 @@ if(isset($_POST['btnSubmit']))
                         message: 'Permit number cannot be empty, required!'
                     },
                      regexp: {
-//                        regexp: /^[a-zA-Z0-9 -/]+$/,
-//                        message: 'The permit number dont match format'
+                        //                        regexp: /^[a-zA-Z0-9 -/]+$/,
+                        //                        message: 'The permit number dont match format'
                     },
                 }
             },
           
-        }
     });
     
         $('#form2').on('submit', function(){
             var permitno = document.getElementById('permitno').value;
             if(permitno == null || permitno ==""){
-                alert "Enter development permit number";
+                alert ("Enter development permit number");
             }else{//do nothing
             }            
         });
@@ -493,7 +513,7 @@ if(isset($_POST['btnSubmit']))
        
         if (des == null || des == "") // check if value is null or blank
         { //if yes = show an error message
-            alert "Development application number can not be blank";
+            alert ("Development application number can not be blank");
         }
         else
         { //if no = do nothing

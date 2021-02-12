@@ -54,7 +54,7 @@ class Admin
         $query = "UPDATE `admin_account` SET fullname = ?,mobileno = ?,email = ?,username = ? WHERE adminid = ?";
         $paramType = "ssssi";
         $paramValue = array(
-            $name,
+           ucwords($name),
             $phone,
             $email,
             $username,

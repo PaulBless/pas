@@ -4,13 +4,13 @@ error_reporting(0);
 
 require_once '../functions/db_connection.php';
 
-////invoke db classes
-//require_once '../functions/databaseController.php';
-//require_once '../functions/Applications.php';
-//require_once '../functions/Users.php';
-//
-////new instance of db controller
-//$db_handle = new databaseController();
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 
 //redirect to login page if not loggedIn
@@ -57,37 +57,37 @@ if(!isset($_SESSION['loggedin'])){
      
       <!--page level styles and scripts-->
     <!-- custom datatable style-->
-<!--    <link rel="stylesheet" href="../assets/css/datatables.min.css">-->
-<link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-   <!--jquery 1.10 plugin -->
-<script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
-<script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+    <!--    <link rel="stylesheet" href="../assets/css/datatables.min.css">-->
+    <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <!--jquery 1.10 plugin -->
+    <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap js plugin -->
+    <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
 
-    
-  <!--jquery3.3.1 library-->
- <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
- <!-- jquery datatable plugin -->
-<!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
-<script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
-<!-- end -->
+        
+    <!--jquery3.3.1 library-->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery datatable plugin -->
+    <!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
+    <script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
+    <!-- end -->
     
   
-   
- <!-- dataTables export buttons scripts-->
-<link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
-<script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
-<script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
-<script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
-<script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
-<script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
+    
+    <!-- dataTables export buttons scripts-->
+    <link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
+    <script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
+    <script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
   
-  <script>
+    <script>
         $(document).ready(function () {
             var table = $('#table').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
-//                    {extend: 'copy', attr: {id: 'allan'}}, 'csv', 'excel', 'pdf'
+        //                    {extend: 'copy', attr: {id: 'allan'}}, 'csv', 'excel', 'pdf'
                 ]
             });
 
@@ -140,7 +140,7 @@ if(!isset($_SESSION['loggedin'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -258,17 +258,17 @@ if(!isset($_SESSION['loggedin'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li class="panel active"><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                <!--
+                                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -314,13 +314,13 @@ if(!isset($_SESSION['loggedin'])){
             <h5>CARRY SITE INSPECTIONS</h5></header>
                         
             <div class="panel panel-default">
-<!--             <div class="panel-heading"></div>-->
+            <!--             <div class="panel-heading"></div>-->
             
             <div class="panel-body">
                 <div class="data-table-area mg-tb-15">
                     <div class="sparkline13-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
-<!--
+                            <!--
                             <div id="toolbar" style="margin-right: 15px;">
                                 <select class="form-control">
                                     <option value="">Export Basic</option>
@@ -329,17 +329,15 @@ if(!isset($_SESSION['loggedin'])){
                                 </select>
                             <br>
                             </div>
--->
+                            -->
                     
                     <table id="table" class="table table-bordered table-hover" width="100%">
-                    <!--table head-->
+                        <!--table head-->
                         <thead class="text-warning" style="background: #000; ">
                             <tr>
                             <th>No.</th>
                             <!-- <th data-field="id">ID</th>-->
                             <th data-field="fullname">Applicant Name</th>
-							<!--   <th data-field="gender">Gender</th>-->
-							<!--  <th data-field="mobile">Mobile No</th>-->
                             <th data-field="appid">Application No.</th>
                             <th data-field="project">Project Development Name</th>
                             <th data-field="location">Site Location</th>
@@ -350,36 +348,35 @@ if(!isset($_SESSION['loggedin'])){
                         </thead>
                         <tbody>
             <?php
+
+                
                 ## will add 'status' in sql later to filter results
                 ## filter by status='New' and current year
                 $currentYear = date("Y");
-                $sql=mysqli_query($connect_db,"SELECT * from `applications` WHERE `status`='New' || `status`='Pending' || `status`='Submitted' || `status`='Approved' AND YEAR(datecreated)='$currentYear' ORDER BY `applicationid` DESC");
-//                $sql=mysqli_query($connect_db,"SELECT * from `applications` WHERE status!='Granted' AND YEAR(`datecreated`)=$currentYear");
+                $sql=mysqli_query($connect_db,"SELECT * FROM `applications` WHERE `status`='New' || `status`='Pending' || `status`='Submitted' || `status`='Approved' AND YEAR(datecreated)='$currentYear' ORDER BY `applicationid` DESC");
+                //  $sql=mysqli_query($connect_db,"SELECT * FROM `applications` WHERE status!='Granted' AND YEAR(`datecreated`)=$currentYear");
                 $cnt=1;
                 while($last=mysqli_fetch_array($sql)){
 
             ?>
                     <tr>
-                    <td><?php echo $cnt; ?></td>
-                    <!-- <td><?php //echo $last['applicationid'] ?></td>-->
-                    <td><?php echo $last['name']; ?></td>
-<!--                    <td><?php ## echo $last['gender']; ?></td>-->
-<!--                    <td><?php //echo $last['phoneno']; ?></td>-->
-                    <td> <?php echo $last['application_no']; ?></td>
-                    <td><?php echo $last['project_type']; ?></td>
-                    <td><?php 
-                    //get locality name by binding with id param
-                    $getSiteLocality=mysqli_query($connect_db, "select loc_name from locality where id='".$last['location']."'");
-                    $result = mysqli_fetch_array($getSiteLocality);
-                    //fetch corresponding data
-                   if($result['loc_name'] == "") echo "Invalid Location"; else echo $result['loc_name']; ?></td>
-                    <td><?php echo $last['status']; ?></td>
-                    <td class="datatable-ct">
-                    <!--process button link-->
-                    <a href="addsiteinspection.php?applicationid=<?php echo $last['applicationid'];?>"><button class="processBtn btn btn-primary btn-sm" id="appId" style="font-weight: bold"><i class="fa fa-smile"></i> Inspect</button></a>
-
-                   <?php //include('modals.php'); ?>
-                    </td>
+                        <td><?php echo $cnt; ?></td>
+                        <!-- <td><?php //echo $last['applicationid'] ?></td>-->
+                        <td><?php echo $last['name']; ?></td>
+                        <td> <?php echo $last['application_no']; ?></td>
+                        <td><?php echo $last['project_type']; ?></td>
+                        <td><?php 
+                        //get locality name by binding with id param
+                        $getSiteLocality=mysqli_query($connect_db, "SELECT `loc_name` FROM `locality` WHERE id='".$last['location']."'");
+                        $result = mysqli_fetch_array($getSiteLocality);
+                        //fetch corresponding data
+                    if($result['loc_name'] == "") echo "Invalid Location"; else echo $result['loc_name']; ?></td>
+                        <td><?php echo $last['status']; ?></td>
+                        <td class="datatable-ct">
+                        <!--process button link-->
+                        <a href="addsiteinspection.php?applicationid=<?php echo $last['applicationid'];?>" onclick=""><button  onclick="" class="processBtn btn btn-primary btn-sm" id="appId" style="font-weight: bold"><i class="fa fa-smile"></i> Inspect</button></a>
+                        
+                        </td>
                     </tr>
         <?php
         $cnt=$cnt+1;        
@@ -401,9 +398,21 @@ if(!isset($_SESSION['loggedin'])){
         </div>
     </div>
 
+                <?php //include('modals.php');
+                    //function check if site is inspected
+                    function checkInspected(){
+                        require_once '../functions/db_connection.php';
+                    $check = mysqli_query($connect_db, "SELECT * FROM `inspections` WHERE `applicationID`='".$last['applicationid']."'"); 
+                    // $check = mysqli_query($connect_db, "SELECT * FROM `inspections` WHERE `applicationID`='$id'"); 
+                    $gtdt = mysqli_fetch_assoc($check);
+                    if(mysqli_num_rows($gtdt) > 0){
+                        echo "<script>alert('Site already inspected..')</script>";
+                        }
+                    }
+                     ?>
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

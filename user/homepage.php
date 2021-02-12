@@ -1,11 +1,20 @@
 
 <?php
 session_start();
+require('../functions/db_connection.php');
+
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: ../index.php');
 	exit;
 }
+
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 ## set/get user credentials
@@ -33,8 +42,8 @@ if(isset($_SESSION['role'])){
     <meta charset="UTF-8" />
     <title>E-Permit System </title>
      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="" name="description" />
-	<meta content="" name="author" />
+	<meta content="Permit Application System" name="description" />
+	<meta content="Paul Eshun" name="author" />
      <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
@@ -92,7 +101,7 @@ if(isset($_SESSION['role'])){
 </head>    <!-- END HEAD -->
 
    
-    <!-- BEGIN BODY -->
+<!-- BEGIN BODY -->
 <body class="padTop53" onload="pageLoading()" >
 	<div class="loading"></div>
  <!-- MAIN WRAPPER -->
@@ -107,8 +116,7 @@ if(isset($_SESSION['role'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-<!--                <img src="../assets/images/logo.jpg" width="25" height="25">-->
-               <a class="app-name"> E-Permit System</a>
+                <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -173,22 +181,24 @@ if(isset($_SESSION['role'])){
                     </a>                                   
                 </li>
 
+                <?php if($_SESSION['role'] == "Officer") ?>
+
                 <!--menu item -->
                 <li><a href="addapplication.php"><i class="fa fa-plus"></i> Add New Application </a></li>
                 <!--menu item-->
-                <li class="panel"><a href="search-applications.php"><i class="fa fa-search"></i> Search Applications </a></li>
+                <li class="panel"><a href="application-lists.php"><i class="fa fa-th"></i> Application Lists </a></li>
                 <!--menu item-->
                 <li class="panel"><a href="mysubmisssions.php"><i class="fa fa-folder"></i> My Submitted Forms </a></li>
-                <li class="panel"><a href="building-permits.php"><i class="fa fa-star"></i> Building Permits </a></li>
+                <li class="panel"><a href="building-permits.php"><i class="fa fa-star"></i> Permits Granted </a></li>
                 <!--menu item-->
-<!--                <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
+                <!--  <li class="panel"><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>-->
                
                 <!--menu item exit-->
                 <li class="panel"><a href="../logout.php" onclick=""><i class="fa fa-power-off"></i> Logout</a></li>
 
             </ul>
 
-        </div>
+       </div>
         <!--END MENU SECTION -->
 
         <!--PAGE CONTENT -->
@@ -201,39 +211,40 @@ if(isset($_SESSION['role'])){
                         <h5><span class="fa fa-home"></span> E-Permit <i class="fa fa-chevron-right"></i> User Dashboard </h5>
                     </div>
                 </div>
+                <?php //if(isset($_SESSION['login_date_time'])) echo $_SESSION['login_date_time']; else echo "no login date"; ?>
                   <hr />
                   
                  <!--HOME SECTION -->
                  <div class="row">
                      <div class="col-lg-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">
+                            <div class="panel-heading ">
                                 Electronic Permit System
                             </div>                   
-                            <div class="app-details" style="padding: 20px">
-                            <p>This is an electronic web based system or application designed and developed for internal use in managing and processing building applications permits. 
-                            
-                            </p> 
-                            <p>
-                            The application is designed with user functionalities that enable easy and efficient application, processing, tracking, monitoring and generating of building application permits.
-                            </p>
-                            <p>
-                            This is a complete web based information management system build for smart use in district assemblies for a complete end-to-end processing and reporting of permits.
-                            </p>
-                            <p>
-                            It comes with features such as registering new applications, searching through application records, filtering individual applications, generating and granting unique building permits  numbers, etc.
-                            </p>
-                            <p>
-                             
-                            </p>
-                            </div>
+                                <div class="app-details" style="padding: 20px">
+                                <p>This is an electronic web based system or application designed and developed for internal use in managing and processing building applications permits. 
+                                
+                                </p> 
+                                <p>
+                                The application is designed with user functionalities that enable easy and efficient application, processing, tracking, monitoring and generating of building application permits.
+                                </p>
+                                <p>
+                                This is a complete web based information management system build for smart use in district assemblies for a complete end-to-end processing and reporting of permits.
+                                </p>
+                                <p>
+                                It comes with features such as registering new applications, searching through application records, filtering individual applications, generating and granting unique building permits  numbers, etc.
+                                </p>
+                                <p>
+                                
+                                </p>
+                                </div>
                         </div>
                     </div>
                 </div>
                  
                  
                    <!-- CHART & CHAT  SECTION -->
-                 <div class="row">
+                 <div class="row ">
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -260,7 +271,7 @@ if(isset($_SESSION['role'])){
     
     <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
 

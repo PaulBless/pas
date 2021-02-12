@@ -7,6 +7,13 @@ include '../functions/db_connection.php';
 require_once '../functions/databaseController.php';
 require_once '../functions/Applications.php';
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 //instance of db controller class
 $db_handle = new databaseController();
 
@@ -31,7 +38,7 @@ if(isset($_POST['btnSubmit'])){
     $ins_reason = ucfirst($reason);
     
     //1st: check state of application, if already deferred
-    $check= mysqli_query($connect_db,"SELECT * FROM `defer` WHERE appID='$id'");
+    $check= mysqli_query($connect_db,"SELECT * FROM `defer` WHERE appID='$id' AND `state`='0'");
     $numRst=mysqli_fetch_array($check);
     if($numRst>0){
          //show error message
@@ -47,12 +54,12 @@ if(isset($_POST['btnSubmit'])){
     $queryDefer = $newApplication->deferApplication($id);
     
     //3rd: insert/add reason for deferring application
-    $insert = mysqli_query($connect_db, "INSERT INTO `defer` (appID, reason, dateDefer) VALUES ('".$id."', '".$ins_reason."', CURRENT_TIMESTAMP)");
+    $insert = mysqli_query($connect_db, "INSERT INTO `defer` (appID, reason, dateDefer, `state`) VALUES ('".$id."', '".$ins_reason."', 'CURRENT_TIMESTAMP', '0')");
     
 	//4th: delete application processed checklist items/data/record
     $delete = mysqli_query($connect_db, "DELETE FROM `app_processes` WHERE `app_id`='".$id."'");
     
-//		if($insert == true && $delete == true){}
+    //		if($insert == true && $delete == true){}
     //show success message
     echo "<div class='alert alert-success fadeIn col-lg-6 col-md-offset-3' style='top: 10px; transition: all 0.3s ease-in-out 0s'>"
     . "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>"
@@ -99,11 +106,11 @@ if(isset($_POST['btnSubmit'])){
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
      <link href="../admin/assets/css/bootstrap-fileupload.min.css" rel="stylesheet" />
     
-<!--
+    <!--
     <link href="../admin/assets/plugins/jquery-steps-master/demo/css/normalize.css" rel="stylesheet" />
     <link href="../admin/assets/plugins/jquery-steps-master/demo/css/jquery.steps.css" rel="stylesheet" />
     <link href="../admin/assets/plugins/jquery-steps-master/demo/css/wizardMain.css" rel="stylesheet" />
--->
+    -->
     <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
     <!--scripts-->
@@ -111,10 +118,10 @@ if(isset($_POST['btnSubmit'])){
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
     
       <!--jquery3.3.1 library-->
-<!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
+    <!--    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>-->
       <!--datatable js-->
-<!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
-<!--    -->
+    <!--    <script type="text/javascript" src="../assets/js/datatables.min.js"></script>-->
+    <!--    -->
     <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../third-party/dist/js/bootstrapValidator.js"></script>
   
@@ -154,7 +161,7 @@ if(isset($_POST['btnSubmit'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -272,17 +279,17 @@ if(isset($_POST['btnSubmit'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li class="panel active "><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+            <!--
+                            <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                            <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+            -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -396,7 +403,7 @@ if(isset($_POST['btnSubmit'])){
                                     </div>
                                     <div class="col-lg-4">
                                     <!--save button-->
-                                    <button class="btn btn-danger" style="font-weight: bold" type="submit" name="btnSubmit">Confirm Defer</button>
+                                    <button class="btn btn-danger" style="font-weight: bold" type="submit" name="btnSubmit">Defer Application</button>
                                     </div>
                                         </div>                       
                                 </form>
@@ -417,7 +424,7 @@ if(isset($_POST['btnSubmit'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

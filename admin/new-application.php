@@ -12,6 +12,13 @@ require_once '../functions/Applications.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 //global variables
 $last_id = "";                 //variable to hold last saved application id
@@ -125,7 +132,7 @@ if(isset($_POST['btnSubmit'])){
     
     //proceed to save new application for later processing
     //preparing the SQL statement will prevent SQL injection.
-    if ($stmt = $connect_db->prepare('SELECT name, application_no FROM applications WHERE name = ? AND phoneno = ?')) {
+    if ($stmt = $connect_db->prepare('SELECT `name`, `application_no` FROM `applications` WHERE name = ? AND phoneno = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), 
     //in our case the username is a string so we use "s"
 	$stmt->bind_param('ss', $name, $mobile);
@@ -205,8 +212,8 @@ if(isset($_POST['btnSubmit'])){
         
         /*sub-menulink hover effects*/
         .panel .my-sub-link:hover{
-/*            background-color: #33b35a;*/
-/*            color: white;*/
+            /*            background-color: #33b35a;*/
+            /*            color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
         }
@@ -255,7 +262,7 @@ if(isset($_POST['btnSubmit'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -372,17 +379,17 @@ if(isset($_POST['btnSubmit'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                    <!--
+                                    <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                    <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                    -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -497,11 +504,11 @@ if(isset($_POST['btnSubmit'])){
                         <!--site location-->
                         <div class="form-group">
                             <label class="control-label col-lg-4">Site Location <span class="text-danger">*</span></label>
-<!--
-                            <div class="col-lg-4">
-                             <input name="location" id="location" class="form-control" placeholder="Location of site or building (eg. Adeiso)" />
-                            </div>
--->
+                            <!--
+                                <div class="col-lg-4">
+                                <input name="location" id="location" class="form-control" placeholder="Location of site or building (eg. Adeiso)" />
+                                </div>
+                            -->
                             <div class="col-lg-4">
                             <!--get location lists from db-->
                             <!-- to display location lists-->
@@ -520,7 +527,7 @@ if(isset($_POST['btnSubmit'])){
                         <div class="form-group">
                             <label class="control-label col-lg-4">Project Development Name <span class="text-danger">*</span></label>
                             <div class="col-lg-6">
-                                <textarea style="" class="form-control" id="project" name="project" cols="6" rows="2"></textarea>
+                                <textarea  class="form-control" id="project" name="project" cols="6" rows="2"></textarea>
                             </div>
                         </div>
                         <!-- End Structure X -->
@@ -575,14 +582,14 @@ if(isset($_POST['btnSubmit'])){
                             <input id="sdate" class="form-control" type="text" name="sdate" placeholder="" pattern="">
                             </div>
                         </div> 
-<!--
-                        <div class="form-group">
-                            <label class="control-label col-lg-4">Submission Date</label>
-                            <div class="col-lg-4">
-                            <input class="form-control" type="text" data-mask="99/99/9999" id="dateEncode" name="dateEncode">
-                            </div>
-                        </div>
--->
+                        <!--
+                                                <div class="form-group">
+                                                    <label class="control-label col-lg-4">Submission Date</label>
+                                                    <div class="col-lg-4">
+                                                    <input class="form-control" type="text" data-mask="99/99/9999" id="dateEncode" name="dateEncode">
+                                                    </div>
+                                                </div>
+                        -->
                         
                         <br>
                         
@@ -614,7 +621,7 @@ if(isset($_POST['btnSubmit'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     
@@ -628,233 +635,233 @@ if(isset($_POST['btnSubmit'])){
    
    <!-- validation scripts-->
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function() {
      
-    //display effect on submit button clicked
-    $('#btnSubmit').click(function(){
-        var mybutton = document.getElementById('btnSubmit');
-        mybutton.innerHTML = "Please wait, saving..";
-        mybutton.classList.add('spinning'); //add class list
-//        mybutton.innerHTML.add()
-        //show loader
-        $('spinner').show();
+        //display effect on submit button clicked
+        $('#btnSubmit').click(function(){
+            var mybutton = document.getElementById('btnSubmit');
+            mybutton.innerHTML = "please wait, saving..";
+            mybutton.classList.add('spinning'); //add class list
+            //        mybutton.innerHTML.add()
+            //show loader
+            $('spinner').show();
+            
+            setTimeout(function(){
+                mybutton.classList.remove('spinning');  //remove class list
+                $('spinner').hide();
+                mybutton.innerHTML = "Save Application";
+            }, 7000);
+        });
+    
+    
+        //bootstrap form-control fields validation
+        $('#form-newpermit').bootstrapValidator({
+                //        live: 'disabled',
+            message: 'This value is not valid',
+            feedbackIcons: {
+                //            valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                name: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                            message: 'Applicant name cannot be empty, required!'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z -]+$/,
+                            message: 'The name can only consist of alphabets'
+                        },
+                    }
+                },
+                gender: {
+                    group: '.col-lg-5',
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select gender'
+                        },
+                    }
+                },
+                mobile: {
+                    group: '.col-lg-4',
+                    validators: {
+                        digits: {
+                            message: 'Phone number should be digits only'
+                        },
+                        notEmpty: {
+                                message: 'Phone number is required'
+                            },
+                        stringLength: {
+                            min: 1,
+                            max: 10,
+                            message: 'Phone number is not complete'
+                                },
+                            }
+                        },
+                contactnumber: {
+                    group: '.col-lg-4',
+                    validators: {
+                        digits: {
+                            message: 'Contact number should be digits only'
+                        },
+                        notEmpty: {
+                                message: 'Contact number is required'
+                            },
+                        stringLength: {
+                            min: 1,
+                            max: 10,
+                            message: 'Contact number is not complete'
+                                },
+                            }
+                        },
+                residence: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Place or town of residence cannot be empty'
+                            },
+                        regexp: {
+                            regexp: /^[a-zA-Z ]+$/,
+                            message: 'The residence can only consist of alphabets'
+                        },
+                            }
+                        },
+                occupation: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Provide occupation of applicant'
+                            },
+                        regexp: {
+                            regexp: /^[a-zA-Z ]+$/,
+                            message: 'Occupation can only consist of alphabets'
+                        },
+                            }
+                        },
+                contactname: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Emergency contact name is required'
+                            },
+                        regexp: {
+                            regexp: /^[a-zA-Z -]+$/,
+                            message: 'Contact name can only consist of alphabets'
+                        },
+                            }
+                        },
+                location: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Location of site is required'
+                            },
+                            //                    regexp: {
+                            //                        regexp: /^[a-zA-Z]+$/,
+                            //                        message: 'Site location can only consist of alphabets'
+                            //                    },
+                            }
+                        },
+                project: {
+                    group: '.col-lg-6',
+                    validators: {
+                        notEmpty: {
+                                message: 'Specify the proposed development name'
+                            },
+                        regexp: {
+                            regexp: /^[a-zA-Z ]+$/,
+                            message: 'Proposed development name can only consist of alphabets'
+                        },
+                            }
+                        },
+                date2: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Select valid date'
+                            },
+                        date: {
+                            message: 'Specify application date',
+                        },
+                        }
+                    },
+                sdate: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Enter valid date for today'
+                            },
+                        format: {
+                            message: 'dd/mm/yyyy',
+                        },
+                        }
+                    },
+                landuse: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Please select landuse type'
+                            },
+                        }
+                    },
+                category: {
+                    group: '.col-lg-4',
+                    validators: {
+                        notEmpty: {
+                                message: 'Please select category of application'
+                            },
+                        }
+                    },
+            }
+        });
+    
+    
+        // keypress event
+        //phone-number validation
+        jQuery("#mobile").keypress(function(ev){
+        var x = $(this).val();
+        if (ev.keyCode < 48 || ev.keyCode > 57) {
+        ev.preventDefault();
+            }
+        });
         
-        setTimeout(function(){
-            mybutton.classList.remove('spinning');  //remove class list
-            $('spinner').hide();
-            mybutton.innerHTML = "Save Application";
-        }, 7000);
-    });
+        jQuery("#mobile").onblur(function(ev){
+            var x = $(this).val();
+            var num = this.substring(0, 3);
+            if (num !== '054' && num !== '024'){
+                alert('Phone number is invalid.');
+            }
+        });
+        
+        //first-name validation
+        jQuery("#firstname").keypress(function(ev){
+            var x = $(this).val();
+            if ((ev.keyCode < 65 || ev.keyCode > 90) && (ev.keyCode < 97 || ev.keyCode > 122 )){
+                ev.preventDefault();
+            }
+        });
+        
+        //last-name validation
+        jQuery("#lastname").keypress(function(ev){
+            var x = $(this).val();
+            if ((ev.keyCode < 65 || ev.keyCode > 90) && (ev.keyCode < 97 || ev.keyCode > 122 )){
+                ev.preventDefault();
+            }
+        });
+        
     
-    
-    //bootstrap form-control fields validation
-    $('#form-newpermit').bootstrapValidator({
-//        live: 'disabled',
-        message: 'This value is not valid',
-        feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            name: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                        message: 'Applicant name cannot be empty, required!'
-                    },
-                     regexp: {
-                        regexp: /^[a-zA-Z -]+$/,
-                        message: 'The name can only consist of alphabets'
-                    },
-                }
-            },
-            gender: {
-                group: '.col-lg-5',
-                validators: {
-                    notEmpty: {
-                        message: 'Please select gender'
-                    },
-                }
-            },
-            mobile: {
-                group: '.col-lg-4',
-                validators: {
-                    digits: {
-                        message: 'Phone number should be digits only'
-                    },
-                    notEmpty: {
-                            message: 'Phone number is required'
-                        },
-                    stringLength: {
-                        min: 1,
-                        max: 10,
-                        message: 'Phone number is not complete'
-                            },
-                        }
-                    },
-            contactnumber: {
-                group: '.col-lg-4',
-                validators: {
-                    digits: {
-                        message: 'Contact number should be digits only'
-                    },
-                    notEmpty: {
-                            message: 'Contact number is required'
-                        },
-                    stringLength: {
-                        min: 1,
-                        max: 10,
-                        message: 'Contact number is not complete'
-                            },
-                        }
-                    },
-            residence: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Place or town of residence cannot be empty'
-                        },
-                    regexp: {
-                        regexp: /^[a-zA-Z ]+$/,
-                        message: 'The residence can only consist of alphabets'
-                    },
-                        }
-                    },
-            occupation: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Provide occupation of applicant'
-                        },
-                    regexp: {
-                        regexp: /^[a-zA-Z ]+$/,
-                        message: 'Occupation can only consist of alphabets'
-                    },
-                        }
-                    },
-            contactname: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Emergency contact name is required'
-                        },
-                    regexp: {
-                        regexp: /^[a-zA-Z -]+$/,
-                        message: 'Contact name can only consist of alphabets'
-                    },
-                        }
-                    },
-            location: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Location of site is required'
-                        },
-//                    regexp: {
-//                        regexp: /^[a-zA-Z]+$/,
-//                        message: 'Site location can only consist of alphabets'
-//                    },
-                        }
-                    },
-            project: {
-                group: '.col-lg-6',
-                validators: {
-                    notEmpty: {
-                            message: 'Specify the proposed development name'
-                        },
-                    regexp: {
-                        regexp: /^[a-zA-Z ]+$/,
-                        message: 'Proposed development name can only consist of alphabets'
-                    },
-                        }
-                    },
-            date2: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Select valid date'
-                        },
-                    date: {
-                        message: 'Specify application date',
-                    },
-                     }
-                },
-            sdate: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Enter valid date for today'
-                        },
-                    format: {
-                        message: 'dd/mm/yyyy',
-                    },
-                     }
-                },
-            landuse: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Please select landuse type'
-                        },
-                     }
-                },
-            category: {
-                group: '.col-lg-4',
-                validators: {
-                    notEmpty: {
-                            message: 'Please select category of application'
-                        },
-                     }
-                },
-        }
-    });
-    
-    
-    // keypress event
-    //phone-number validation
-    jQuery("#mobile").keypress(function(ev){
-    var x = $(this).val();
-    if (ev.keyCode < 48 || ev.keyCode > 57) {
-      ev.preventDefault();
-        }
-    });
-    
-    jQuery("#mobile").onblur(function(ev){
-        var x = $(this).val();
-        var num = this.substring(0, 3);
-        if (num !== '054' && num !== '024'){
-            alert('Phone number is invalid.');
-        }
-    });
-    
-    //first-name validation
-    jQuery("#firstname").keypress(function(ev){
-        var x = $(this).val();
-        if ((ev.keyCode < 65 || ev.keyCode > 90) && (ev.keyCode < 97 || ev.keyCode > 122 )){
-            ev.preventDefault();
-        }
-    });
-    
-    //last-name validation
-    jQuery("#lastname").keypress(function(ev){
-        var x = $(this).val();
-        if ((ev.keyCode < 65 || ev.keyCode > 90) && (ev.keyCode < 97 || ev.keyCode > 122 )){
-            ev.preventDefault();
-        }
-    });
-    
-   
-    
-    
-    // Validate the form manually
-    $('#validateBtn').click(function() {
-        $('#defaultForm').bootstrapValidator('validate');
-    });
+        
+        
+        // Validate the form manually
+        $('#validateBtn').click(function() {
+            $('#defaultForm').bootstrapValidator('validate');
+        });
 
-    $('#resetBtn').click(function() {
-        $('#defaultForm').data('bootstrapValidator').resetForm(true);
-    });
+        $('#resetBtn').click(function() {
+            $('#defaultForm').data('bootstrapValidator').resetForm(true);
+        });
 });
 
     </script>
@@ -869,12 +876,7 @@ $(document).ready(function() {
 		}
 	</script>
       
-       <script type="text/javascript">
-        $('#sdate').datepicker({
-
-       format: 'dd/mm/yyyy';
-
-     });</script>
+      
 
     </body>
 </html>

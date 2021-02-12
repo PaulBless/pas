@@ -8,9 +8,16 @@ include '../functions/db_connection.php';
 
 // If the user is not logged in, redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: logout.php');
+	header('Location: index.php');
 	exit;
 }
+
+## get system settings to display as app name
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
  // get settings record
@@ -22,14 +29,14 @@ $rows=mysqli_fetch_array($fetch);
 ## process form data
 if(isset($_POST['btnSubmit']))
 {
-//get post data
-$district = $_POST['district'];
-$town = $_POST['town'];                 
-$address = $_POST['address'];        
-$description = $_POST['appdesc'];
+    //get post data
+    $district = $_POST['district'];
+    $town = $_POST['town'];                 
+    $address = $_POST['address'];        
+    $description = $_POST['appdesc'];
     
     //bind variables to save
-    $ins_name = strtoupper($district);
+    $ins_name = ucwords($district);
     $ins_town = ucwords($town);
     $ins_address = ucwords($address);
     $ins_desc = ucwords($description);
@@ -37,14 +44,14 @@ $description = $_POST['appdesc'];
    //preparing the SQL statement will prevent SQL injection.
     if ($stmt = $connect_db->prepare('SELECT * FROM settings')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), 
-//	$stmt->bind_param('s', $district);
+    //	$stmt->bind_param('s', $district);
 	$stmt->execute();
 	$stmt->store_result(); 	//store the result, and check it availability.
-    //check if record exists in database
-    if ($stmt->num_rows > 0) {
-        echo "<script>alert('The record you are trying to add already exists.. Record will be updated')</script>";
-	$stmt->bind_result($distID,$distName,$distTown,$distAddress,$Description,$distLogo);
-	$stmt->fetch();  //record exists,
+        //check if record exists in database
+        if ($stmt->num_rows > 0) {
+            echo "<script>alert('The record you are trying to add already exists.. Record will be updated')</script>";
+        $stmt->bind_result($distID,$distName,$distTown,$distAddress,$Description,$distLogo);
+        $stmt->fetch();  //record exists,
         $stmt = $connect_db->prepare('UPDATE `settings` SET `dist_name`= ?, `dist_town`= ?, `dist_address`=?, `description`=? WHERE `id`= ?');
         $stmt->bind_param('ssssi', $ins_name, $ins_town, $ins_address, $ins_desc, $distID);
         $stmt->execute();
@@ -54,8 +61,8 @@ $description = $_POST['appdesc'];
         . "<strong><span class='fa fa-info'></span> </strong>" 
         . "<strong>&nbsp;&nbsp;System Settings updated!</strong>."
         . "</div>";
-    }else{ 
-            $sql_save=mysqli_query($connect_db, "INSERT INTO settings (`dist_name`, `dist_town`, `dist_address`, `description`) VALUES ('".$ins_name."', '".$ins_town."', '".$ins_address."', '".$ins_desc."')");
+        }else{ 
+                $sql_save=mysqli_query($connect_db, "INSERT INTO settings (`dist_name`, `dist_town`, `dist_address`, `description`) VALUES ('".$ins_name."', '".$ins_town."', '".$ins_address."', '".$ins_desc."')");
             
         echo "<div class='alert alert-success fade in col-lg-6 col-md-offset-3' style='top: 10px; transition: all 0.3s ease-in-out 0s'>"
         . "<a href='#' class='close' data-dismiss='alert' aria-label='close'>×</a>"
@@ -161,7 +168,7 @@ $description = $_POST['appdesc'];
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -279,17 +286,17 @@ $description = $_POST['appdesc'];
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+            <!--
+                            <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                            <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+            -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -347,16 +354,16 @@ $description = $_POST['appdesc'];
                         <form class="form-horizontal" method="post" id="formAdd">
                            <?php
                                 // get settings record
-//                                $select = "select * from settings";
-//                                $fetch=mysqli_query($connect_db, $select);
-//                                while($rows=mysqli_fetch_array($fetch))
-//                                    {   
-//                                        $id = $rows['id'];
-//                                        $name = $rows['dist_name'];
-//                                        $location = $rows['dist_town'];
-//                                        $addr = $rows['dist_address'];
-//                                        $desc= $rows['description'];
-//                                    }
+                                //                                $select = "select * from settings";
+                                //                                $fetch=mysqli_query($connect_db, $select);
+                                //                                while($rows=mysqli_fetch_array($fetch))
+                                //                                    {   
+                                //                                        $id = $rows['id'];
+                                //                                        $name = $rows['dist_name'];
+                                //                                        $location = $rows['dist_town'];
+                                //                                        $addr = $rows['dist_address'];
+                                //                                        $desc= $rows['description'];
+                                //                                    }
                             ?>
                             <!--district name-->
                                 <div class="form-group">
@@ -383,15 +390,16 @@ $description = $_POST['appdesc'];
                                 <div class="form-group">
                                     <label class="control-label col-lg-4">Name of Department to use System </label>
                                     <div class="col-lg-6">
-                                        <textarea style="" class="form-control" id="appdesc" name="appdesc" cols="6" rows="3"><?php if(isset($rows['description'])) echo $rows['description']; ?></textarea>
+                                        <textarea  class="form-control" id="appdesc" name="appdesc" cols="6" rows="3"><?php if(isset($rows['description'])) echo $rows['description']; ?></textarea>
                                     </div>
                                 </div>
 
                                  <!--action button -->
                                 <div class="form-actions no-margin-bottom" style="text-align:center; padding-top: 20px; padding-left: 250px;">
-                                    <button style="font-weight: bold" class="btn btn-success" type="submit" name="btnSubmit"><i class="fa fa-paper-plane"></i>  Save Settings</button>
+                                    <button style="font-weight: bold" class="btn btn-success" type="submit" name="btnSubmit"><i class="fa fa-save"></i>  Save Settings</button>
+                                    <button style="font-weight: bold" class="btn btn-danger" type="reset" onclick="return window.history.back()"><i class="fa fa-times"></i>  Cancel</button>
                                 </div>
-
+                                      
 
                         </form>
                     </div>
@@ -406,7 +414,7 @@ $description = $_POST['appdesc'];
 
     <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

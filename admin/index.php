@@ -10,6 +10,7 @@ require_once '../functions/db_connection.php';
 
 //function triggers to save user login credentials
 function saveLoginDetails($logid){
+    require_once('../functions/db_connection.php');
 	$sql = mysqli_query($connect_db, "insert into userlogs(userId, login, logout) values ($logid, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
 	if($sql == true){
 		
@@ -19,12 +20,12 @@ function saveLoginDetails($logid){
 ## proceed to execute on clicking login button
 if(isset($_POST['btnLogin'])){
 
-//post variables
-$log_username = $_POST['username'];
-$log_userpass = $_POST['password'];
+    //post variables
+    $log_username = $_POST['username'];
+    $log_userpass = $_POST['password'];
 
 	//preparing the SQL statement will prevent SQL injection.
-    if ($stmt = $connect_db->prepare('SELECT adminid, fullname, password FROM admin_account WHERE username = ?')) {
+    if ($stmt = $connect_db->prepare('SELECT `adminid`, `fullname`, `password`, `status` FROM `admin_account` WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), 
     //in our case the username is a string so we use "s"
 	$stmt->bind_param('s', $log_username);
@@ -34,11 +35,27 @@ $log_userpass = $_POST['password'];
 
     //check if account exists in database
     if ($stmt->num_rows > 0) {
-	$stmt->bind_result($userid, $fname, $userpwd);
+	$stmt->bind_result($userid, $fname, $userpwd, $status);
 	$stmt->fetch(); 	//Account exists, fetch results 
-   
+        
+        if($status == "Inactive"){
+            echo "<script>alert('Access Denied..\\nYour account is locked, cannot access the system... Contact the system admin'); window.location.href='index.php'</script>";
+        }
+  
     //now verify the password.
 	if (password_verify($log_userpass, $userpwd)) {
+        
+       
+        //save login details
+        $sql = mysqli_query($connect_db, "insert into userlogs(userId, login, logout) values ('".$_SESSION['id']."', CURRENT_TIMESTAMP, '')");
+        
+        //save user activity
+        $sql_act = mysqli_query($connect_db, "insert into user_activities(activity, date_created) values ('".$_SESSION['uname'].", successfully logged into the  system.','".date('d/M/Y')."')");
+        
+        //get login date and save as sesssion
+        $sql_logindate = mysqli_query($connect_db, "SELECT MAX(`login`) FROM `userlogs` WHERE userId='".$userid."'");
+        $get_login = mysqli_fetch_assoc($sql_logindate);
+        $data = $get_login['login'];
 
 		// Verification success! User has loggedin!
 		// Create sessions so we know the user is logged in, they basically act like cookies but remember the data on the server.
@@ -47,7 +64,7 @@ $log_userpass = $_POST['password'];
 		$_SESSION['uname'] = $fname;
 		$_SESSION['id'] = $userid;
 		date_default_timezone_set("Africa/Accra");
-		$_SESSION['login_date_time'] = date('Y-m-d H:i:sa');
+		$_SESSION['login_date_time'] = $data;
 		
 		// if remember me clicked . store values in $_COOKIE  array
 		if(!empty($_POST["rememberme"])) {
@@ -63,12 +80,6 @@ $log_userpass = $_POST['password'];
 			}
 		}
 	}
-		//save login details
-		$sql = mysqli_query($connect_db, "insert into userlogs(userId, login, logout) values ('".$_SESSION['id']."', CURRENT_TIMESTAMP, '')");
-		
-		//save user activity
-		$sql_act = mysqli_query($connect_db, "insert into user_activities(activity, date_created) values ('".$_SESSION['uname'].", successfully logged into the  system.','".date('d/M/Y')."')");
-		
         //redirect loggedin user to application homepage
 		//after all parameters are checked and satisfied
         header('location: dashboard.php');
@@ -143,10 +154,10 @@ $log_userpass = $_POST['password'];
     
     
 <body class="page-login" onload=""> 
-        <!-- loader icon-->
-       <div class="loading"></div>
+   <!-- loader icon-->
+   <div class="loading"></div>
        <!--login container-->
-    <div class="login-container d-flex align-items-center justify-content-center">
+   <div class="login-container d-flex align-items-center justify-content-center">
        <!-- begin login form--> 
         <form class="login-form text-center" action="" method="post" role="form">
         <div class="logo"><img src="../assets/images/logo.jpg" width="100" height="100"/><span style="display: block"><h4 class="app-title">E-Permit System</h4></span>
@@ -173,15 +184,16 @@ $log_userpass = $_POST['password'];
         <button id="submit-btn" class="btn btn-custom mt-3 btn-block font-weight-bold rounded-pill btn-login" name="btnLogin" onclick="">Login</button>
         </div>
          <!--register link-->
-            <div class="register-link font-weight-normal ">Powered by <a class="new-register font-weight-semibold f-reg" href="../jecmasgh/index.html" target="blank">Jecmas Ghana</a></div>
-<!--            <div class="register-link font-weight-normal ">Don't have an account? <a class="new-register font-weight-semibold f-reg" href="register.php">Register</a></div>-->
+         <div class="register-link font-weight-normal ">Powered by <a class="new-register font-weight-semibold f-reg" href="../jecmasghana/index.html" target="blank">Jecmas Ghana</a></div>
+<!--   <div class="register-link font-weight-normal ">Don't have an account? <a class="new-register font-weight-semibold f-reg" href="register.php">Register</a></div>-->
 <!--
         <div class="bottom-textt ">
             <p class="lower-text">Powered by <a class="developer" href="">Jecmas Ghana</a></p>
         </div>
 -->
         </form>
-    </div>
+    
+   </div>
     
   
 <!-- scripts-->

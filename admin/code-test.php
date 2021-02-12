@@ -35,6 +35,17 @@ if (isset($_GET['usertype'])){
     $upass = 'eps12345';
 }
 
+if(!isset($_POST['testme']))
+{
+    $sel=mysqli_query($connect_db, "SELECT * FROM `inspections` WHERE applicationID='".$last['applicationid']."'");
+    $rec = mysqli_fetch_array($sel);
+    if(mysqli_num_rows($rec) > 0)
+    {
+        echo $rec['applicationID'] .": ". "site inspected";
+    }
+    
+}
+
 //process data on form submission
 if(isset($_POST['btnRegister'])){
     
@@ -165,7 +176,7 @@ if(isset($_POST['btnRegister'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -367,7 +378,7 @@ if(isset($_POST['btnRegister'])){
                         <div class="form-group">
                             <label class="control-label col-lg-4">Proposed Development</label>
                             <div class="col-lg-6">
-                                <textarea style="" class="form-control" id="project" name="project" cols="6" rows="8"></textarea>
+                                <textarea  class="form-control" id="project" name="project" cols="6" rows="8"></textarea>
                             </div>
                         </div>
                        <br>
@@ -527,7 +538,7 @@ if(isset($_POST['btnRegister'])){
                         <div class="form-group">
                             <label class="control-label col-lg-4">Proposed Development</label>
                             <div class="col-lg-6">
-                                <textarea style="" class="form-control" id="project" name="project" value="<?php echo $record['project_type']; ?>" readonly cols="6" rows="6"></textarea>
+                                <textarea  class="form-control" id="project" name="project" value="<?php echo $record['project_type']; ?>" readonly cols="6" rows="6"></textarea>
                             </div>
                         </div> <!--end applicant details preview section-->
                     </form>
@@ -560,7 +571,7 @@ if(isset($_POST['btnRegister'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

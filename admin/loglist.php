@@ -4,6 +4,13 @@ error_reporting(0);
 
 require_once '../functions/db_connection.php';
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 if(!isset($_SESSION['loggedin'])){
     header('Location: ./index.php');
@@ -45,27 +52,27 @@ if(!isset($_SESSION['loggedin'])){
     <!--END GLOBAL STYLES -->
 
      
-      <!--page level styles-->
- <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+        <!--page level styles-->
+    <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
-<script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
-<script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
-    
-<!--jquery -->
-<script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
-<!-- jquery datatable scripts -->
-<script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
-<!-- end -->
-    
- <!-- dataTables export buttons scripts-->
-<link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
-<script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
-<script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
-<script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
-<script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
-<script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
-  <!-- function to show loader on pageloading-->
+    <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap js plugin -->
+    <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+        
+    <!--jquery -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery datatable scripts -->
+    <script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
+    <!-- end -->
+        
+    <!-- dataTables export buttons scripts-->
+    <link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
+    <script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
+    <script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
+    <!-- function to show loader on pageloading-->
 	<script type="text/javascript">
 		function pageLoading(){
 			$('.loading').show();
@@ -74,9 +81,9 @@ if(!isset($_SESSION['loggedin'])){
 			}, 1500);
 		}
 	</script>
-<!--	end function here-->
+    <!--	end function here-->
  
-  <script>
+    <script>
         $(document).ready(function () {
             var table = $('#table').DataTable({
                 dom: 'Bfrtip',
@@ -88,7 +95,7 @@ if(!isset($_SESSION['loggedin'])){
         });
     </script>
 
-<!--  end  -->  
+    <!--  end  -->  
   
     <!--stylesheet-->
     <style type="text/css">
@@ -148,7 +155,7 @@ if(!isset($_SESSION['loggedin'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -266,7 +273,7 @@ if(!isset($_SESSION['loggedin'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -332,7 +339,7 @@ if(!isset($_SESSION['loggedin'])){
 									<th data-field="fullname">Full Name</th>
 									<th data-field="username">Username</th>
 									<th data-field="lgindate">Login Date</th>
-									<th data-field="lgoutdate">Logout Date</th>
+<!--									<th data-field="lgoutdate">Logout Date</th>-->
 									</tr>
                     			</thead>
 								<tbody>
@@ -349,7 +356,7 @@ if(!isset($_SESSION['loggedin'])){
 											<td><?php echo $row['fullname']; ?></td>
 											<td><?php echo $row['username']; ?></td>
 											<td><?php echo date("d M, Y H:i:sa", strtotime($row['login'])); ?></td>
-											<td><?php echo date("d M, Y H:i:sa", strtotime($row['logout'])); ?></td>
+<!--											<td><?php echo date("d M, Y H:i:sa", strtotime($row['logout'])); ?></td>-->
 										</tr>
 									<?php
 									$cnt=$cnt+1;        
@@ -373,7 +380,7 @@ if(!isset($_SESSION['loggedin'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

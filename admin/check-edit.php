@@ -6,6 +6,13 @@ error_reporting(E_ALL ^ E_NOTICE);
 include '../functions/db_connection.php';
 
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
@@ -13,9 +20,9 @@ if (!isset($_SESSION['loggedin'])) {
 	exit;
 }
 
-    //get locationid from previous session page
-    $checklistid = "";
-    if(isset($_GET['checklist_id']))
+//get locationid from previous session page
+$checklistid = "";
+if(isset($_GET['checklist_id']))
     $checklistid = ($_GET['checklist_id']);
 
     //global
@@ -27,9 +34,11 @@ if (!isset($_SESSION['loggedin'])) {
     $oldlanduse = $record['land_use'];
     $oldcomment = $record['comments'];
 
-    //process data on form submission
-    #to update record
-    if(isset($_POST['btnUpdate'])){
+
+//process data on form submission
+#to update record
+
+if(isset($_POST['btnUpdate'])){
         
         
         //get form data
@@ -113,8 +122,8 @@ if (!isset($_SESSION['loggedin'])) {
         }
         
         .panel .my-sub-link:hover{
-/*            background-color: #33b35a;*/
-/*            color: white;*/
+    /*            background-color: #33b35a;*/
+    /*            color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
         }
@@ -151,7 +160,7 @@ if (!isset($_SESSION['loggedin'])) {
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -270,7 +279,7 @@ if (!isset($_SESSION['loggedin'])) {
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -374,7 +383,7 @@ if (!isset($_SESSION['loggedin'])) {
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     

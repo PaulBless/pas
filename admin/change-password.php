@@ -1,7 +1,7 @@
 
 <?php
 session_start();
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
 //include db connection file
 include '../functions/db_connection.php';
@@ -13,6 +13,13 @@ require_once '../functions/Admin.php';
 //instance of db controller class
 $db_handle = new databaseController();
 
+
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
 
 
 // If the user is not logged in redirect to the login page...
@@ -119,7 +126,7 @@ if(isset($_POST['btnchange'])){
     <!--END GLOBAL STYLES -->
 
       <!--page level scripts-->
-<!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
+    <!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
     <!--scripts-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
@@ -135,8 +142,8 @@ if(isset($_POST['btnchange'])){
         }
 		
         .panel .my-sub-link:hover{
-/*            background-color: #33b35a;*/
-/*            color: white;*/
+        /*            background-color: #33b35a;*/
+        /*            color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
         }
@@ -165,7 +172,7 @@ if(isset($_POST['btnchange'])){
 			left: 0px;
         }
     </style>
-   </head>    <!-- END HEAD -->
+</head>    <!-- END HEAD -->
 
    
     <!-- BEGIN BODY -->
@@ -185,7 +192,7 @@ if(isset($_POST['btnchange'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -302,17 +309,17 @@ if(isset($_POST['btnchange'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
                 <li><a href="committee-decisions.php"><i class="fa fa-bookmark"></i> Committee Decisions </a></li>
                 <li><a href="site-inspections.php"><i class="fa fa-eye"></i> Site Inspections </a></li>
                 <!--menu item-->
-<!--
-                <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
-                <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
--->
+                    <!--
+                                    <li><a href="tasks.php"><i class="fa fa-tasks"></i> Users Tasks </a></li>
+                                    <li><a href="chat.php"><i class="fa fa-comments"></i> Chat Option </a></li>
+                    -->
                 <!-- Report menu item-->
                 <li class="panel hidden">
                     <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#report-nav">
@@ -361,7 +368,7 @@ if(isset($_POST['btnchange'])){
                         <div class="btn-group">
                         <a class="accordion-toggle btn btn-xs minimize-box" data-toggle="collapse"
                         href="#collapseForm">
-<!--                        <i class="fa fa-chevron-up"></i>-->
+                        <!--                        <i class="fa fa-chevron-up"></i>-->
                         </a>
                         </div>
                         </li>
@@ -412,7 +419,7 @@ if(isset($_POST['btnchange'])){
                         <div class="form-actions no-margin-bottom" style="text-align:center;">
 
 						<!-- submit button-->
-<!--                       <button type="submit" name="test" value="" id="test" class="btn_change btn btn-info" style="font-weight: bold"> Submit</button>-->
+                        <!--                       <button type="submit" name="test" value="" id="test" class="btn_change btn btn-info" style="font-weight: bold"> Submit</button>-->
                        
                        <button type="submit" name="btnchange" value="" id="btnchange" class="btn_change btn btn-primary" style="font-weight: bold"> Change Password</button>
                         <a class="btn btn-danger" type="reset" href="dashboard.php" style="margin-left: 25px; font-weight: bold"><i class="fa fa-times"></i> Cancel</a>
@@ -435,7 +442,7 @@ if(isset($_POST['btnchange'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer"  href="../jecmasghana/index.html" target="_blank">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     
@@ -447,10 +454,10 @@ if(isset($_POST['btnchange'])){
      
     //bootstrap form-control fields validation
     $('#form-adduser').bootstrapValidator({
-//        live: 'disabled',
+        //        live: 'disabled',
         message: 'This value is not valid',
         feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
+        //            valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
@@ -510,7 +517,7 @@ if(isset($_POST['btnchange'])){
                     },
 				}
               },
-                    
+            }          
     });
     
     

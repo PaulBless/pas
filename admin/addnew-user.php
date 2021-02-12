@@ -10,6 +10,13 @@ include '../functions/db_connection.php';
 require_once '../functions/databaseController.php';
 require_once '../functions/Users.php';
 
+## get system settings
+$sql = "select `dist_name`,`dist_town` from settings";
+$qry = mysqli_query($connect_db, $sql);
+$fetch = mysqli_fetch_assoc($qry);
+$district = $fetch['dist_name'];
+$town = $fetch['dist_town'];
+
 //instance of db controller class
 $db_handle = new databaseController();
 
@@ -38,7 +45,7 @@ if (isset($_GET['usertype'])){
 //process data on form submission
 if(isset($_POST['btnRegister'])){
     
-//    $uname = ($_POST['firstname']);
+    //    $uname = ($_POST['firstname']);
     $upass = 'eps12345';
     
     ## set default password
@@ -65,7 +72,7 @@ if(isset($_POST['btnRegister'])){
     $activity = '';
     $name = "{$firstname} {$lastname}"; //join first and last names
     // $regdate = date("d-m-Y h:i:sa"); 
-//    $regdate = ($_GET['regdate']);
+    //    $regdate = ($_GET['regdate']);
     
        
     //preparing the SQL statement will prevent SQL injection.
@@ -81,7 +88,7 @@ if(isset($_POST['btnRegister'])){
 	$stmt->fetch(); 	//record exists, fetch results 
         $error = "Record Exists..\\n \\nThe Name: ".$fullname. " with Username: ".$user_name. " is already taken or registered.. \\nCannot save duplicate records!";
         echo "<script>alert('".$error."')</script>";
-//        echo 'The Name: ' .$fullname. ' with Username: '.$user_name. ' is already taken or registered.. \\nCannot save duplicate records!';
+    //        echo 'The Name: ' .$fullname. ' with Username: '.$user_name. ' is already taken or registered.. \\nCannot save duplicate records!';
     }else{
     #create instance object of users class
     $new_user = new Users();
@@ -90,7 +97,7 @@ if(isset($_POST['btnRegister'])){
     //insert the record in db
     $insertid = $new_user->addUser($name, $mobile, $email, $department, $username, $password, $usertype, $status, $regdate);
 	//insert record using hash password
-//    $insertid = $new_user->addUser($name, $mobile, $email, $department, $username, $pwd_hash, $usertype, $status, $regdate);
+    //    $insertid = $new_user->addUser($name, $mobile, $email, $department, $username, $pwd_hash, $usertype, $status, $regdate);
     if(empty($insertid)){
     echo "<script>alert('Error!\\n \\nCould not complete the request.. Try again later!')</script>";
     }else{
@@ -134,7 +141,7 @@ if(isset($_POST['btnRegister'])){
     <!--END GLOBAL STYLES -->
 
       <!--page level scripts-->
-<!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
+    <!--   <link rel="stylesheet" href="../third-party/vendor/bootstrap/css/bootstrap.css">-->
     <link rel="stylesheet" href="../third-party/dist/css/bootstrapValidator.css">
     <!--scripts-->
     <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
@@ -158,8 +165,8 @@ if(isset($_POST['btnRegister'])){
             color: #5b6574;
         }
         .panel .my-sub-link:hover{
-/*            background-color: #33b35a;*/
-/*            color: white;*/
+        /*            background-color: #33b35a;*/
+        /*            color: white;*/
             background: #343a40;
             transition: transform .3s ease, -webkit-transform .3s ease, -moz-transform .3s ease, -o-transform .3s ease;
         }
@@ -195,7 +202,7 @@ if(isset($_POST['btnRegister'])){
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                 <!--app name/title-->
-               <a class="app-name"> E-Permit System</a>
+               <a class="app-name"> <?php echo $district . ", ". $town ?></a>
                 <!-- add search button-->
                 </header>
                 <!-- END LOGO SECTION -->
@@ -312,7 +319,7 @@ if(isset($_POST['btnRegister'])){
                     <ul class="collapse" id="chart-nav">
                         <li class="my-sub-link"><a href="grantpermit.php"><i class="fa fa-arrow-right"></i> Grant New Permit </a></li>
                         <li class="my-sub-link"><a href="reviewlists.php"><i class="fa fa-arrow-right"></i> Review Applications </a></li>
-                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Building Permits </a></li>
+                        <li class="my-sub-link"><a href="permits.php"><i class="fa fa-arrow-right"></i> Permits Granted </a></li>
                     </ul>
                 </li>
                 <!--panel menu item-->
@@ -426,20 +433,20 @@ if(isset($_POST['btnRegister'])){
                             <span class="lbl-error col-lg-4" id="dept-error"></span>
                         </div>
                         <!--end-->
-<!--                        <br>-->
-<!--                        <hr>-->
+                        <!--                        <br>-->
+                        <!--                        <hr>-->
                         <!--account info-->
                         <legend> Account Information</legend>
                         <!--select user type-->
                         <div class="form-group">
-                        <label class="control-label col-lg-4">User Type:</label>
+                            <label class="control-label col-lg-4">User Type:</label>
                         <div class="col-lg-4">
-                                <select class="form-control" name="usertype" id="usertype" onselect="" onclick="" onchange="">
+                            <select class="form-control" name="usertype" id="usertype" onselect="" onclick="" onchange="">
                                 <option value="">--Select--</option>
                                 <option class="hidden" value="Admin">Admin</option>
                                 <option value="Officer">Planning Officer</option>
                                 <option value="User">User</option>
-                                </select>
+                            </select>
                             </div>
                         <span class="lbl-error col-lg-4" id="usertype-error"></span>
                         </div>
@@ -464,9 +471,10 @@ if(isset($_POST['btnRegister'])){
                                <input type="text" class="form-control hidden" value="<?php echo date("d/m/Y h:i:sa") ?>" name="regdate" id="regdate">
                             </div>
                         </div>
+                        
                         <!--buttons group-->
                         <div class="form-actions no-margin-bottom" style="text-align:center;">
-<!--                        <input type="submit" name="btnRegister" value="Register" class="btn btn-success" style="margin-right: 25px">-->
+                        <!--                        <input type="submit" name="btnRegister" value="Register" class="btn btn-success" style="margin-right: 25px">-->
                         <!-- submit button-->
                        <button type="submit" name="btnRegister" value="Register" id="btnSave" class="btn btn-success" style="font-weight: bold"><i class="fa fa-save"></i> Register</button>
                         <a class="btn btn-danger" type="reset" href="dashboard.php" style="margin-left: 25px; font-weight: bold"><i class="fa fa-times"></i> Cancel</a>
@@ -485,7 +493,7 @@ if(isset($_POST['btnRegister'])){
 
 <!-- FOOTER -->
     <div id="footer">
-        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" style="" href="">Jecmas </a>&nbsp;</p>
+        <p>&copy; E-Permit 2020. &nbsp;Developed by <a class="app-developer" href="">Jecmas </a>&nbsp;</p>
     </div>
     <!--END FOOTER -->
     
@@ -497,10 +505,10 @@ if(isset($_POST['btnRegister'])){
      
     //bootstrap form-control fields validation
     $('#form-adduser').bootstrapValidator({
-//        live: 'disabled',
+        //        live: 'disabled',
         message: 'This value is not valid',
         feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
+        //            valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
@@ -576,12 +584,12 @@ if(isset($_POST['btnRegister'])){
     });
     
     //this function triggers when form data is submitted
-//    $("#form-adduser").submit(function(){
-//        var num_val = $("#mobile").substring(0, 3);
-//        if (num_val !== '024') && (num_val !== '054') && (num_val !== '055') && (num_val !== '059') && (num_val !== '027') && (num_val !== '057') && (num_val !== '056') && (num_val !== '026') && (num_val !== '020') && (num_val !== '050') && (num_val !== '023'){
-//            alert('Phone number is invalid.');
-//        }
-//    });
+        // $("#form-adduser").submit(function(){
+        //    var num_val = $("#mobile").substring(0, 3);
+        //      if (num_val !== '024') && (num_val !== '054') && (num_val !== '055') && (num_val !== '059') && (num_val !== '027') && (num_val !== '057') && (num_val !== '056') && (num_val !== '026') && (num_val !== '020') && (num_val !== '050') && (num_val !== '023'){
+        //         alert('Phone number is invalid.');
+        //        }
+        //    });
     
     // keypress event
     //phone-number validation
