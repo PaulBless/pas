@@ -566,10 +566,10 @@ if(isset($_POST['btnSubmit'])){
     
     //bootstrap form-control fields validation
     $('#form-newpermit').bootstrapValidator({
-//        live: 'disabled',
+        //        live: 'disabled',
         message: 'This value is not valid',
         feedbackIcons: {
-//            valid: 'glyphicon glyphicon-ok',
+        //            valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },

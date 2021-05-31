@@ -89,26 +89,26 @@ $dbresults = $myapplication->getApplicationByCreatedUser($search_value);
 
      
       <!--  page level styles-->
-<link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="../admin/assets/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 
-<script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
-  <!-- bootstrap js plugin -->
-<script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
-    
-<!--jquery -->
-<script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
-<!-- jquery datatable scripts -->
-<!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
-<script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
-<!-- end -->
-    
- <!-- dataTables export buttons scripts-->
-<link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
-<script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
-<script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
-<script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
-<script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
-<script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
+    <script type="text/javascript" src="../third-party/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <!-- bootstrap js plugin -->
+    <script type="text/javascript" src="../third-party/vendor/bootstrap/js/bootstrap.js"></script>
+        
+    <!--jquery -->
+    <script type="text/javascript" src="../assets/js/jquery-3.3.1.min.js"></script>
+    <!-- jquery datatable scripts -->
+    <!--<link rel="stylesheet" href="../assets/export/jquery.dataTables.min.css">-->
+    <script type="text/javascript" src="../assets/export/jquery.dataTables.min.js"></script>
+    <!-- end -->
+        
+    <!-- dataTables export buttons scripts-->
+    <link rel="stylesheet"  href="../assets/export/buttons.dataTables.min.css">    
+    <script src="../assets/export/dataTables.buttons.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/jszip.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/pdfmake.min.js" type="text/javascript"></script> 
+    <script src="../assets/export/vfs_fonts.js" type="text/javascript"></script> 
+    <script src="../assets/export/buttons.html5.min.js" type="text/javascript"></script> 
    
     <script>
         $(document).ready(function () {
