@@ -184,13 +184,12 @@ if(isset($_POST['btnLogin'])){
         <button id="submit-btn" class="btn btn-custom mt-3 btn-block font-weight-bold rounded-pill btn-login" name="btnLogin" onclick="">Login</button>
         </div>
          <!--register link-->
-         <div class="register-link font-weight-normal ">Powered by <a class="new-register font-weight-semibold f-reg" href="../jecmasghana/index.html" target="blank">Jecmas Ghana</a></div>
-<!--   <div class="register-link font-weight-normal ">Don't have an account? <a class="new-register font-weight-semibold f-reg" href="register.php">Register</a></div>-->
-<!--
-        <div class="bottom-textt ">
-            <p class="lower-text">Powered by <a class="developer" href="">Jecmas Ghana</a></p>
+        <!-- <div class="register-link font-weight-normal ">Don't have an account? <a class="new-register font-weight-semibold f-reg" href="register.php">Register</a></div> -->
+
+        <div class="bottom-text ">
+            <p class="lower-text">Powered by <a class="developer" href="#">Jecmas Ghana</a></p>
         </div>
--->
+
         </form>
     
    </div>

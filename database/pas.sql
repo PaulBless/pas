@@ -360,7 +360,7 @@ CREATE TABLE IF NOT EXISTS `user_activities` (
 
 -- add records to admin_account table
 INSERT INTO `admin_account` (`adminid`, `fullname`, `mobileno`, `email`, `username`, `password`, `activity`, `status`, `regdate`) VALUES
-('Jecmas Ghana', '0555428455', 'jecmasghana@gmail.com', 'jecmas', '$2y$10$/Lo.Ktx9y4qhgj1YRi6t7eT4UFduYOpLJjFXCv9W7zjj3nHAuiRmC', '', 'Active', '2021-02-05 12:43:03'),
+('Jecmas Ghana', '0555428455', 'jecmasghana@gmail.com', 'admin', '$2y$10$/Lo.Ktx9y4qhgj1YRi6t7eT4UFduYOpLJjFXCv9W7zjj3nHAuiRmC', '', 'Active', '2021-02-05 12:43:03'),
 ('System Admin', '0320201000', 'sysadmin@eps.org', 'sysadm', '$2y$10$s1F59Dkg44v4iZBPAWgeqeOLKYQxEdXWnDEAlHh3JH9QAoICXIfkO', '', 'Inactive', '2021-02-05 12:44:22');
 
 -- add records to landuse table

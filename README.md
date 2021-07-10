@@ -1,4 +1,4 @@
-# pas
+# Permit Application System
 
 --FOLLOW THE STEPS BELOW TO RUN THIS APPLICATION--
 
@@ -8,25 +8,20 @@
 	-- if you are using xampp "c:/xampp/htdocs"
 3. Database Configuration
 Open phpmyadmin
-Create Database with the name 'pas'.
-Import database pas.sql from downloaded folder(inside database)
+Import Database by clicking on the "Import" 
+Select "dummy_data" from downloaded folder
+Run to install the database, That's All!
 4. Open Your browser put inside "http://localhost/pas/"
 5. To Login as admin put "http://localhost/pas/admin"
 
 
 Admin Login Details
-1. Login Id : admin
+1. Login Id : jecmas
    Password : admin1
 
 2. Username: sysadm
    Password: 123456
 
-User Login Details
-1. Username: test
-   Password: test123
-
-2. Username: azoro
-   Password: eps12345
 
 
 

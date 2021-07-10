@@ -139,9 +139,9 @@ if (isset($_POST['btnLogin'])) {
         <div class="login-link">
         <button class="btn btn-custom mt-1 btn-block font-weight-bold rounded-pill btn-login" name="btnLogin"> <i class="fa fa-login-alt"></i> Login</button>
         </div>
-<!--        <div class="register-link font-weight-normal ">Powered by <a class="new-register font-weight-semibold f-reg" href="../jecmasghana/index.html" target="blank">Jecmas Ghana</a></div>-->
-        <div class="bottom-text ">
-            <p class="lower-text">Powered by <a class="developer" href="">Jecmas Ghana</a></p>
+
+        <div class="bottom-text text-center">
+            <p class="lower-text">Powered by <a class="developer" href="#">Jecmas </a></p>
         </div>
     
        </form>
