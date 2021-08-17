@@ -187,7 +187,7 @@ if(isset($_POST['btnLogin'])){
         <!-- <div class="register-link font-weight-normal ">Don't have an account? <a class="new-register font-weight-semibold f-reg" href="register.php">Register</a></div> -->
 
         <div class="bottom-text ">
-            <p class="lower-text">Powered by <a class="developer" href="#">Jecmas Ghana</a></p>
+            <p class="lower-text">&copy; 2021 - Powered by <a class="developer" href="#">Jecmas</a></p>
         </div>
 
         </form>

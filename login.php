@@ -141,7 +141,7 @@ if (isset($_POST['btnLogin'])) {
         </div>
 
         <div class="bottom-text text-center">
-            <p class="lower-text">Powered by <a class="developer" href="#">Jecmas </a></p>
+            <p class="lower-text">&copy; 2021 - Powered by <a class="developer" href="javascript:void(0)">Jecmas </a></p>
         </div>
     
        </form>
